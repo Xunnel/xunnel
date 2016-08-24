@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="XunnelLogin">
+        <div>
+            <div class="js_wait_updating_account alert alert-warning hidden" role="alert">Please wait while we are updating your account...
+        This process can take several minutes...
+      </div>
+      <style>
+          .input-group-addon {
+          background-color: white;
+          border-left: 0px;
+          border-bottom: 0px;
+          border-top: 0px;
+        }
+        .form-control .js_online_sync_input{
+         border-left: 1px solid black;
+         border-bottom: 1px solid black;
+         border-top: 1px solid black;
+         border-right: 1px solid black;
+        }
+        input[type='text']{
+         border-left: 1px solid #C1B5B3;
+         border-bottom: 1px solid #C1B5B3;
+         border-top: 1px solid #C1B5B3;
+         border-right: 1px solid #C1B5B3;
+        }
+      </style>
+            <form class="form-horizontal js_online_sync_form">
+                <t t-if="call!='twofa'">
+                    <t t-as="credential" t-foreach="credentials">
+                        <div class="input-group col-md-offset-4 col-md-4">
+                            <span class="input-group-btn">
+                                <label class="input-group-addon" type="button"><strong><t t-esc="credential.label"/></strong></label>
+                            </span>
+                            <input class="form-control js_online_sync_input" aria-describedby="basic-addon2" required="1" t-att-name="credential.name" t-att-type="credential.type"/>
+                        </div> <br/>
+                    </t>
+                </t>
+                <t t-if="call=='twofa'">
+                    <t t-as="factor" t-foreach="twofa">
+                        <div class="form-group">
+                            <t t-if="factor.imgBase64File">
+                                <img class="col-md-offset-4" t-att-src="factor.imgBase64File"/><br/>
+                            </t>
+                            <t t-if="factor.imgURL">
+                                <img class="col-md-offset-4" t-att-src="factor.imgURL"/><br/>
+                            </t>
+                            <t t-if="factor.type=='options'">
+                                <label class="col-md-offset-2" style="margin-bottom: 20px;"> 
+                                    <strong><t t-esc="factor.label"/></strong>
+                                </label>
+                                <section id="sect" class="container col-md-offset-1 col-md-10">
+                                    <div>
+                                        <div class="row col-md-9">
+                                            <t t-foreach="factor.options" t-as="option">
+                                                <article class="col-md-4" style="margin-bottom: 5px;">   
+                                                    <t t-if="option.imgBase64File">
+                                                        <img class="checked" style="height:150px; width:150px; border-radius: 10px;" t-att-src="option.imgBase64File"/>
+                                                    </t>
+                                                    <t t-if="option.imgURL">
+                                                        <img class="checked" style="height:150px; width:150px; border-radius: 10px;" t-att-src="option.imgURL"/>
+                                                    </t>
+                                                    <t t-if="option.value or option.value == 0">
+                                                        <input type="checkbox" class="hidden js_online_sync_input" t-att-value="option.value"/>
+                                                    </t>  
+                                                </article>                                   
+                                            </t>
+                                        </div>
+                                    </div>
+                                </section> 
+                            </t>
+                            <t t-if="factor.type=='textOptions'">
+                                <label class="col-md-4" style="margin-bottom: 40px; margin-top: 40px;"><t t-esc="factor.label"/></label>
+                                <select class="col-md-2" style="margin-left: -20px; margin-bottom: 40px; margin-top: 40px;">
+                                    <option selected="1"></option>
+                                    <t t-foreach="factor.options" t-as="option">                                    
+                                        <option class="js_online_sync_input" t-att-value="option.value">
+                                            <t t-esc="option.label"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </t>
+                           <t t-if="factor.type == 'text'">
+                                <div class="input-group col-md-offset-2 col-md-7">
+                                        <span class="input-group-addon col-md-offset-4">
+                                            <strong><t t-esc="factor.label" /></strong>
+                                        </span>
+                                        <input class="form-control js_online_sync_input col-md-1" required="1" t-att-name="factor.name" t-att-type="factor.type"/>
+                                </div>
+                            </t>   
+                        </div>
+                    </t>
+                </t>
+            </form>
+            <div class="footer">
+                <t t-if="call=='init'">
+                    <button class="js_process_next_step btn btn-primary" type="button">Continue</button>
+                </t>
+                <t t-if="call=='twofa'">
+                    <button class="js_process_twofa_step btn btn-primary" type="button">Continue</button>
+                </t>
+                <button class="js_process_cancel btn btn-default" type="button">Cancel</button>
+            </div>
+        </div>
+    </t>
+</templates>

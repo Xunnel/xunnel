@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="invoice_supplier_xunnel_form_view" model="ir.ui.view">
+        <field name="name">invoice.supplier.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(xunnel_account.action_pre_invoice_link_wizard)d" string="Link Invoice" type="action"
+                    attrs="{'invisible': ['|','|',('state','!=','open'),('pre_invoices_found_msg','=',False),('pre_invoice_linked','!=',False)]}"/>
+                <button name="unlink_invoice" string="Unlink Invoice" type="object"
+                    attrs="{'invisible': ['|',('state','!=','open'),('pre_invoice_linked','=',False)]}"/>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[2]/group/group[2]/field[@name='company_id']" position="after">
+                <field name="pre_invoice_linked"/>
+            </xpath>
+            <xpath expr="//header" position="after">
+                <div class="alert alert-info" role="alert" style="margin-bottom:0px;padding:10px 15px 6px;"
+                    attrs="{'invisible': ['|','|',('state','!=','open'),('pre_invoices_found_msg','=',False),('pre_invoice_linked','!=',False)]}">
+                    <field name='pre_invoices_found_msg'/>
+                </div>
+            </xpath>
+        </field> 
+    </record>
+</odoo>

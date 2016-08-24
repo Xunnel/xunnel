@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="account_pre_invoice_tree" model="ir.ui.view">
+            <field name="name">account.pre.invoice.tree</field>
+            <field name="model">account.pre.invoice</field>
+            <field name="arch" type="xml">
+                <tree colors="gray:state=='pending';#cc6161:state=='check';#499459:state=='done';" create="false" string="Invoice">
+                    <field groups="base.group_user" name="partner_id" string="Vendor"/>
+                    <field name="date_invoice" string="Bill Date"/>
+                    <field name="reference"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="type" invisible="context.get('type',True)"/>
+                    <field name="amount_untaxed"/>
+                    <field name="amount_tax"/>
+                    <field name="amount_total" string="Total" sum="Total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="account_pre_invoice_filter" model="ir.ui.view">
+            <field name="name">account.pre.invoice.filter</field>
+            <field name="model">account.pre.invoice</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="state_pending" string="State: Pending" domain="[('state','=','pending')]"/>
+                    <filter name="state_check" string="State: Check" domain="[('state','=','check')]"/>
+                    <filter name="state_done" string="State: Done" domain="[('state','=','done')]"/>
+                    <group>
+                        <filter string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Date Invoice" domain="[]" context="{'group_by':'date_invoice'}"/>
+                        <filter string="State" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="account_pre_invoice_view_form" model="ir.ui.view">
+            <field name="name">account.pre.invoice.form</field>
+            <field name="model">account.pre.invoice</field>
+            <field name="arch" type="xml">
+                <form attrs="{'edit': [('message_wrong_data','!=',False)]}" create="false" string="Vendor Bill">
+                    <header>
+                        <button name="validate_invoice" states="check" string="Mark as corrected" type="object"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <div attrs="{'invisible': [('message_wrong_data','=',False)]}" class="alert alert-danger" role="alert" style="margin-bottom:0px;padding:10px 15px 6px;">
+                        <field name="message_wrong_data"/>
+                    </div>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button attrs="{'invisible':[('account_invoice_id','=', False)]}" class="oe_stat_button" icon="fa-bars" name="button_account_invoice" string="Invoice" type="object">
+                                <field invisible="1" name="account_invoice_id"/>
+                            </button>
+                        </div>
+                        <group>
+                            <div>
+                                <h1>
+                                    <field name="name"/>
+                                </h1>
+                            </div>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="reference"/>
+                            </group>
+                            <group>
+                                <field name="date_invoice"/>
+                                <field invisible="1" name="company_id"/>
+                                <field groups="base.group_multi_currency" name="currency_id"/>
+                            </group>
+                        </group>
+                        <field name="invoice_line_ids" nolabel="1">
+                            <tree editable="bottom" string="Bill lines">
+                                <field name="index"/>
+                                <field invisible="1" name="company_id"/>
+                                <field name="product_id"/>
+                                <field name="name" attrs="{'readonly': [('xml_invoice', '=', True)]}"/>
+                                <field name="account_id" groups="account.group_account_user"
+                                    domain="[('company_id', '=', parent.company_id), ('internal_type', '=', 'other')]"/>
+                                <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
+                                    domain="[('company_id', '=', parent.company_id)]"/>
+                                <field name="analytic_tag_ids" groups="analytic.group_analytic_accounting" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="quantity" attrs="{'readonly': [('xml_invoice', '=', True)]}"/>
+                                <field groups="product.group_uom" name="uom_id"/>
+                                <field name="price_unit" attrs="{'readonly': [('xml_invoice', '=', True)]}"/>
+                                <field groups="base.group_no_one" name="discount"/>
+                                <field domain="[('type_tax_use','=','purchase'),('company_id', '=', parent.company_id)]" name="invoice_line_tax_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="price_subtotal"/>
+                                <field name="xml_invoice" invisible="1"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <group>
+                                <div class="oe_inline">
+                                    <field name="tax_line_ids">
+                                        <tree editable="bottom" string="Taxes">
+                                            <field name="name" attrs="{'readonly': [('xml_invoice', '=', True)]}"/>
+                                            <field groups="account.group_account_invoice" name="account_id"/>
+                                            <field name="amount" attrs="{'readonly': [('xml_invoice', '=', True)]}"/>
+                                            <field name="xml_invoice" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </group>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed"/>
+                                <field name="amount_tax"/>
+                                <field class="oe_subtotal_footer_separator" name="amount_total"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_account_pre_invoice" model="ir.actions.act_window">
+            <field name="name">Account Pre Invoice</field>
+            <field name="res_model">account.pre.invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+        <menuitem action="action_account_pre_invoice" id="menu_account_pre_invoice" name="Pre Vendor Bills" parent="account.menu_finance_payables" sequence="0"/>
+    </data>
+</odoo>
