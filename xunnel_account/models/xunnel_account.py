@@ -5,8 +5,9 @@
 import json
 from datetime import datetime
 from time import mktime
-from odoo.exceptions import UserError
+
 from odoo import api, models
+from odoo.exceptions import UserError
 
 
 class PlaidAccount(models.Model):
