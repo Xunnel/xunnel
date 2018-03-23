@@ -25,6 +25,7 @@
         'views/account_pre_invoice.xml',
         'views/res_company.xml',
         'data/ir_cron.xml',
+        'data/config_xunnel_url.xml',
         'views/account_config_settings.xml',
     ],
     'qweb': [

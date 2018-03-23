@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="config_xunnel_url" model="ir.config_parameter">
+        <field name="key">xunnel_account.url</field>
+        <field name="value">http://localhost:8070/</field>
+    </record>
+</odoo>

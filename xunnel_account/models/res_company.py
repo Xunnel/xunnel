@@ -21,9 +21,10 @@ class ResCompany(models.Model):
             if is there any an exception. The error message within the API
             response will be raised.
         """
-        base = 'http://localhost:8070/'
+        base = self.env['ir.config_parameter'].get_param(
+            'xunnel_account.url')
         response = requests.post(
-            base + endpoint,
+            str(base) + endpoint,
             headers={'Xunnel-Token': str(self.xunnel_token)},
             data=dumps(payload) if payload else None)
         return response.json()
