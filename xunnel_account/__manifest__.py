@@ -31,9 +31,6 @@
         'static/src/xml/xunnel_templates.xml',
     ],
     'external_dependencies': {
-        'python': [
-            'odoorpc',
-            ]
     },
     'installable': True,
 }
