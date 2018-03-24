@@ -13,25 +13,12 @@
     'website': 'http://www.jarsa.com.mx',
     'license': 'LGPL-3',
     'depends': [
-        'account_online_sync',
         'account_accountant',
     ],
     'data': [
-        'security/ir.model.access.csv',
-        'views/assets.xml',
-        'wizards/account_pre_invoice_wizard_view.xml',
-        'wizards/pre_invoice_link_wizard_view.xml',
-        'views/account_invoice_view.xml',
-        'views/account_pre_invoice.xml',
-        'views/res_company.xml',
+        'views/account_config_settings.xml',
         'data/ir_cron.xml',
         'data/config_xunnel_url.xml',
-        'views/account_config_settings.xml',
     ],
-    'qweb': [
-        'static/src/xml/xunnel_templates.xml',
-    ],
-    'external_dependencies': {
-    },
     'installable': True,
 }
