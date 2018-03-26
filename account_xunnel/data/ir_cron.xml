@@ -8,8 +8,9 @@
         <field name='interval_number'>4</field>
         <field name='interval_type'>hours</field>
         <field name='numbercall'>-1</field>
-        <field name='model_id' ref='base.model_res_company'/>
-        <field name='code'>model.cron_xunnel_sync()</field>
+        <field name='model_id' ref='account_xunnel.model_res_company'/>
         <field name='state'>code</field>
+        <field name='code'>model.cron_xunnel_sync()</field>
     </record>
 </odoo>
+

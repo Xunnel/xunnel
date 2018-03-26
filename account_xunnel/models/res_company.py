@@ -2,12 +2,17 @@
 # Copyright 2017, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import requests
+import base64
+from codecs import BOM_UTF8
+from datetime import datetime
 from json import dumps
+from time import mktime
+
+import requests
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from time import mktime
-from datetime import datetime
+
+BOM_UTF8U = BOM_UTF8.decode('UTF-8')
 
 
 class ResCompany(models.Model):
@@ -33,15 +38,31 @@ class ResCompany(models.Model):
 
     @api.model
     def cron_xunnel_sync(self):
+        att_obj = self.env['ir.attachment']
         for rec in self.search([]):
             response = rec._xunnel(
                 'get_invoices_sat',
                 dict(
                     last_sync=mktime(datetime.strptime(
                         '2009-01-01', '%Y-%m-%d').timetuple())
-                    ))
+                ))
             err = response.get('error')
             if err:
                 raise UserError(err)
-            response.get('response')
+            for item in response.get('response'):
+                xml = item[0].lstrip(BOM_UTF8U).encode("UTF-8")
+                json = item[1]
+                attachment = att_obj.search([
+                    ('name', '=', 'Xunnel_' + json['id_attachment'])])
+                if not attachment:
+                    att_obj.create({
+                        'name': 'Xunnel_' + json['id_attachment'],
+                        'datas_fname': (
+                            'Xunnel_' + json['id_attachment'] + '.xml'),
+                        'type': 'binary',
+                        'datas': base64.encodestring(xml),
+                        'description': str(json),
+                        'index_content': xml,
+                        'mimetype': 'text/plain',
+                    })
             rec.xunnel_last_sync = fields.Date.context_today(self)
