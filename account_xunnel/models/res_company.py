@@ -36,7 +36,7 @@ class ResCompany(models.Model):
             data=dumps(payload) if payload else None)
         return response.json()
 
-    @api.multi
+    @api.model
     def cron_xunnel_sync(self):
         att_obj = self.env['ir.attachment']
         for rec in self.search([]):
