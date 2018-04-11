@@ -14,6 +14,7 @@
     'license': 'LGPL-3',
     'depends': [
         'account_accountant',
+        'account_online_sync'
     ],
     'data': [
         'views/account_config_settings.xml',
