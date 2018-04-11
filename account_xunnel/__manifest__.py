@@ -16,8 +16,8 @@
         'account_accountant',
     ],
     'data': [
-        'data/ir_cron.xml',
         'views/account_config_settings.xml',
+        'data/ir_cron.xml',
         'data/config_xunnel_url.xml',
     ],
     'installable': True,
