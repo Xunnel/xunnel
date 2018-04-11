@@ -40,3 +40,10 @@ class XunnelProviderAccount(models.Model):
         if err:
             raise UserError(err)
         return res.get('response')
+
+    @api.multi
+    def manual_sync(self):
+        super(XunnelProviderAccount, self).manual_sync()
+        for journal in self.account_online_journal_ids:
+            journal.retrieve_transactions()
+

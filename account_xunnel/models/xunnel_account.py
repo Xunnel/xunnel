@@ -41,7 +41,7 @@ class PlaidAccount(models.Model):
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
             transactions.append(trans)
-        print('transactions', transactions)
         # Create the bank statement with the transactions
         return self.env['account.bank.statement'].online_sync_bank_statement(
-            transactions, self.journal_ids[0])
+            transactions,
+            self.journal_ids[0] if self.journal_ids else self.journal_ids)
