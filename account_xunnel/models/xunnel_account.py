@@ -31,8 +31,6 @@ class PlaidAccount(models.Model):
         if err:
             raise UserError(err)
         resp_json = json.loads(resp.get('response'))
-        print('---------------------------------------------------------- retrieve_transactions')
-        print(self.account_online_provider_id.provider_account_identifier,self.online_identifier, resp_json)
         transactions = []
         for transaction in resp_json['transactions']:
             trans = {

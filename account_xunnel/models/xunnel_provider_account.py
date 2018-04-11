@@ -40,3 +40,9 @@ class XunnelProviderAccount(models.Model):
         if err:
             raise UserError(err)
         return res.get('response')
+
+    @api.multi
+    def update_credentials(self):
+        raise UserError(
+            'Updating credentials is not allowed here. '
+            'Please go to https://www.xunnel.com/ to achieve that.')
