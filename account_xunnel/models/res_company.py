@@ -36,7 +36,7 @@ class ResCompany(models.Model):
             data=dumps(payload) if payload else None)
         return response.json()
 
-    @api.model
+    @api.multi
     def cron_xunnel_sync(self):
         att_obj = self.env['ir.attachment']
         for rec in self.search([]):
@@ -66,3 +66,23 @@ class ResCompany(models.Model):
                         'mimetype': 'text/plain',
                     })
             rec.xunnel_last_sync = fields.Date.context_today(self)
+
+    @api.multi
+    def cron_get_xunnel_providers(self):
+        for rec in self.search([('xunnel_token', '!=', False)]):
+            prov_res = rec._xunnel('get_xunnel_providers')
+            err = prov_res.get('error')
+            if err:
+                raise UserError(err)
+            providers = prov_res.get('response')
+            obj_prov = rec.env['account.online.provider']
+            for provider in providers:
+                provider.update(company_id=rec.id, provider_type='xunnel')
+                prov = obj_prov.search([
+                    ('provider_account_identifier', '=',
+                     provider.get('provider_account_identifier'))], limit=1)
+                if prov:
+                    prov.write(provider)
+                else:
+                    prov = obj_prov.create(provider)
+                prov._sync_journals()
