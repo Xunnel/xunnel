@@ -19,8 +19,11 @@ class PlaidAccount(models.Model):
             return super(PlaidAccount, self).retrieve_transactions()
         params = {
             'id_account': self.online_identifier,
+            'id_credential':
+                self.account_online_provider_id.provider_account_identifier,
             'dt_transaction_from': mktime(datetime.strptime(
-                self.last_sync, '%Y-%m-%d').timetuple()),
+                '1900-01-01', '%Y-%m-%d').timetuple()),
+                # self.last_sync, '%Y-%m-%d').timetuple()),
         }
         resp = self.env.user.company_id._xunnel(
             'get_xunnel_transactions', params)
@@ -28,6 +31,8 @@ class PlaidAccount(models.Model):
         if err:
             raise UserError(err)
         resp_json = json.loads(resp.get('response'))
+        print('---------------------------------------------------------- retrieve_transactions')
+        print(self.account_online_provider_id.provider_account_identifier,self.online_identifier, resp_json)
         transactions = []
         for transaction in resp_json['transactions']:
             trans = {
@@ -43,5 +48,13 @@ class PlaidAccount(models.Model):
             transactions.append(trans)
         # Create the bank statement with the transactions
         return self.env['account.bank.statement'].online_sync_bank_statement(
-            transactions,
-            self.journal_ids[0] if self.journal_ids else self.journal_ids)
+            transactions, self.journal_ids[0])
+
+
+class XunnelJournal(models.Model):
+    _inherit = 'account.journal'
+
+    @api.multi
+    def manual_sync(self):
+        self.account_online_journal_id.retrieve_transactions()
+        return super().manual_sync()

@@ -20,11 +20,11 @@ class XunnelProviderAccount(models.Model):
                 [('online_identifier', '=', account.get('id_account'))])
             vals = {
                 'name': account.get('name'),
-                'account_online_provider_id': self.id,
+                'balance': account.get('balance'),
                 'account_number': account.get('number'),
-                'last_sync': datetime.now(),
                 'online_identifier': account.get('id_account'),
-                'balance': account.get('balance')
+                'account_online_provider_id': self.id,
+                'last_sync': datetime.now()
             }
             if journal:
                 journal.write(vals)
@@ -40,10 +40,3 @@ class XunnelProviderAccount(models.Model):
         if err:
             raise UserError(err)
         return res.get('response')
-
-    @api.multi
-    def manual_sync(self):
-        super(XunnelProviderAccount, self).manual_sync()
-        for journal in self.account_online_journal_ids:
-            journal.retrieve_transactions()
-
