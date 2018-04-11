@@ -3,7 +3,6 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import api, fields, models
-from datetime import datetime
 from odoo.exceptions import UserError
 
 
@@ -24,7 +23,7 @@ class XunnelProviderAccount(models.Model):
                 'account_number': account.get('number'),
                 'online_identifier': account.get('id_account'),
                 'account_online_provider_id': self.id,
-                'last_sync': datetime.now()
+                'last_sync': fields.Datetime.now()
             }
             if journal:
                 journal.write(vals)
