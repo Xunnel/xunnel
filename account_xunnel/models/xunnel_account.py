@@ -55,4 +55,4 @@ class XunnelJournal(models.Model):
     @api.multi
     def manual_sync(self):
         self.account_online_journal_id.retrieve_transactions()
-        return super().manual_sync()
+        return super(XunnelJournal, self).manual_sync()
