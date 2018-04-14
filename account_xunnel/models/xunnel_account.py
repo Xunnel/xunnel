@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 from time import mktime
 
-from odoo import api, models
+from odoo import api, models, fields
 from odoo.exceptions import UserError
 
 
@@ -17,19 +17,20 @@ class PlaidAccount(models.Model):
     def retrieve_transactions(self):
         if self.account_online_provider_id.provider_type != 'xunnel':
             return super(PlaidAccount, self).retrieve_transactions()
+        last_sync = mktime(datetime.strptime(
+            self.last_sync or '1970-01-01', '%Y-%m-%d').timetuple())
         params = {
             'id_account': self.online_identifier,
             'id_credential':
                 self.account_online_provider_id.provider_account_identifier,
-            'dt_transaction_from': mktime(datetime.strptime(
-                '1900-01-01', '%Y-%m-%d').timetuple()),
-                # self.last_sync, '%Y-%m-%d').timetuple()),
+            'dt_transaction_from': last_sync,
         }
         resp = self.env.user.company_id._xunnel(
             'get_xunnel_transactions', params)
         err = resp.get('error')
         if err:
             raise UserError(err)
+        # self.last_sync = fields.Datetime.now()
         resp_json = json.loads(resp.get('response'))
         transactions = []
         for transaction in resp_json['transactions']:
@@ -38,13 +39,15 @@ class PlaidAccount(models.Model):
                 'date': datetime.fromtimestamp(
                     int(transaction['dt_transaction'])).strftime('%Y-%m-%d'),
                 'description': transaction['description'],
-                'amount': -1 * transaction['amount'],
+                'amount': transaction['amount'],
                 'end_amount': resp_json['balance'],
             }
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
             transactions.append(trans)
         # Create the bank statement with the transactions
+        if not self.journal_ids:
+            return []
         return self.env['account.bank.statement'].online_sync_bank_statement(
             transactions, self.journal_ids[0])
 

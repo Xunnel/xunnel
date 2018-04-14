@@ -2,7 +2,7 @@
 # Copyright 2017, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -13,24 +13,30 @@ class XunnelProviderAccount(models.Model):
 
     @api.multi
     def sync_journals(self):
-        for account in self._get_journals():
-            journal = self.env['account.online.journal'].search(
-                [('online_identifier', '=', account.get('id_account'))])
+        """Get all journals and check them in the database
+        to create them if they're not.
+        """
+        for journal in self._get_journals():
+            online_journal = self.env['account.online.journal'].search(
+                [('online_identifier', '=', journal.get('id_account'))])
             vals = {
-                'name': account.get('name'),
-                'balance': account.get('balance'),
-                'account_number': account.get('number'),
-                'online_identifier': account.get('id_account'),
+                'name': journal.get('name'),
+                'balance': journal.get('balance'),
+                'account_number': journal.get('number'),
+                'online_identifier': journal.get('id_account'),
                 'account_online_provider_id': self.id,
                 'last_sync': fields.Datetime.now()
             }
-            if journal:
-                journal.write(vals)
+            if online_journal:
+                online_journal.write(vals)
             else:
-                journal.create(vals)
+                online_journal.create(vals)
 
     @api.multi
     def _get_journals(self):
+        """Requests https://wwww.xunnel.com/ to retrive all journals
+        related to the indicated provider.
+        """
         res = self.company_id._xunnel(
             'get_xunnel_accounts',
             dict(credential_id=self.provider_account_identifier))
@@ -39,8 +45,9 @@ class XunnelProviderAccount(models.Model):
             raise UserError(err)
         return res.get('response')
 
+
     @api.multi
     def update_credentials(self):
-        raise UserError(
+        raise UserError(_(
             'Updating credentials is not allowed here. '
-            'Please go to https://www.xunnel.com/ to achieve that.')
+            'Please go to https://www.xunnel.com/ to achieve that.'))
