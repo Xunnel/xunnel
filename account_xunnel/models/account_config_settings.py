@@ -32,3 +32,7 @@ class AccountConfigSettings(models.TransientModel):
             'xunnel_last_sync': self.xunnel_last_sync,
             'xunnel_token': self.xunnel_token
         })
+
+    @api.multi
+    def sync_xunnel_providers(self):
+        self.company_id.sync_xunnel_providers()

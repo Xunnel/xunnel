@@ -70,19 +70,21 @@ class ResCompany(models.Model):
     @api.multi
     def cron_get_xunnel_providers(self):
         for rec in self.search([('xunnel_token', '!=', False)]):
-            prov_res = rec._xunnel('get_xunnel_providers')
-            err = prov_res.get('error')
-            if err:
-                raise UserError(err)
-            providers = prov_res.get('response')
-            obj_prov = rec.env['account.online.provider']
-            for provider in providers:
-                provider.update(company_id=rec.id, provider_type='xunnel')
-                prov = obj_prov.search([
-                    ('provider_account_identifier', '=',
-                     provider.get('provider_account_identifier'))], limit=1)
-                if prov:
-                    prov.write(provider)
-                else:
-                    prov = obj_prov.create(provider)
-                prov._sync_journals()
+            rec.sync_xunnel_providers()
+
+    @api.multi
+    def sync_xunnel_providers(self):
+        self.ensure_one()
+        prov_res = self._xunnel('get_xunnel_providers')
+        if prov_res.get('error'):
+            return
+        for provider in prov_res.get('response'):
+            provider.update(company_id=self.id, provider_type='xunnel')
+            prov = self.env['account.online.provider'].search([
+                ('provider_account_identifier', '=',
+                 provider.get('provider_account_identifier'))], limit=1)
+            if prov:
+                prov.write(provider)
+            else:
+                prov = prov.create(provider)
+            prov.sync_journals()

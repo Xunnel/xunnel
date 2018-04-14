@@ -12,6 +12,7 @@
                         <div class="o_setting_right_pane">
                             <label for="xunnel_token"/>
                             <field name="xunnel_token"/>
+                            <button attrs="{'invisible': [('xunnel_token', '=', False)]}" name="sync_xunnel_providers" string="Manual Sync" type="object"/>
                             <div class="text-muted" id="xunnel_token_help">User's private token authentication
                             </div>
                         </div>

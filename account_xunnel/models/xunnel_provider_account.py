@@ -12,10 +12,9 @@ class XunnelProviderAccount(models.Model):
     provider_type = fields.Selection(selection_add=[('xunnel', 'Xunnel')])
 
     @api.multi
-    def _sync_journals(self):
+    def sync_journals(self):
         for account in self._get_journals():
-            obj_jor = self.env['account.online.journal']
-            journal = obj_jor.search(
+            journal = self.env['account.online.journal'].search(
                 [('online_identifier', '=', account.get('id_account'))])
             vals = {
                 'name': account.get('name'),
@@ -28,7 +27,7 @@ class XunnelProviderAccount(models.Model):
             if journal:
                 journal.write(vals)
             else:
-                obj_jor.create(vals)
+                journal.create(vals)
 
     @api.multi
     def _get_journals(self):
