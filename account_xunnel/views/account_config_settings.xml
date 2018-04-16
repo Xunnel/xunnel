@@ -12,8 +12,17 @@
                         <div class="o_setting_right_pane">
                             <label for="xunnel_token"/>
                             <field name="xunnel_token"/>
-                            <button attrs="{'invisible': [('xunnel_token', '=', False)]}" name="sync_xunnel_providers" string="Manual Sync" type="object"/>
+                            <button name="sync_xunnel_providers" type="object">
+                                <i class="fa fa-refresh fa-fw"></i> Sync providers &amp; journals
+                            </button>
                             <div class="text-muted" id="xunnel_token_help">User's private token authentication
+                            </div>
+                            <label for="xunnel_last_sync"/>
+                            <field name="xunnel_last_sync"/>
+                            <button name="sync_xunnel_attachments" type="object">
+                                <i class="fa fa-refresh fa-fw"></i> Sync attachments
+                            </button>
+                            <div class="text-muted" id="xunnel_last_sync_help">SAT's invoices olders than this date won't be fetched. 
                             </div>
                         </div>
                     </div>

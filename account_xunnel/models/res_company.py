@@ -15,10 +15,16 @@ from odoo.exceptions import UserError
 BOM_UTF8U = BOM_UTF8.decode('UTF-8')
 
 
+def _time(value):
+    return datetime.strptime(value, '%Y-%m-%d')
+
+
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    xunnel_last_sync = fields.Date(string='Last Sync in Xunnel')
+    xunnel_last_sync = fields.Date(
+        string='Last Sync in Xunnel',
+        default=lambda _: _time('2011-12-31'))
     xunnel_token = fields.Char()
 
     @api.multi
@@ -38,38 +44,42 @@ class ResCompany(models.Model):
 
     @api.model
     def cron_xunnel_sync(self):
-        """Gets all SAT's invoices from https://www.xunnel.com/,
-        decode them and creates them in database if there're not.
-        Then refresh xunnel_last_sync field.
+        """Sync all the attachments from all companies that have xunnel_provider
         """
-        att_obj = self.env['ir.attachment']
-        for rec in self.search([]):
-            response = rec._xunnel(
-                'get_invoices_sat',
-                dict(
-                    last_sync=mktime(datetime.strptime(
-                        '2009-01-01', '%Y-%m-%d').timetuple())
-                ))
-            err = response.get('error')
-            if err:
-                raise UserError(err)
-            for item in response.get('response'):
-                xml = item[0].lstrip(BOM_UTF8U).encode("UTF-8")
-                json = item[1]
-                attachment = att_obj.search([
-                    ('name', '=', 'Xunnel_' + json['id_attachment'])])
-                if not attachment:
-                    att_obj.create({
-                        'name': 'Xunnel_' + json['id_attachment'],
-                        'datas_fname': (
-                            'Xunnel_' + json['id_attachment'] + '.xml'),
-                        'type': 'binary',
-                        'datas': base64.encodestring(xml),
-                        'description': str(json),
-                        'index_content': xml,
-                        'mimetype': 'text/plain',
-                    })
-            rec.xunnel_last_sync = fields.Date.context_today(self)
+        for rec in self.search([('xunnel_token', '!=', False)]):
+            rec.sync_xunnel_attachments()
+
+    @api.multi
+    def sync_xunnel_attachments(self):
+        """Requests https://wwww.xunnel.com/ to retrive all invoices
+        related to the current company and check them in the database
+        to create them if they're not. After refresh xunnel_last_sync
+        """
+        self.ensure_one()
+        response = self._xunnel(
+            'get_invoices_sat', dict(
+                last_sync=mktime(_time(self.xunnel_last_sync).timetuple())
+            ))
+        err = response.get('error')
+        if err:
+            raise UserError(err)
+        for item in response.get('response'):
+            xml = item[0].lstrip(BOM_UTF8U).encode("UTF-8")
+            json = item[1]
+            attachment = self.env['ir.attachment'].search([
+                ('name', '=', 'Xunnel_' + json['id_attachment'])])
+            if not attachment:
+                attachment.create({
+                    'name': 'Xunnel_' + json['id_attachment'],
+                    'datas_fname': (
+                        'Xunnel_' + json['id_attachment'] + '.xml'),
+                    'type': 'binary',
+                    'datas': base64.encodestring(xml),
+                    'description': str(json),
+                    'index_content': xml,
+                    'mimetype': 'text/plain',
+                })
+        self.xunnel_last_sync = fields.Date.context_today(self)
 
     @api.multi
     def cron_get_xunnel_providers(self):

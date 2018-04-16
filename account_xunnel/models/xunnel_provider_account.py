@@ -24,13 +24,12 @@ class XunnelProviderAccount(models.Model):
                 'balance': journal.get('balance'),
                 'account_number': journal.get('number'),
                 'online_identifier': journal.get('id_account'),
-                'account_online_provider_id': self.id,
-                'last_sync': fields.Datetime.now()
+                'account_online_provider_id': self.id
             }
             if online_journal:
                 online_journal.write(vals)
             else:
-                online_journal.create(vals)
+                online_journal = online_journal.create(vals)
 
     @api.multi
     def _get_journals(self):

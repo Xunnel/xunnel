@@ -36,3 +36,7 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     def sync_xunnel_providers(self):
         self.company_id.sync_xunnel_providers()
+
+    @api.multi
+    def sync_xunnel_attachments(self):
+        self.company_id.sync_xunnel_attachments()

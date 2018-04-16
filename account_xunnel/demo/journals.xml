@@ -1,0 +1,51 @@
+<odoo>
+	<record id="journal_1" model="account.online.journal">
+		<field name="name">ACME Checking</field>
+		<field name="account_online_provider_id" ref="account_xunnel.provider_1"/>
+		<field name="account_number">00000001</field>
+		<field name="last_sync">2018-04-10</field>
+		<field name="online_identifier">58e30593244283b9158b4c8b</field>
+		<field name="balance">1099</field>
+	</record>
+	<record id="journal_2" model="account.online.journal">
+		<field name="name">ACME Credit</field>
+		<field name="account_online_provider_id" ref="account_xunnel.provider_1"/>
+		<field name="account_number">00000011</field>
+		<field name="last_sync">2018-04-10</field>
+		<field name="online_identifier">58e30593244283b9158b4c9a</field>
+		<field name="balance">535</field>
+	</record>
+	<record id="journal_3" model="account.online.journal">
+		<field name="name">ACME Investment</field>
+		<field name="account_online_provider_id" ref="account_xunnel.provider_1"/>
+		<field name="account_number">00000021</field>
+		<field name="last_sync">2018-04-10</field>
+		<field name="online_identifier">58e30593244283b9158b4ca5</field>
+		<field name="balance">499</field>
+	</record>
+	<record id="journal_4" model="account.online.journal">
+		<field name="name">ACME Checking</field>
+		<field name="account_online_provider_id" ref="account_xunnel.provider_2"/>
+		<field name="account_number">00000001</field>
+		<field name="last_sync">2018-04-10</field>
+		<field name="online_identifier">573734952342833a178b5ec3</field>
+		<field name="balance">1099</field>
+	</record>
+	<record id="journal_5" model="account.online.journal">
+		<field name="name">ACME Credit</field>
+		<field name="account_online_provider_id" ref="account_xunnel.provider_2"/>
+		<field name="account_number">00000011</field>
+		<field name="last_sync">2018-04-10</field>
+		<field name="online_identifier">573734952342833a178b5ee6</field>
+		<field name="balance">535</field>
+	</record>
+	<record id="journal_6" model="account.online.journal">
+		<field name="name">ACME Investment</field>
+		<field name="account_online_provider_id" ref="account_xunnel.provider_2"/>
+		<field name="account_number">00000021</field>
+		<field name="last_sync">2018-04-10</field>
+		<field name="online_identifier">573734952342833a178b5ef0</field>
+		<field name="balance">499</field>
+	</record>
+</odoo>
+
