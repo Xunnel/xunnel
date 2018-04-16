@@ -38,13 +38,12 @@ class XunnelProviderAccount(models.Model):
         related to the indicated provider.
         """
         res = self.company_id._xunnel(
-            'get_xunnel_accounts',
-            dict(credential_id=self.provider_account_identifier))
+            'get_xunnel_journals',
+            dict(account_identifier=self.provider_account_identifier))
         err = res.get('error')
         if err:
             raise UserError(err)
         return res.get('response')
-
 
     @api.multi
     def update_credentials(self):
