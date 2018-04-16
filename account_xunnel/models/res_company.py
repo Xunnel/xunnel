@@ -38,6 +38,10 @@ class ResCompany(models.Model):
 
     @api.model
     def cron_xunnel_sync(self):
+        """Gets all SAT's invoices from https://www.xunnel.com/,
+        decode them and creates them in database if there're not.
+        Then refresh xunnel_last_sync field.
+        """
         att_obj = self.env['ir.attachment']
         for rec in self.search([]):
             response = rec._xunnel(
