@@ -85,16 +85,16 @@ class ResCompany(models.Model):
         to create them if they're not. After sync journals.
         """
         self.ensure_one()
-        prov_res = self._xunnel('get_xunnel_providers')
-        if prov_res.get('error'):
+        providers_response = self._xunnel('get_xunnel_providers')
+        if providers_response.get('error'):
             return
-        for provider in prov_res.get('response'):
+        for provider in providers_response.get('response'):
             provider.update(company_id=self.id, provider_type='xunnel')
-            prov = self.env['account.online.provider'].search([
+            online_provider = self.env['account.online.provider'].search([
                 ('provider_account_identifier', '=',
                  provider.get('provider_account_identifier'))], limit=1)
-            if prov:
-                prov.write(provider)
+            if online_provider:
+                online_provider.write(provider)
             else:
-                prov = prov.create(provider)
-            prov.sync_journals()
+                online_provider = online_provider.create(provider)
+            online_provider.sync_journals()
