@@ -5,7 +5,7 @@
 import json
 from datetime import datetime
 from time import mktime
-from odoo import api, models, fields
+from odoo import api, models
 from odoo.exceptions import UserError
 
 
