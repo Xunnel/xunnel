@@ -29,7 +29,7 @@ class XunnelProviderAccount(models.Model):
             if online_journal:
                 online_journal.write(vals)
             else:
-                online_journal = online_journal.create(vals)
+                online_journal.create(vals)
 
     @api.multi
     def _get_journals(self):

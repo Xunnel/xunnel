@@ -20,8 +20,10 @@
         'views/account_config_settings.xml',
         'data/ir_cron.xml',
         'data/config_xunnel_url.xml',
-        'demo/providers.xml',
-        'demo/journals.xml',
+        'demo/res_company.xml',
+        'demo/online_providers.xml',
+        'demo/online_journals.xml',
+        'demo/account_journals.xml',
     ],
     'installable': True,
 }
