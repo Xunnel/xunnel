@@ -1,4 +1,4 @@
-response = [
+TRANSACTIONS = [
     {
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 1',
@@ -221,3 +221,13 @@ response = [
         'id_external': '', 'id_credential': '5ad5ad730c212a6a268b45e4',
         'id_account_type': '520d3aa93b8e778e0d000000'}
 ]
+
+PROVIDERS = [{
+    'name': 'Acme Bank - Normal with Attachments',
+    'provider_identifier': '58b884fc056f295aa1483a02',
+    'provider_account_identifier': '5ad5ad730c212a6a268b45e4',
+}, {
+    'name': 'Acme Bank-Normal',
+    'provider_identifier': '56cf5728784806f72b8b4568',
+    'provider_account_identifier': '5ad79e9d0b212a5b608b459a'
+}]

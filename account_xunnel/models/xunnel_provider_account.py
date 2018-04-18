@@ -17,8 +17,9 @@ class XunnelProviderAccount(models.Model):
         to create them if they're not.
         """
         for journal in self._get_journals():
-            online_journal = self.env['account.online.journal'].search(
-                [('online_identifier', '=', journal.get('id_account'))])
+            online_journal = self.env['account.online.journal'].search([
+                ('account_online_provider_id', '=', self.id),
+                ('online_identifier', '=', journal.get('id_account'))])
             vals = {
                 'name': journal.get('name'),
                 'balance': journal.get('balance'),

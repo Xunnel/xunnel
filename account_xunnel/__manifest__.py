@@ -24,6 +24,7 @@
         'demo/online_providers.xml',
         'demo/online_journals.xml',
         'demo/account_journals.xml',
+        'demo/ir_attachments.xml',
     ],
     'installable': True,
 }

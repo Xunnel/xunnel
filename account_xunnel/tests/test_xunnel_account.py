@@ -14,7 +14,7 @@ class TestXunnelAccount(TransactionCase):
     @mock()
     def test_01_retrieve_transactions_last_sync(self, request):
         """Test requesting all transactions from an account and
-        making a bank statement. Also checks last_sync's refreshed
+        how many bank statement were created. Also checks last_sync's refreshed
         """
         id_journal = self.ref('account_xunnel.account_journal_attachments')
         for stm in self.env['account.bank.statement'].search(
@@ -24,7 +24,7 @@ class TestXunnelAccount(TransactionCase):
             '%sget_xunnel_transactions' % self.url,
             text=dumps(dict(response=dumps({
                 'balance': 0,
-                'transactions': response.response}))))
+                'transactions': response.TRANSACTIONS}))))
         journal = self.env['account.journal'].browse(id_journal)
         online_journal = journal.account_online_journal_id
         statements = journal.manual_sync()
@@ -40,7 +40,7 @@ class TestXunnelAccount(TransactionCase):
             '%sget_xunnel_transactions' % self.url,
             text=dumps(dict(response=dumps({
                 'balance': 0,
-                'transactions': response.response}))))
+                'transactions': response.TRANSACTIONS}))))
         id_journal = self.ref('account_xunnel.online_journal_attachments')
         online_journal = self.env['account.online.journal'].browse(id_journal)
         # To test if manual_sync its executed before is assigned to a journal
