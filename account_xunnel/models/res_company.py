@@ -3,7 +3,6 @@
 
 import base64
 from codecs import BOM_UTF8
-from datetime import datetime
 from json import dumps
 from time import mktime
 
@@ -12,10 +11,6 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 BOM_UTF8U = BOM_UTF8.decode('UTF-8')
-
-
-def _time(value):
-    return datetime.strptime(value, '%Y-%m-%d')
 
 
 class ResCompany(models.Model):
@@ -57,7 +52,8 @@ class ResCompany(models.Model):
         self.ensure_one()
         response = self._xunnel(
             'get_invoices_sat', dict(
-                last_sync=mktime(_time(self.xunnel_last_sync).timetuple())
+                last_sync=mktime(
+                    fields.from_sting(self.xunnel_last_sync).timetuple())
             ))
         err = response.get('error')
         if err:
