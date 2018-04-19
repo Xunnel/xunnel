@@ -23,7 +23,7 @@ class ResCompany(models.Model):
 
     xunnel_last_sync = fields.Date(
         string='Last Sync in Xunnel',
-        default=lambda _: _time('2011-12-31'))
+        default='2018-01-01')
     xunnel_token = fields.Char()
 
     @api.multi

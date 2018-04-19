@@ -28,7 +28,7 @@ class TestXunnelAccount(TransactionCase):
         request.post(
             '%sget_invoices_sat' % self.url,
             text=attachments_response)
-        old_sync = datetime.strptime('1970-01-01', '%Y-%m-%d')
+        old_sync = datetime.strptime('2018-01-01', '%Y-%m-%d')
         self.company.xunnel_last_sync = old_sync
         self.company.sync_xunnel_attachments()
         last_sync = datetime.strptime(
