@@ -1,3 +1,6 @@
+# Copyright 2017, Jarsa Sistemas, S.A. de C.V.
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
 from odoo.tests.common import TransactionCase
 from datetime import datetime
 from odoo.exceptions import UserError
