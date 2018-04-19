@@ -36,6 +36,7 @@ install:
 
 script:
   - travis_run_tests
+  - pip install requests_mock
 
 after_success:
   - travis_after_tests_success
