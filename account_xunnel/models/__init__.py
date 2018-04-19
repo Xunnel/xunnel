@@ -4,4 +4,5 @@
 from . import account_config_settings
 from . import res_company
 from . import xunnel_provider_account
+from . import xunnel_online_account
 from . import xunnel_account
