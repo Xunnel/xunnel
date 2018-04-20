@@ -15,7 +15,7 @@ addons:
       - python-yaml
   python:
     packages:
-      - requests_mock
+      - requests-mock
 
 python:
   - "3.5"
@@ -26,7 +26,7 @@ env:
   - LINT_CHECK="0"
   - TESTS="0"
   - VERSION="11.0"
-  - ODOO_REPO="Vauxoo/odoo"
+  - ODOO_REPO="Vauxoo/odoo"2
 
   matrix:
   - LINT_CHECK="1"
