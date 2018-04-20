@@ -35,6 +35,7 @@ install:
   - travis_install_nightly
 
 script:
+  - pip3 install requests_mock
   - travis_run_tests
 
 after_success:
