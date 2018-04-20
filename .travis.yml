@@ -13,9 +13,6 @@ addons:
       - python-lxml
       - python-simplejson
       - python-yaml
-  python:
-    packages:
-      - requests-mock
 
 python:
   - "3.5"

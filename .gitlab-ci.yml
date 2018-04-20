@@ -39,7 +39,7 @@ test:
     LINT_CHECK: "0"
     TESTS: "1"
   script:
-    - pip install requests_mock
+    - pip3 install requests_mock
     - export TRAVIS_BUILD_DIR=$(pwd)
     - apt-get update && apt-get install -y tree dos2unix
     - pip install deployv-addon-gitlab-tools
@@ -68,7 +68,7 @@ nodemo:
     OPTIONS: "--without-demo=all"
     INSTALL_OPTIONS: "--without-demo=all"
   script:
-    - pip install requests_mock
+    - pip3 install requests_mock
     - export TRAVIS_BUILD_DIR=$(pwd)
     - apt-get update && apt-get install -y tree dos2unix
     - pip install deployv-addon-gitlab-tools
