@@ -14,7 +14,8 @@ addons:
       - python-simplejson
       - python-yaml
   python:
-    - requests_mock
+    packages:
+      - requests_mock
 
 python:
   - "3.5"
