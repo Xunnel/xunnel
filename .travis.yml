@@ -13,6 +13,8 @@ addons:
       - python-lxml
       - python-simplejson
       - python-yaml
+  python:
+    - requests_mock
 
 python:
   - "3.5"
@@ -35,7 +37,6 @@ install:
   - travis_install_nightly
 
 script:
-  - pip install requests_mock
   - travis_run_tests
 
 after_success:
