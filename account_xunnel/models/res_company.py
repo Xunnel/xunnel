@@ -53,7 +53,7 @@ class ResCompany(models.Model):
         response = self._xunnel(
             'get_invoices_sat', dict(
                 last_sync=mktime(
-                    fields.from_sting(self.xunnel_last_sync).timetuple())
+                    fields.Date.from_sting(self.xunnel_last_sync).timetuple())
             ))
         err = response.get('error')
         if err:
