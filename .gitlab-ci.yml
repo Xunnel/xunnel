@@ -1,6 +1,8 @@
 image: vauxoo/odoo-80-image-shippable-auto
 stages:
   - test
+  - build
+  - upload_image
 
 variables:
     PSQL_VERSION: "9.5"
@@ -79,3 +81,25 @@ nodemo:
     - travis_install_nightly
     - travis_run_tests
     - travis_after_tests_success || true
+
+build:
+  stage: build
+  tags:
+    - build
+  variables:
+    INSTALL: "account_xunnel"
+    CUSTOMER: "account_xunnel"
+  script:
+    - deployvcmd gitlab_tools test_images --psql_image='vauxoo/docker-postgresql:9.6-ci' 
+
+upload_image:
+  stage: upload_image
+  only:
+      - 11.0@vauxoo/xunnel-account
+  when: on_success
+  tags:
+    - build
+  variables:
+    CUSTOMER: "account_xunnel"
+  script:
+    - deployvcmd gitlab_tools upload_image
