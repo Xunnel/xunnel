@@ -7,6 +7,7 @@ from json import dumps
 from time import mktime
 
 import requests
+from lxml import objectify
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -59,18 +60,20 @@ class ResCompany(models.Model):
         if err:
             raise UserError(err)
         for item in response.get('response'):
-            xml = item[0].lstrip(BOM_UTF8U).encode("UTF-8")
-            json = item[1]
+            xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
+            xml_obj = objectify.fromstring(xml)
+            uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
+                xml_obj).get('UUID')
+            name = 'Xunnel_' + uuid
             attachment = self.env['ir.attachment'].search([
-                ('name', '=', 'Xunnel_' + json['id_attachment'])])
+               ('name', '=', name)])
             if not attachment:
                 attachment.create({
-                    'name': 'Xunnel_' + json['id_attachment'],
+                    'name': name,
                     'datas_fname': (
-                        'Xunnel_' + json['id_attachment'] + '.xml'),
+                        name + '.xml'),
                     'type': 'binary',
-                    'datas': base64.encodestring(xml),
-                    'description': str(json),
+                    'datas': base64.encodestring(xml_obj),
                     'index_content': xml,
                     'mimetype': 'text/plain',
                 })
