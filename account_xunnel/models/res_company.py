@@ -66,14 +66,14 @@ class ResCompany(models.Model):
                 xml_obj).get('UUID')
             name = 'Xunnel_' + uuid
             attachment = self.env['ir.attachment'].search([
-               ('name', '=', name)])
+                ('name', '=', name)])
             if not attachment:
                 attachment.create({
                     'name': name,
                     'datas_fname': (
                         name + '.xml'),
                     'type': 'binary',
-                    'datas': base64.encodestring(xml_obj),
+                    'datas': base64.encodestring(bytes(xml)),
                     'index_content': xml,
                     'mimetype': 'text/plain',
                 })

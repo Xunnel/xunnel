@@ -13,7 +13,8 @@
     'license': 'LGPL-3',
     'depends': [
         'account_accountant',
-        'account_online_sync'
+        'account_online_sync',
+        'l10n_mx_edi_vendor_bills',
     ],
     'data': [
         'views/account_config_settings.xml',
@@ -23,7 +24,7 @@
         'demo/online_providers.xml',
         'demo/online_journals.xml',
         'demo/account_journals.xml',
-        'demo/ir_attachments.xml',
+        # 'demo/ir_attachments.xml',
     ],
     'installable': True,
 }
