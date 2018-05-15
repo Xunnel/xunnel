@@ -1,2 +1,2 @@
 enterprise git@github.com:Vauxoo/enterprise.git
-l10n_mx_edi_vendor_bills git@github.com:Vauxoo/mexico.git
+mexico git@github.com:Vauxoo/mexico.git
