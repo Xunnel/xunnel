@@ -22,8 +22,6 @@ def assert_xunnel_token(function):
 class AccountConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    xunnel_last_sync = fields.Date(
-        string='Last Sync in Xunnel', related='company_id.xunnel_last_sync')
     xunnel_token = fields.Char(
         related='company_id.xunnel_token',
         help="Key-like text for authentication in controllers.")
@@ -35,7 +33,6 @@ class AccountConfigSettings(models.TransientModel):
         res = super(AccountConfigSettings, self).get_values()
         company = self.company_id
         res.update(
-            xunnel_last_sync=company.xunnel_last_sync,
             xunnel_token=company.xunnel_token
         )
         return res
@@ -45,7 +42,6 @@ class AccountConfigSettings(models.TransientModel):
         super(AccountConfigSettings, self).set_values()
         company = self.company_id
         company.write({
-            'xunnel_last_sync': self.xunnel_last_sync,
             'xunnel_token': self.xunnel_token
         })
 
@@ -53,8 +49,3 @@ class AccountConfigSettings(models.TransientModel):
     @assert_xunnel_token
     def sync_xunnel_providers(self):
         self.company_id.sync_xunnel_providers()
-
-    @api.multi
-    @assert_xunnel_token
-    def sync_xunnel_attachments(self):
-        self.company_id.sync_xunnel_attachments()
