@@ -17,8 +17,7 @@ class TestXunnelAccount(TransactionCase):
 
     def setUp(self):
         super(TestXunnelAccount, self).setUp()
-        self.url = self.env['ir.config_parameter'].get_param(
-            'account_xunnel.url')
+        self.url = "https://ci.xunnel.com/"
         self.company = self.env['res.company'].browse(
             self.ref('base.main_company'))
 
