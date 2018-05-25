@@ -11,8 +11,7 @@ class TestXunnelAccount(TransactionCase):
 
     def setUp(self):
         super(TestXunnelAccount, self).setUp()
-        self.url = self.env[
-            'ir.config_parameter'].get_param('account_xunnel.url')
+        self.url = "https://ci.xunnel.com/"
 
     @mock()
     def test_01_retrieve_transactions_last_sync(self, request):

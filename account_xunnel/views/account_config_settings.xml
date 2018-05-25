@@ -24,6 +24,10 @@
                             </button>
                             <div class="text-muted" id="xunnel_last_sync_help">SAT's invoices olders than this date won't be fetched. 
                             </div>
+                            <label for="xunnel_testing"/>
+                            <field name="xunnel_testing"/>
+                            <div class="text-muted" id="xunnel_testing_help">Enable/Disable Xunnel Test Environment.
+                            </div> 
                         </div>
                     </div>
                 </div>

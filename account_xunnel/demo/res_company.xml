@@ -3,6 +3,7 @@
 	<record id="base.main_company" model="res.company">
 		<field name="xunnel_token">6785eec71a014b7484dc21dd531b02a1</field>
 		<field name="xunnel_last_sync">1970-01-01</field>
+		<field name="xunnel_testing" eval="True"/>
 	</record>
 </odoo>
 

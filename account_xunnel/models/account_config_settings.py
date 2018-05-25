@@ -27,6 +27,8 @@ class AccountConfigSettings(models.TransientModel):
     xunnel_token = fields.Char(
         related='company_id.xunnel_token',
         help="Key-like text for authentication in controllers.")
+    xunnel_testing = fields.Boolean(
+        help="Use Xunnel server testing?", related='company_id.xunnel_testing')
 
     @api.model
     def get_values(self):

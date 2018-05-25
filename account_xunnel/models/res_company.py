@@ -21,6 +21,7 @@ class ResCompany(models.Model):
         string='Last Sync in Xunnel',
         default='2018-01-01')
     xunnel_token = fields.Char()
+    xunnel_testing = fields.Boolean()
 
     @api.multi
     def _xunnel(self, endpoint, payload=None):
@@ -29,8 +30,9 @@ class ResCompany(models.Model):
             response will be raised.
         """
         self.ensure_one()
-        base = self.env['ir.config_parameter'].get_param(
-            'account_xunnel.url')
+        base = "https://xunnel.com/"
+        if self.xunnel_testing:
+            base = "https://ci.xunnel.com/"
         response = requests.post(
             str(base) + endpoint,
             headers={'Xunnel-Token': str(self.xunnel_token)},

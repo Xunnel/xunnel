@@ -19,7 +19,6 @@
     'data': [
         'views/account_config_settings.xml',
         'data/ir_cron.xml',
-        'data/config_xunnel_url.xml',
     ],
     'demo': [
         'demo/res_company.xml',
