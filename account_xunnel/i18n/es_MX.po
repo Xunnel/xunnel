@@ -241,12 +241,6 @@ msgid "Last Modified on"
 msgstr "Última modificación en"
 
 #. module: account_xunnel
-#: model:ir.model.fields,field_description:account_xunnel.field_account_config_settings_xunnel_last_sync
-#: model:ir.model.fields,field_description:account_xunnel.field_res_company_xunnel_last_sync
-msgid "Last Sync in Xunnel"
-msgstr "Última sincronización en Xunnel"
-
-#. module: account_xunnel
 #: model:ir.model.fields,field_description:account_xunnel.field_account_pre_invoice_line_write_uid
 #: model:ir.model.fields,field_description:account_xunnel.field_account_pre_invoice_tax_write_uid
 #: model:ir.model.fields,field_description:account_xunnel.field_account_pre_invoice_wizard_write_uid
