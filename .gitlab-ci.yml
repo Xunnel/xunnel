@@ -11,9 +11,6 @@ variables:
     ODOO_BRANCH: "11.0"
     CUSTOMER: "vauxoo"
     BASE_IMAGE: "vauxoo/odoo-110-image"
-    http_proxy: http://172.17.0.1:3128
-    https_proxy: http://172.17.0.1:3128
-    ftp_proxy: http://172.17.0.1:3128
 
 lint:
   stage: test
@@ -90,16 +87,29 @@ build:
     INSTALL: "account_xunnel"
     CUSTOMER: "account_xunnel"
   script:
-    - deployvcmd gitlab_tools test_images --psql_image='vauxoo/docker-postgresql:9.6-ci' 
+    - deployvcmd gitlab_tools test_images --psql_image='vauxoo/docker-postgresql:9.6-ci' --push_image
 
-upload_image:
+bump:
   stage: upload_image
   only:
       - 11.0@vauxoo/xunnel-account
   when: on_success
   tags:
-    - build
-  variables:
-    CUSTOMER: "account_xunnel"
+    - odoo
+    - test
   script:
-    - deployvcmd gitlab_tools upload_image
+    - |
+      case "$CI_COMMIT_MESSAGE" in
+        *Bump*)
+          ;;
+        *)
+          git config --global user.email "coward@vauxoo.com"
+          git config --global user.name "Coward - Auto release"
+          pip install -U bumpversion
+          git clone -b 11.0 --single-branch git@git.vauxoo.com:vauxoo/xunnel-account.git
+          cd xunnel-account
+          bumpversion patch
+          git push origin 11.0
+          ;;
+        esac
+
