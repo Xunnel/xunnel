@@ -103,9 +103,11 @@ bump:
         *Bump*)
           ;;
         *)
+          pip install -U deployv-addon-gitlab-tools
+          pip install -U bumpversion
+          deployvcmd gitlab_tools check_keys
           git config --global user.email "coward@vauxoo.com"
           git config --global user.name "Coward - Auto release"
-          pip install -U bumpversion
           git clone -b 11.0 --single-branch git@git.vauxoo.com:vauxoo/xunnel-account.git
           cd xunnel-account
           bumpversion patch
