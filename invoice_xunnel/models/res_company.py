@@ -41,6 +41,9 @@ class ResCompany(models.Model):
         err = response.get('error')
         if err:
             raise UserError(err)
+        if response.get('reponse') is None:
+            self.xunnel_last_sync = fields.Date.context_today(self)
+            return True
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             xml_obj = objectify.fromstring(xml)
