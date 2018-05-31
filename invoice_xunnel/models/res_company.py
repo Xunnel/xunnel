@@ -36,8 +36,9 @@ class ResCompany(models.Model):
         response = self._xunnel(
             'get_invoices_sat', dict(
                 last_sync=mktime(
-                    fields.Date.from_string(self.xunnel_last_sync).timetuple())
-            ))
+                    fields.Date.from_string(
+                        self.xunnel_last_sync).timetuple()),
+                vat=self.vat, xunnel_testing=self.xunnel_testing))
         err = response.get('error')
         if err:
             raise UserError(err)
