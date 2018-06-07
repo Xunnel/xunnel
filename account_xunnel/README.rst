@@ -1,47 +1,42 @@
 .. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
     :alt: License: AGPL-3
 
-Xunnel Sync
-============
+Account Xunnel
+==============
 
 This App allows you to sync your bank statement with Odoo
 
-Compatible Banks
-----------------
-
-- Banamex
-- Santander
-- HSBC
-- Banregio
-- etc...
 
 How To use it
 -------------
 
-- If you don't have a Xunnel Account, you must create it.
+- If you don't have a Xunnel Account, you must create it in xunnel.com.
 - Login to your account.
-- Activate Developer Mode.
 - Sync the accounts or banks that you need in the company.
 - Copy the token of the company.
 - Go to Accounting/Configuration/Settings then Xunnel Configuration and paste the token in Xunnel Token.
 - Press the button "Sync Providers & Journals".
+
+.. figure:: account_xunnel/static/description/xunnel-config.jpeg
+
 - Go to Accounting/Configuration/Bank Accounts and create the bank that you need.
-- Go to your Bank journal and in Advance Settings tab Select Online Synchronization.
-- Follow the instructions.
+- Go to the Dashboard and select "Online Synchronization"
 
-Contributors
-------------
+.. figure:: account_xunnel/static/description/online.jpeg
 
-* Jarsa Sistemas <info@jarsa.com.mx>
-* Alan Ramos <alan.ramos@jarsa.com.mx>
+- Select the account for the list.
+- Set the start date to get transactions from Xunnel.
+- Press the button "Associate to Journal".
+
+.. figure:: account_xunnel/static/description/transactions.jpeg
+
 
 Maintainer
 ----------
 
-.. image:: https://www.jarsa.com.mx/logo.png
-   :alt: Jarsa Sistemas
-   :target: https://jarsa.com.mx
+.. image:: https://xunnel.com/logo.png
+   :alt: Xunnel
+   :target: https://www.xunnel.com/
 
-This module is maintained by Jarsa.
+This module is maintained by Xunnel.
 
-To contribute to this module, please visit http://www.jarsa.com.mx.
