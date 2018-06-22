@@ -8,4 +8,4 @@ class MainController(Controller):
         provider = kw.get('credential')
         if not provider:
             return
-        request.env['res.company'].sync_providers_webhook(provider)
+        request.env['res.company'].sudo().sync_providers_webhook(provider)
