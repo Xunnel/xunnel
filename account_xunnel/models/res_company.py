@@ -60,7 +60,7 @@ class ResCompany(models.Model):
             else:
                 online_provider = online_provider.create(provider)
             online_provider.sync_journals()
-    
+
     @api.multi
     def sync_providers_webhook(self, provider):
         for rec in self.search([('xunnel_token', '!=', False)]):
