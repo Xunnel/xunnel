@@ -23,6 +23,7 @@ class ResCompany(models.Model):
         base = "https://xunnel.com/"
         if self.xunnel_testing:
             base = "https://ci.xunnel.com/"
+            base = "http://localhost:8080/"
         response = requests.post(
             str(base) + endpoint,
             headers={'Xunnel-Token': str(self.xunnel_token)},
@@ -37,13 +38,16 @@ class ResCompany(models.Model):
             rec.sync_xunnel_providers()
 
     @api.multi
-    def sync_xunnel_providers(self):
+    def sync_xunnel_providers(self, providers=None):
         """Requests https://wwww.xunnel.com/ to retrive all providers
         related to the current company and check them in the database
         to create them if they're not. After sync journals.
         """
         self.ensure_one()
-        providers_response = self._xunnel('get_xunnel_providers')
+        params = {}
+        if providers:
+            params['provider_account_identifier'] = providers
+        providers_response = self._xunnel('get_xunnel_providers', params)
         if providers_response.get('error'):
             return
         for provider in providers_response.get('response'):
@@ -56,3 +60,8 @@ class ResCompany(models.Model):
             else:
                 online_provider = online_provider.create(provider)
             online_provider.sync_journals()
+    
+    @api.multi
+    def sync_providers_webhook(self, provider):
+        for rec in self.search([('xunnel_token', '!=', False)]):
+            rec.sync_xunnel_providers(providers=provider)

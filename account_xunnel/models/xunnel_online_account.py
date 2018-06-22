@@ -12,7 +12,7 @@ class ProviderAccount(models.Model):
     _inherit = 'account.online.journal'
 
     @api.multi
-    def retrieve_transactions(self):
+    def retrieve_transactions(self, journal=None):
         if self.account_online_provider_id.provider_type != 'xunnel':
             return super(ProviderAccount, self).retrieve_transactions()
         params = {
@@ -20,6 +20,8 @@ class ProviderAccount(models.Model):
             'id_credential':
                 self.account_online_provider_id.provider_account_identifier
         }
+        if journal:
+            params.update(id_account=journal)
         if self.last_sync:
             params.update(
                 dt_transaction_from=mktime(datetime.strptime(
