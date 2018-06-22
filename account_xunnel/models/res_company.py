@@ -48,6 +48,7 @@ class ResCompany(models.Model):
         if providers:
             params['provider_account_identifier'] = providers
         providers_response = self._xunnel('get_xunnel_providers', params)
+        import pdb; pdb.set_trace()
         if providers_response.get('error'):
             return
         for provider in providers_response.get('response'):
