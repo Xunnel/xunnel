@@ -45,6 +45,3 @@ class TestXunnelAccount(TransactionCase):
             [('provider_account_identifier', '=', account_id)])
         journals = len(provider.account_online_journal_ids)
         self.assertEqual(journals, 6)
-        # transactions = self.env['account.bank.statement'].search_count([('journal_id', '=', journal)])
-        # TODO: test transactions created
-        
