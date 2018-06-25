@@ -53,7 +53,8 @@ class ResCompany(models.Model):
             provider.update(company_id=self.id, provider_type='xunnel')
             online_provider = self.env['account.online.provider'].search([
                 ('provider_account_identifier', '=',
-                 provider.get('provider_account_identifier'))], limit=1)
+                 provider.get('provider_account_identifier')),
+                 ('company_id', '=', self.id)], limit=1)
             if online_provider:
                 online_provider.write(provider)
             else:

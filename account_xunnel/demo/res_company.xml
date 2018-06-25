@@ -4,4 +4,8 @@
 		<field name="xunnel_token">6785eec71a014b7484dc21dd531b02a1</field>
 		<field name="xunnel_testing" eval="True"/>
 	</record>
+	<record id="webhook_company" model="res.company">
+		<field name="name">WebhookCompany</field>
+		<field name="xunnel_token">8ae0ee2b2a9f4825aeb8916d739f0805</field>
+	</record>
 </odoo>

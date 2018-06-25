@@ -14,7 +14,7 @@ class TestXunnelAccount(TransactionCase):
     def setUp(self):
         super(TestXunnelAccount, self).setUp()
         self.company = self.env['res.company'].browse(
-            self.ref('base.main_company'))
+            self.ref('account_xunnel.webhook_company'))
         self.url = "https://ci.xunnel.com/"
 
     @mock()
@@ -35,12 +35,13 @@ class TestXunnelAccount(TransactionCase):
         provider_obj = self.env['account.online.provider']
         providers_old_count = provider_obj.search_count(
             [('company_id', '=', self.company.id)])
-        self.assertEqual(providers_old_count, 2)
+        self.assertEqual(providers_old_count, 0)
         self.company.cron_get_xunnel_providers(account_id)
         providers_new_count = provider_obj.search_count(
             [('company_id', '=', self.company.id)])
-        self.assertEqual(providers_new_count, 3)
+        self.assertEqual(providers_new_count, 2)
         provider = provider_obj.search(
-            [('provider_account_identifier', '=', account_id)])
+            [('provider_account_identifier', '=', account_id),
+            ('company_id', '=', self.company.id)])
         journals = len(provider.account_online_journal_ids)
         self.assertEqual(journals, 6)
