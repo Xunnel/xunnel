@@ -23,7 +23,6 @@ class ResCompany(models.Model):
         base = "https://xunnel.com/"
         if self.xunnel_testing:
             base = "https://ci.xunnel.com/"
-            base = "http://localhost:8080/"
         response = requests.post(
             str(base) + endpoint,
             headers={'Xunnel-Token': str(self.xunnel_token)},
@@ -48,7 +47,6 @@ class ResCompany(models.Model):
         if providers:
             params['provider_account_identifier'] = providers
         providers_response = self._xunnel('get_xunnel_providers', params)
-        import pdb; pdb.set_trace()
         if providers_response.get('error'):
             return
         for provider in providers_response.get('response'):
