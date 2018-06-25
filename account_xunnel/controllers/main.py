@@ -9,4 +9,4 @@ class MainController(Controller):
         provider = post.get('credential')
         if not provider:
             return
-        request.env['res.company'].sudo().sync_providers_webhook(provider)
+        request.env['res.company'].sudo().cron_get_xunnel_providers(provider)

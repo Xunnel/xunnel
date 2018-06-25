@@ -30,11 +30,11 @@ class ResCompany(models.Model):
         return response.json()
 
     @api.multi
-    def cron_get_xunnel_providers(self):
+    def cron_get_xunnel_providers(self, provider=None):
         """Sync all the providers from all companies that have xunnel_provider
         """
         for rec in self.search([('xunnel_token', '!=', False)]):
-            rec.sync_xunnel_providers()
+            rec.sync_xunnel_providers(provider)
 
     @api.multi
     def sync_xunnel_providers(self, providers=None):
@@ -59,8 +59,3 @@ class ResCompany(models.Model):
             else:
                 online_provider = online_provider.create(provider)
             online_provider.sync_journals()
-
-    @api.multi
-    def sync_providers_webhook(self, provider):
-        for rec in self.search([('xunnel_token', '!=', False)]):
-            rec.sync_xunnel_providers(providers=provider)
