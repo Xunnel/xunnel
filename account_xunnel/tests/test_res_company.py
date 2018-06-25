@@ -41,6 +41,10 @@ class TestXunnelAccount(TransactionCase):
         request.post(
             '%sget_xunnel_journals' % self.url,
             text=_response)
+        request.post(
+            '%sget_xunnel_transactions' % self.url,
+            text=dumps(
+                {'response': '{"balance": 1099, "transactions": []}'}))
 
         old_providers = len(self.env['account.online.provider'].search([]))
         old_journals = len(self.env['account.online.journal'].search([]))

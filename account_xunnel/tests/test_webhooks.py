@@ -7,7 +7,7 @@ from json import dumps, loads
 from odoo.tests.common import TransactionCase
 from requests_mock import mock
 
-from . import response
+from . import webhook_responses
 
 
 class TestXunnelAccount(TransactionCase):
@@ -20,17 +20,31 @@ class TestXunnelAccount(TransactionCase):
 
     @mock()
     def test_01_sync_account_data(self, request):
-        providers_old_count = self.env['account.online.provider'].search_count(
-            [('company_id', '=', self.company_id)])
         request.post(
-            '%sget_xunnel_providers/' % self.url,
-            text=dumps({'response': [{
-                'name': 'Acme Bank-Normal',
-                'provider_account_identifier': '5b2d52940b212a18128b456c',
-                'provider_identifier': '56cf5728784806f72b8b4568'
-            }]}))
-        self.assertEqual(providers_old_count, 0)
-        self.company.sync_providers()
-        providers_new_count = self.env['account.online.provider'].search_count(
-            [('company_id', '=', self.company_id)])
-        self.assertEqual(providers_new_count, 1)
+            '%sget_xunnel_providers' % self.url,
+            text=dumps(
+                webhook_responses.get_xunnel_providers))
+        request.post(
+            '%sget_xunnel_journals' % self.url,
+            text=dumps(
+                webhook_responses.get_xunnel_journals))
+        request.post(
+            '%sget_xunnel_transactions' % self.url,
+            text=dumps(
+                webhook_responses.get_xunnel_transactions))
+        account_id = '5b2d85a00b212a1f1c8b456d'
+        provider_obj = self.env['account.online.provider']
+        providers_old_count = provider_obj.search_count(
+            [('company_id', '=', self.company.id)])
+        self.assertEqual(providers_old_count, 3)
+        self.company.sync_providers_webhook(account_id)
+        providers_new_count = provider_obj.search_count(
+            [('company_id', '=', self.company.id)])
+        self.assertEqual(providers_new_count, 4)
+        provider = provider_obj.search(
+            [('provider_account_identifier', '=', account_id)])
+        journals = len(provider.account_online_journal_ids)
+        self.assertEqual(journals, 6)
+        # transactions = self.env['account.bank.statement'].search_count([('journal_id', '=', journal)])
+        # TODO: test transactions created
+        

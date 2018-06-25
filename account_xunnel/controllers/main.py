@@ -3,9 +3,10 @@ from odoo.http import request, Controller
 
 class MainController(Controller):
 
-    @http.route('/webhook/', type='http', auth='public', csrf=False)
+    @http.route('/webhook/', type='json', auth='public', csrf=False)
     def webhook_hanlder(self, **kw):
-        provider = kw.get('credential')
+        post = request.jsonrequest
+        provider = post.get('credential')
         if not provider:
             return
         request.env['res.company'].sudo().sync_providers_webhook(provider)

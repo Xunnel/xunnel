@@ -8,4 +8,11 @@
 		<field name="online_identifier">5a9dcb3d244283f35a8c6e22</field>
 		<field name="balance">1099</field>
 	</record>
+	<record id="online_journal_webhooks" model="account.online.journal">
+		<field name="name">Webhook Checking</field>
+		<field name="account_online_provider_id" ref="account_xunnel.online_provider_webhooks"/>
+		<field name="account_number">00000001</field>
+		<field name="online_identifier">5703f88223428348328b45db</field>
+		<field name="balance">0</field>
+	</record>
 </odoo>
