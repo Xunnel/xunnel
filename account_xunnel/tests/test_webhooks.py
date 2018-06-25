@@ -1,8 +1,7 @@
 # Copyright 2017, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import os
-from json import dumps, loads
+from json import dumps
 
 from odoo.tests.common import TransactionCase
 from requests_mock import mock
@@ -23,15 +22,15 @@ class TestXunnelAccount(TransactionCase):
         request.post(
             '%sget_xunnel_providers' % self.url,
             text=dumps(
-                webhook_responses.get_xunnel_providers))
+                webhook_responses.GET_XUNNEL_PROVIDERS))
         request.post(
             '%sget_xunnel_journals' % self.url,
             text=dumps(
-                webhook_responses.get_xunnel_journals))
+                webhook_responses.GET_XUNNEL_JOURNALS))
         request.post(
             '%sget_xunnel_transactions' % self.url,
             text=dumps(
-                webhook_responses.get_xunnel_transactions))
+                webhook_responses.GET_XUNNEL_TRANSACTIONS))
         account_id = '5b2d85a00b212a1f1c8b456d'
         provider_obj = self.env['account.online.provider']
         providers_old_count = provider_obj.search_count(
