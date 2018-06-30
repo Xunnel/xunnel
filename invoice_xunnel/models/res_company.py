@@ -42,7 +42,7 @@ class ResCompany(models.Model):
         err = response.get('error')
         if err:
             raise UserError(err)
-        if response.get('reponse') is None:
+        if response.get('response') is None:
             self.xunnel_last_sync = fields.Date.context_today(self)
             return True
         for item in response.get('response'):
