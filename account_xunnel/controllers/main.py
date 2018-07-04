@@ -12,10 +12,12 @@ class MainController(Controller):
         data = post.get('sync_data')
 
         if event == 'refresh':
-            journals = request.env['account.online.journal'].sudo().search(
-                [('online_identifier', '=', data.get('journal'))])
-            for journal in journals:
-                journal.retrieve_transactions(forced_params=data)
+            for journal_id in data:
+                journal_data = data[journal_id]
+                journals = request.env['account.online.journal'].sudo().search(
+                    [('online_identifier', '=', journal_data.get('journal'))])
+                for journal in journals:
+                    journal.retrieve_transactions(forced_params=journal_data)
         else:
             request.env[
                 'res.company'].sudo().cron_get_xunnel_providers(provider)
