@@ -21,7 +21,7 @@ class MainController(Controller):
         data = post.get('sync_data')
 
         if event == 'refresh':
-            for journal_id, journal_data in data.items():
+            for _, journal_data in data.items():
                 online_identifier = journal_data.get('journal')
                 if not online_identifier:
                     continue
