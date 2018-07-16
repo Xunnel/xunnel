@@ -7,7 +7,9 @@ from odoo.http import request, Controller
 
 class MainController(Controller):
 
-    @http.route('/account_xunnel/webhook_notification/', type='json', auth='public', csrf=False)
+    @http.route(
+        '/account_xunnel/xunnel_webhook_connection/',
+        type='json', auth='public', csrf=False)
     def webhook_hanlder(self, **kw):
         post = request.jsonrequest
         provider = post.get('provider')
