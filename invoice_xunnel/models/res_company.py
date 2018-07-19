@@ -6,7 +6,7 @@ from codecs import BOM_UTF8
 from time import mktime
 
 from lxml import objectify
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 BOM_UTF8U = BOM_UTF8.decode('UTF-8')
@@ -33,6 +33,9 @@ class ResCompany(models.Model):
         to create them if they're not. After refresh xunnel_last_sync
         """
         self.ensure_one()
+        if not self.vat and self.xunnel_token:
+            raise UserError(
+                _('You need to define the VAT of your company.'))
         response = self._xunnel(
             'get_invoices_sat', dict(
                 last_sync=mktime(
