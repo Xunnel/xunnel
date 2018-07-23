@@ -14,7 +14,6 @@
     'depends': [
         'account_accountant',
         'account_online_sync',
-        'l10n_mx_edi_vendor_bills',
     ],
     'data': [
         'views/account_config_settings.xml',
