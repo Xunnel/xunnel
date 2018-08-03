@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_config_settings_xunnel_id" model="ir.ui.view">
+        <field name="name">Xunnel accountant dashboard</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='JournalBodyBankCash']/div[hasclass('o_kanban_primary_right')]" position="inside">
+                <div attrs="{'invisible': [('online_journal_last_sync', '=', False)]}" class="row" name="last_synchronization">
+                    <div class="col-xs-6">
+                        <span title="Latest synchronization">Xunnel Last sync</span>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <span>
+                            <field name="online_journal_last_sync" />
+                        </span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <record id="account_journal_dashboard_inherit_online_sync_id" model="ir.ui.view">
+        <field name="name">Xunnel accountant dashboard</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account_online_sync.account_journal_dashboard_inherit_online_sync" />
+        <field name="arch" type="xml">
+            <xpath expr="//t[starts-with(@t-if, 'record.synchronization_status.value !=')]" position="inside">
+                <div>
+                    <small class="text-danger" attrs="{'invisible': [('online_journal_last_sync', '!=', False)]}">Online synchronization may duplicate the transactions added manually.</small>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -18,6 +18,7 @@
     ],
     'data': [
         'views/account_config_settings.xml',
+        'views/accountant_dashboard.xml',
         'data/ir_cron.xml',
     ],
     'demo': [

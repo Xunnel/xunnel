@@ -4,7 +4,7 @@
 import json
 from datetime import datetime
 from time import mktime
-from odoo import api, models
+from odoo import api, models, _
 from odoo.exceptions import UserError
 
 
@@ -33,7 +33,8 @@ class ProviderAccount(models.Model):
             raise UserError(err)
         resp_json = json.loads(resp.get('response'))
         transactions = []
-        for transaction in resp_json['transactions']:
+        json_transactions = resp_json['transactions']
+        for transaction in json_transactions:
             trans = {
                 'id': transaction['id_transaction'],
                 'date': datetime.fromtimestamp(
@@ -48,5 +49,14 @@ class ProviderAccount(models.Model):
         if not self.journal_ids:
             return 0
         # Create the bank statement with the transactions
-        return self.env['account.bank.statement'].online_sync_bank_statement(
-            transactions, self.journal_ids[0])
+        journal_id = self.journal_ids[0]
+        statement_obj = self.env['account.bank.statement']
+        response = statement_obj.online_sync_bank_statement(
+            transactions, journal_id)
+        if json_transactions:
+            statement_id = statement_obj.search(
+                [('journal_id', '=', journal_id.id)],
+                order="date desc, id desc", limit=1)
+            for line in statement_id.line_ids:
+                line.write({'note': _('Transaction synchronized from Xunnel')})
+        return response
