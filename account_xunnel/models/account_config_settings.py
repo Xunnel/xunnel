@@ -30,6 +30,8 @@ class AccountConfigSettings(models.TransientModel):
     xunnel_providers_last_sync = fields.Date(
         string="Last synchronization with Xunnel",
         related='company_id.xunnel_providers_last_sync')
+    xunnel_succes_message = fields.Text(
+        help="Message for success in the configurations settings")
 
     @api.model
     def get_values(self):
@@ -55,4 +57,11 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_providers(self):
-        self.company_id.sync_xunnel_providers()
+        status, response = self.company_id.sync_xunnel_providers()
+        if not status:
+            error = _(
+                "An error has occurred while synchronizing your providers. %s")
+            raise exceptions.UserError(error  % response)
+        success = _(
+            "Success! %s providers have been synchronized.") % len(response)
+        self.xunnel_succes_message = success

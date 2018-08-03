@@ -3,10 +3,10 @@
 
 from json import dumps
 
+import datetime
 import logging
 import requests
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -14,7 +14,8 @@ _logger = logging.getLogger(__name__)
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    xunnel_providers_last_sync = fields.Date("Last synchronization with Xunnel.")
+    xunnel_providers_last_sync = fields.Date(
+        "Last synchronization with Xunnel.")
     xunnel_token = fields.Char()
     xunnel_testing = fields.Boolean()
 
@@ -43,10 +44,9 @@ class ResCompany(models.Model):
         """Sync all the providers from all companies that have xunnel_provider
         """
         for rec in self.search([('xunnel_token', '!=', False)]):
-            try:
-                rec.sync_xunnel_providers(provider)
-            except UserError as error:
-                _logger.error(_('Error while synchronizing: %s'), str(error))
+            status, error = rec.sync_xunnel_providers(provider)
+            if status:
+                _logger.info("Error while synchronizing providers: %s", str(error))
 
     @api.multi
     def sync_xunnel_providers(self, providers=None):
@@ -61,8 +61,10 @@ class ResCompany(models.Model):
         providers_response = self._xunnel('get_xunnel_providers', params)
         error = providers_response.get('error')
         if error:
-            raise UserError(error)
-        for provider in providers_response.get('response'):
+            return False, error
+        self.xunnel_last_sync = datetime.datetime.now().date()
+        all_providers = providers_response.get('response')
+        for provider in all_providers:
             provider.update(company_id=self.id, provider_type='xunnel')
             online_provider = self.env['account.online.provider'].search([
                 ('provider_account_identifier', '=',
@@ -73,3 +75,4 @@ class ResCompany(models.Model):
             else:
                 online_provider = online_provider.create(provider)
             online_provider.sync_journals()
+        return True, all_providers

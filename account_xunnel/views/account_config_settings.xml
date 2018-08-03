@@ -16,7 +16,10 @@
                                     <label for="xunnel_token"/>
                                     <field name="xunnel_token"/>
                                     <div class="text-muted" id="xunnel_token_help">User's private token authentication</div>
-                                    <button name="sync_xunnel_providers" class="mt16 oe_highlight" type="object">
+                                    <div class="mt16 mb8" attrs="{'invisible':[('xunnel_succes_message', '=', False)]}">
+                                        <field class="text-success" name="xunnel_succes_message" readonly="1" />
+                                    </div>
+                                    <button name="sync_xunnel_providers" class="oe_highlight" type="object">
                                             <i class="fa fa-refresh fa-fw"></i> Sync providers &amp; journals
                                     </button>
                                     <div class="mt8" attrs="{'invisible':[('xunnel_providers_last_sync', '=', False)]}">
