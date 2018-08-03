@@ -10,7 +10,7 @@ class AccountConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     xunnel_last_sync = fields.Date(
-        string='Last Sync in Xunnel', related='company_id.xunnel_last_sync')
+        string='Last Sync with Xunnel', related='company_id.xunnel_last_sync')
 
     @api.model
     def get_values(self):

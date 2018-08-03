@@ -11,7 +11,7 @@ from odoo import api, fields, models
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    xunnel_last_sync = fields.Date("Last synchronization with Xunnel.")
+    xunnel_providers_last_sync = fields.Date("Last synchronization with Xunnel.")
     xunnel_token = fields.Char()
     xunnel_testing = fields.Boolean()
 

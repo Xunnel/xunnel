@@ -16,7 +16,7 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     xunnel_last_sync = fields.Date(
-        string='Last Sync in Xunnel',
+        string='Last Sync with Xunnel',
         default='2018-01-01')
 
     @api.model
