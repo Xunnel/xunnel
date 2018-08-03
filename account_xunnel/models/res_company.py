@@ -3,6 +3,7 @@
 
 from json import dumps
 
+import datetime
 import requests
 from odoo import api, fields, models
 
@@ -10,6 +11,7 @@ from odoo import api, fields, models
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
+    xunnel_last_sync = fields.Date("Last synchronization with Xunnel.")
     xunnel_token = fields.Char()
     xunnel_testing = fields.Boolean()
 
@@ -49,6 +51,7 @@ class ResCompany(models.Model):
         providers_response = self._xunnel('get_xunnel_providers', params)
         if providers_response.get('error'):
             return
+        self.xunnel_last_sync = datetime.datetime.now().date()
         for provider in providers_response.get('response'):
             provider.update(company_id=self.id, provider_type='xunnel')
             online_provider = self.env['account.online.provider'].search([
