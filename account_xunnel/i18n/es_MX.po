@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-07 21:27+0000\n"
-"PO-Revision-Date: 2018-08-07 21:27+0000\n"
+"POT-Creation-Date: 2018-08-09 14:00+0000\n"
+"PO-Revision-Date: 2018-08-09 14:00+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,9 +26,9 @@ msgid "<small class=\"text-danger\" attrs=\"{'invisible': [('online_journal_last
 msgstr "<small class=\"text-danger\" attrs=\"{'invisible': [('online_journal_last_sync', '!=', False)]}\">La sincronización en linea puede sobre duplicar las transacciones añadidas manualmente.</small>"
 
 #. module: account_xunnel
-#: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel_id
+#: model:ir.ui.view,arch_db:account_xunnel.view_account_journal_dashboard_kanban_xunnel
 msgid "<span title=\"Latest synchronization\">Xunnel Last sync</span>"
-msgstr "<span title=\"Latest synchronization\">Última sync Xunnel</span>"
+msgstr "<span title=\"Latest synchronization\">Última sincronización Xunnel</span>"
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_res_company
@@ -61,6 +61,12 @@ msgid "Enable/Disable Xunnel Test Environment."
 msgstr "Activa/Desactiva Ambiente de pruebas de Xunnel."
 
 #. module: account_xunnel
+#: code:addons/account_xunnel/models/res_company.py:49
+#, python-format
+msgid "Error while synchronizing: %s"
+msgstr "Error al sincronizar: %s"
+
+#. module: account_xunnel
 #: model:ir.actions.server,name:account_xunnel.ir_cron_xunnel_transactions_ir_actions_server
 #: model:ir.cron,cron_name:account_xunnel.ir_cron_xunnel_transactions
 #: model:ir.cron,name:account_xunnel.ir_cron_xunnel_transactions
@@ -83,11 +89,6 @@ msgid "Key-like text for authentication in controllers."
 msgstr "Llave de autenticación para los controllers."
 
 #. module: account_xunnel
-#: model:ir.model.fields,field_description:account_xunnel.field_account_journal_online_journal_last_sync
-msgid "Online account last synchronization"
-msgstr "Última sincronización de cuenta en linea"
-
-#. module: account_xunnel
 #: model:ir.model.fields,field_description:account_xunnel.field_res_config_settings_xunnel_providers_last_sync
 msgid "Last synchronization with Xunnel"
 msgstr "Última sincronización con Xunnel"
@@ -96,6 +97,11 @@ msgstr "Última sincronización con Xunnel"
 #: model:ir.model.fields,field_description:account_xunnel.field_res_company_xunnel_providers_last_sync
 msgid "Last synchronization with Xunnel."
 msgstr "Última sincronización con Xunnel Account."
+
+#. module: account_xunnel
+#: model:ir.model.fields,field_description:account_xunnel.field_account_journal_online_journal_last_sync
+msgid "Online account last synchronization"
+msgstr "Última sincronización de cuenta en linea"
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_account_online_provider
@@ -117,28 +123,12 @@ msgstr "Actualizar tus credenciales no esta permitido aquí. Por favor ve a http
 #. module: account_xunnel
 #: model:ir.model.fields,help:account_xunnel.field_res_config_settings_xunnel_testing
 msgid "Use Xunnel server testing?"
-msgstr "¿Usar el servidor de testeo Xunnel?"
-
-#. module: account_xunnel
-#: code:addons/account_xunnel/models/xunnel_provider_account.py:52
-#, python-format
-msgid "Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that."
-msgstr "Actualizar tus credenciales no esta permitido aquí. Por favor ve a https://www.xunnel.com/ para lograrlo."
-
-#. module: account_xunnel
-#: model:ir.model.fields,help:account_xunnel.field_res_config_settings_xunnel_testing
-msgid "Use Xunnel server testing?"
 msgstr "¿Usar el servidor de pruebas de Xunnel?"
 
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel
 msgid "User's private token authentication"
 msgstr "Token de autorización privado del usuario"
-
-#. module: account_xunnel
-#: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel
-msgid "Xunnel Configuration"
-msgstr "Configuración Xunnel"
 
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel
@@ -167,4 +157,3 @@ msgstr "Tu compañía no tiene un Xunnel Token establecido. Asegurate de haber g
 #: model:ir.model,name:account_xunnel.model_res_config_settings
 msgid "res.config.settings"
 msgstr "res.config.settings"
-

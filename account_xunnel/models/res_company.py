@@ -3,9 +3,12 @@
 
 from json import dumps
 
-import datetime
+import logging
 import requests
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
 
 
 class ResCompany(models.Model):
@@ -29,14 +32,21 @@ class ResCompany(models.Model):
             str(base) + endpoint,
             headers={'Xunnel-Token': str(self.xunnel_token)},
             data=dumps(payload) if payload else None)
-        return response.json()
+        try:
+            json_resp = response.json()
+        except ValueError as error:
+            json_resp = {'error': str(error)}
+        return json_resp
 
     @api.multi
     def cron_get_xunnel_providers(self, provider=None):
         """Sync all the providers from all companies that have xunnel_provider
         """
         for rec in self.search([('xunnel_token', '!=', False)]):
-            rec.sync_xunnel_providers(provider)
+            try:
+                rec.sync_xunnel_providers(provider)
+            except UserError as error:
+                _logger.error(_('Error while synchronizing: %s'), str(error))
 
     @api.multi
     def sync_xunnel_providers(self, providers=None):
@@ -49,9 +59,9 @@ class ResCompany(models.Model):
         if providers:
             params['provider_account_identifier'] = providers
         providers_response = self._xunnel('get_xunnel_providers', params)
-        if providers_response.get('error'):
-            return
-        self.xunnel_last_sync = datetime.datetime.now().date()
+        error = providers_response.get('error')
+        if error:
+            raise UserError(error)
         for provider in providers_response.get('response'):
             provider.update(company_id=self.id, provider_type='xunnel')
             online_provider = self.env['account.online.provider'].search([
