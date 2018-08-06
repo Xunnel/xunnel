@@ -81,12 +81,14 @@ nodemo:
 
 build:
   stage: build
+  image: quay.io/vauxoo/dockerv:latest
   tags:
     - build
   variables:
     INSTALL: "account_xunnel"
     CUSTOMER: "account_xunnel"
   script:
+    - deployvcmd gitlab_tools check_keys
     - deployvcmd gitlab_tools test_images --psql_image='vauxoo/docker-postgresql:9.6-ci' --push_image
 
 bump:
