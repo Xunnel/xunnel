@@ -18,7 +18,7 @@ msgstr ""
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel
 msgid "<i class=\"fa fa-refresh fa-fw\"/> Sync providers &amp; journals"
-msgstr "<i class=\"fa fa-refresh fa-fw\"/> Sync proveedores &amp; diarios"
+msgstr "<i class=\"fa fa-refresh fa-fw\"/> Sincronizar proveedores &amp; diarios"
 
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.account_journal_dashboard_inherit_online_sync_id
@@ -58,7 +58,7 @@ msgstr "Estimado/a Señor/Señora, \n"
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel
 msgid "Enable/Disable Xunnel Test Environment."
-msgstr "Activa/Desactiva Ambiente de testeo Xunnel."
+msgstr "Activa/Desactiva Ambiente de pruebas de Xunnel."
 
 #. module: account_xunnel
 #: model:ir.actions.server,name:account_xunnel.ir_cron_xunnel_transactions_ir_actions_server
@@ -95,7 +95,7 @@ msgstr "Última sincronización con Xunnel"
 #. module: account_xunnel
 #: model:ir.model.fields,field_description:account_xunnel.field_res_company_xunnel_providers_last_sync
 msgid "Last synchronization with Xunnel."
-msgstr "Última sincronización con XunnelXunnel Account."
+msgstr "Última sincronización con Xunnel Account."
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_account_online_provider
@@ -128,7 +128,7 @@ msgstr "Actualizar tus credenciales no esta permitido aquí. Por favor ve a http
 #. module: account_xunnel
 #: model:ir.model.fields,help:account_xunnel.field_res_config_settings_xunnel_testing
 msgid "Use Xunnel server testing?"
-msgstr "¿Usar el servidor de testeo Xunnel?"
+msgstr "¿Usar el servidor de pruebas de Xunnel?"
 
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.view_account_config_settings_xunnel
@@ -149,7 +149,7 @@ msgstr "Cuenta Xunnel"
 #: model:ir.model.fields,field_description:account_xunnel.field_res_company_xunnel_testing
 #: model:ir.model.fields,field_description:account_xunnel.field_res_config_settings_xunnel_testing
 msgid "Xunnel Testing"
-msgstr "Xunnel Testing"
+msgstr "Pruebas Xunnel"
 
 #. module: account_xunnel
 #: model:ir.model.fields,field_description:account_xunnel.field_res_company_xunnel_token

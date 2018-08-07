@@ -14,7 +14,7 @@
                         <div class="o_setting_right_pane">
                             <label for="xunnel_last_sync" />
                             <field name="xunnel_last_sync" />
-                            <div class="text-muted" id="xunnel_last_sync_help">SAT's invoices olders than this date won't be fetched.
+                            <div class="text-muted" id="xunnel_last_sync_help">SAT's invoices older than this date won't be fetched.
                             </div>
                             <button class="oe_highlight mt8" name="sync_xunnel_attachments" type="object">
                                 <i class="fa fa-refresh fa-fw"></i> Sync attachments
