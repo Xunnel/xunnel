@@ -6,7 +6,7 @@
     'summary': '''
         Use Xunnel Sync to retrieve bank statements
     ''',
-    'version': '11.0.1.0.9',
+    'version': '11.0.1.0.10',
     'author': 'Jarsa Sistemas,Vauxoo',
     'category': 'Accounting',
     'website': 'http://www.jarsa.com.mx',
