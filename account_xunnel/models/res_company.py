@@ -6,7 +6,7 @@ from json import dumps
 import datetime
 import logging
 import requests
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
