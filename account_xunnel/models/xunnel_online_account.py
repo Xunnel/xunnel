@@ -46,17 +46,24 @@ class ProviderAccount(models.Model):
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
             transactions.append(trans)
-        if not self.journal_ids:
+        if not self.journal_ids or not transactions:
             return 0
-        # Create the bank statement with the transactions
         journal_id = self.journal_ids[0]
         statement_obj = self.env['account.bank.statement']
+        line_statement_obj = self.env['account.bank.statement.line']
         response = statement_obj.online_sync_bank_statement(
             transactions, journal_id)
-        if json_transactions:
-            statement_id = statement_obj.search(
-                [('journal_id', '=', journal_id.id)],
-                order="date desc, id desc", limit=1)
-            for line in statement_id.line_ids:
-                line.write({'note': _('Transaction synchronized from Xunnel')})
+        statement = statement_obj.search(
+            [('journal_id', '=', journal_id.id)],
+            order="date desc, id desc", limit=1)
+        starting_balance = line_statement_obj.search([
+            ('id', 'in', statement.line_ids.ids),
+            ('online_identifier', '=', False)], limit=1)
+        if starting_balance:
+            statement.write({'balance_start': starting_balance.amount})
+            starting_balance.unlink()
+        last_date = line_statement_obj.search([
+            ('id', 'in', statement.line_ids.ids)], limit=1, order='date desc').date
+        statement.date = last_date
+        statement.line_ids.write({'note': _('Transaction synchronized from Xunnel')})
         return response
