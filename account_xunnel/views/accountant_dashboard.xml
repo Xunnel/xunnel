@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_account_config_settings_xunnel_id" model="ir.ui.view">
+    <record id="view_account_journal_dashboard_kanban_xunnel" model="ir.ui.view">
         <field name="name">Xunnel accountant dashboard</field>
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />

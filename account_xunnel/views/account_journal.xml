@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_journal_xunnel" model="ir.ui.view">
+        <field name="name">xunnel.account.journal.form.inherit.online.sync</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account_online_sync.account_journal_form_inherit_online_sync"/>
+        <field name="arch" type="xml">
+            <!-- TODO: Remove this view when PR: https://github.com/odoo/enterprise/pull/2493 is merged in EE -->
+            <xpath expr="//field[@name='account_online_journal_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('account_online_journal_id', '=', False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
