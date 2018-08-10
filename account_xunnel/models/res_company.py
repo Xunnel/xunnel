@@ -4,9 +4,11 @@
 from json import dumps
 
 import datetime
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 import logging
 import requests
-from odoo import api, fields, models
+from requests.exceptions import HTTPError
 
 _logger = logging.getLogger(__name__)
 
@@ -34,10 +36,10 @@ class ResCompany(models.Model):
             headers={'Xunnel-Token': str(self.xunnel_token)},
             data=dumps(payload) if payload else None)
         try:
-            json_resp = response.json()
-        except ValueError as error:
-            json_resp = {'error': str(error)}
-        return json_resp
+            response.raise_for_status()
+        except HTTPError as error:
+            raise UserError(error)
+        return response.json()
 
     @api.multi
     def cron_get_xunnel_providers(self, provider=None):
