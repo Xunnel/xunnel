@@ -11,6 +11,7 @@ variables:
     ODOO_BRANCH: "11.0"
     CUSTOMER: "vauxoo"
     BASE_IMAGE: "vauxoo/odoo-110-image"
+    TRAVIS_PYTHON_VERSION: "3.5"
 
 lint:
   stage: test
@@ -34,6 +35,7 @@ test:
   tags:
     - odoo
     - test
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
   variables:
     LINT_CHECK: "0"
     TESTS: "1"
@@ -43,17 +45,17 @@ test:
     - apt-get update && apt-get install -y tree dos2unix
     - pip install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
-    - source /.repo_requirements/virtualenv/python3.5/bin/activate
+    - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
     - git clone https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - export PATH=${HOME}/maintainer-quality-tools/travis:${HOME}/gitlab_tools:${PATH}
     - travis_install_nightly
     - travis_run_tests
     - travis_after_tests_success || true
-    - coverage html --rcfile=${TRAVIS_BUILD_DIR}/.coveragerc -d $CI_COMMIT_REF_NAME
-    - coverage report -m --show-missing --rcfile=${TRAVIS_BUILD_DIR}/.coveragerc | tee $CI_COMMIT_REF_NAME/coverage.txt
+    - coverage html --rcfile=${TRAVIS_BUILD_DIR}/.coveragerc -d $CI_COMMIT_REF_SLUG || true
+    - coverage report -m --show-missing --rcfile=${TRAVIS_BUILD_DIR}/.coveragerc || true
   artifacts:
     paths:
-      - $CI_COMMIT_REF_NAME
+      - $CI_COMMIT_REF_SLUG
 
 nodemo:
   stage: test
@@ -72,7 +74,7 @@ nodemo:
     - apt-get update && apt-get install -y tree dos2unix
     - pip install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
-    - source /.repo_requirements/virtualenv/python3.5/bin/activate
+    - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
     - git clone https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - export PATH=${HOME}/maintainer-quality-tools/travis:${HOME}/gitlab_tools:${PATH}
     - travis_install_nightly
@@ -117,3 +119,15 @@ bump:
           ;;
         esac
 
+publish_coverage:
+  image: quay.io/vauxoo/dockerv
+  stage: build
+  allow_failure: true
+  dependencies:
+    - test
+  script:
+    - deployvcmd gitlab_tools push_coverage
+
+  environment:
+    name: coverage
+    url: https://coverage.vauxoo.com/${CI_COMMIT_REF_SLUG}-${CI_PROJECT_NAME}
