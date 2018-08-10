@@ -26,7 +26,8 @@
         <field name="arch" type="xml">
             <xpath expr="//t[starts-with(@t-if, 'record.synchronization_status.value !=')]" position="inside">
                 <div>
-                    <small class="text-danger" attrs="{'invisible': [('online_journal_last_sync', '!=', False)]}">Online synchronization may duplicate the transactions added manually.</small>
+                    <field name="has_synchronized_xunnel"  invisible="True"/>
+                    <small class="text-danger" attrs="{'invisible': [('has_synchronized_xunnel', '=', True)]}">Online synchronization may duplicate the transactions added manually.</small>
                 </div>
             </xpath>
         </field>
