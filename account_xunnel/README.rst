@@ -15,7 +15,7 @@ How To use it
 - Sync the accounts or banks that you need in the company.
 - Copy the token of the company.
 - Go to Accounting/Configuration/Settings then Xunnel Configuration and paste the token in Xunnel Token.
-- Press the button "Sync Providers & Journals".
+- Press the button "Synchronize banks & account".
 
 .. figure:: account_xunnel/static/description/xunnel-config.jpeg
 

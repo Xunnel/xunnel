@@ -20,7 +20,7 @@
                                         <field class="text-success" name="xunnel_succes_message" readonly="1" />
                                     </div>
                                     <button name="sync_xunnel_providers" class="oe_highlight" type="object">
-                                            <i class="fa fa-refresh fa-fw"></i> Sync providers &amp; journals
+                                            <i class="fa fa-refresh fa-fw"></i> Synchronize banks &amp; accounts
                                     </button>
                                     <div class="mt8" attrs="{'invisible':[('xunnel_providers_last_sync', '=', False)]}">
                                         <label for="xunnel_providers_last_sync" />

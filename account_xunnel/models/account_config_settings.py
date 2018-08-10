@@ -60,8 +60,8 @@ class AccountConfigSettings(models.TransientModel):
         status, response = self.company_id.sync_xunnel_providers()
         if not status:
             error = _(
-                "An error has occurred while synchronizing your providers. %s")
+                "An error has occurred while synchronizing your banks. %s")
             raise exceptions.UserError(error % response)
         success = _(
-            "Success! %s providers have been synchronized.") % len(response)
+            "Success! %s banks have been synchronized.") % len(response)
         self.xunnel_succes_message = success
