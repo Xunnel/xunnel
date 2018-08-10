@@ -30,9 +30,14 @@ class ResCompany(models.Model):
         base = "https://xunnel.com/"
         if self.xunnel_testing:
             base = "https://ci.xunnel.com/"
+        origin_url = self.env['ir.config_parameter'].sudo().get_param(
+            'web.base.url')
         response = requests.post(
             str(base) + endpoint,
-            headers={'Xunnel-Token': str(self.xunnel_token)},
+            headers={
+                'Xunnel-Token': str(self.xunnel_token),
+                'Xunnel-Origin': origin_url
+            },
             data=dumps(payload) if payload else None)
         try:
             response.raise_for_status()
