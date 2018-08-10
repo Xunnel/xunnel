@@ -1,7 +1,6 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-import datetime
 from json import dumps
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -15,8 +14,6 @@ _logger = logging.getLogger(__name__)
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    xunnel_providers_last_sync = fields.Date(
-        "Last synchronization with Xunnel.")
     xunnel_token = fields.Char()
     xunnel_testing = fields.Boolean()
 
@@ -69,7 +66,6 @@ class ResCompany(models.Model):
         error = providers_response.get('error')
         if error:
             return False, error
-        self.xunnel_last_sync = datetime.datetime.now().date()
         all_providers = providers_response.get('response')
         for provider in all_providers:
             provider.update(company_id=self.id, provider_type='xunnel')

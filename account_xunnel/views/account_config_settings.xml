@@ -22,10 +22,6 @@
                                     <button name="sync_xunnel_providers" class="oe_highlight" type="object">
                                             <i class="fa fa-refresh fa-fw"></i> Synchronize banks &amp; accounts
                                     </button>
-                                    <div class="mt8" attrs="{'invisible':[('xunnel_providers_last_sync', '=', False)]}">
-                                        <label for="xunnel_providers_last_sync" />
-                                        <field name="xunnel_providers_last_sync" readonly="1" />
-                                    </div>
                                 </div>
                             </div>
                             <div class="o_setting_left_pane mt16">

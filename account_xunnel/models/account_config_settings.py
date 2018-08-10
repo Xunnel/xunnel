@@ -27,9 +27,6 @@ class AccountConfigSettings(models.TransientModel):
         help="Key-like text for authentication in controllers.")
     xunnel_testing = fields.Boolean(
         help="Use Xunnel server testing?", related='company_id.xunnel_testing')
-    xunnel_providers_last_sync = fields.Date(
-        string="Last synchronization with Xunnel",
-        related='company_id.xunnel_providers_last_sync')
     xunnel_succes_message = fields.Text(
         help="Message for success in the configurations settings")
 
@@ -39,8 +36,7 @@ class AccountConfigSettings(models.TransientModel):
         company = self.company_id
         res.update(
             xunnel_token=company.xunnel_token,
-            xunnel_testing=company.xunnel_testing,
-            xunnel_providers_last_sync=company.xunnel_providers_last_sync
+            xunnel_testing=company.xunnel_testing
         )
         return res
 
@@ -50,8 +46,7 @@ class AccountConfigSettings(models.TransientModel):
         company = self.company_id
         company.write({
             'xunnel_token': self.xunnel_token,
-            'xunnel_testing': self.xunnel_testing,
-            'xunnel_providers_last_sync': self.xunnel_providers_last_sync
+            'xunnel_testing': self.xunnel_testing
         })
 
     @api.multi
