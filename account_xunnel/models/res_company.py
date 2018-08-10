@@ -47,7 +47,8 @@ class ResCompany(models.Model):
         for rec in self.search([('xunnel_token', '!=', False)]):
             status, error = rec.sync_xunnel_providers(provider)
             if status:
-                _logger.info("Error while synchronizing providers: %s", str(error))
+                _logger.info(
+                    "Error while synchronizing providers: %s", str(error))
 
     @api.multi
     def sync_xunnel_providers(self, providers=None):
@@ -70,7 +71,7 @@ class ResCompany(models.Model):
             online_provider = self.env['account.online.provider'].search([
                 ('provider_account_identifier', '=',
                  provider.get('provider_account_identifier')),
-                 ('company_id', '=', self.id)], limit=1)
+                ('company_id', '=', self.id)], limit=1)
             if online_provider:
                 online_provider.write(provider)
             else:

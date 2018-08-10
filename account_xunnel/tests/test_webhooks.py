@@ -42,6 +42,6 @@ class TestXunnelAccount(TransactionCase):
         self.assertEqual(providers_new_count, 2)
         provider = provider_obj.search(
             [('provider_account_identifier', '=', account_id),
-            ('company_id', '=', self.company.id)])
+             ('company_id', '=', self.company.id)])
         journals = len(provider.account_online_journal_ids)
         self.assertEqual(journals, 6)

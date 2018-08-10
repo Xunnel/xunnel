@@ -62,8 +62,10 @@ class ProviderAccount(models.Model):
         if starting_balance:
             statement.write({'balance_start': starting_balance.amount})
             starting_balance.unlink()
-        last_date = line_statement_obj.search([
-            ('id', 'in', statement.line_ids.ids)], limit=1, order='date desc').date
+        last_date = line_statement_obj.search(
+            [('id', 'in', statement.line_ids.ids)], limit=1,
+            order='date desc').date
         statement.date = last_date
-        statement.line_ids.write({'note': _('Transaction synchronized from Xunnel')})
+        statement.line_ids.write({
+            'note': _('Transaction synchronized from Xunnel')})
         return response
