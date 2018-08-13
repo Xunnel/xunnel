@@ -21,12 +21,11 @@ lint:
     LINT_CHECK: "1"
     TESTS: "0"
   script:
-    - export TRAVIS_BUILD_DIR=$(pwd)
     - sudo apt-get update && sudo apt-get install -y dos2unix
+    - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
+    - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
     - pip install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
-    - git clone https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
-    - export PATH=${HOME}/maintainer-quality-tools/travis:${HOME}/gitlab_tools:${PATH}
     - travis_install_nightly
     - travis_run_tests
 
@@ -41,13 +40,12 @@ test:
     TESTS: "1"
   script:
     - pip3 install requests_mock
-    - export TRAVIS_BUILD_DIR=$(pwd)
     - apt-get update && apt-get install -y tree dos2unix
+    - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
+    - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
     - pip install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
     - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
-    - git clone https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
-    - export PATH=${HOME}/maintainer-quality-tools/travis:${HOME}/gitlab_tools:${PATH}
     - travis_install_nightly
     - travis_run_tests
     - travis_after_tests_success || true
@@ -70,13 +68,12 @@ nodemo:
     INSTALL_OPTIONS: "--without-demo=all"
   script:
     - pip3 install requests_mock
-    - export TRAVIS_BUILD_DIR=$(pwd)
     - apt-get update && apt-get install -y tree dos2unix
+    - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
+    - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
     - pip install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
     - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
-    - git clone https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
-    - export PATH=${HOME}/maintainer-quality-tools/travis:${HOME}/gitlab_tools:${PATH}
     - travis_install_nightly
     - travis_run_tests
     - travis_after_tests_success || true
