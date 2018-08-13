@@ -4,7 +4,7 @@
 {
     'name': 'Xunnel Invoice',
     'summary': '''
-        Use Xunnel Sync to retrieve bank statements
+        Use Xunnel Invoice to retrieve invoices from SAT.
     ''',
     'version': '11.0.1.0.22',
     'author': 'Jarsa Sistemas,Vauxoo',

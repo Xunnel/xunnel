@@ -2,9 +2,9 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 {
-    'name': 'Xunnel Sync',
+    'name': 'Xunnel Bank',
     'summary': '''
-        Use Xunnel Sync to retrieve bank statements
+        Use Xunnel Bank to retrieve bank statements.
     ''',
     'version': '11.0.1.0.22',
     'author': 'Jarsa Sistemas,Vauxoo',
