@@ -42,12 +42,13 @@ class AccountConfigSettings(models.TransientModel):
 
     @api.multi
     def set_values(self):
-        super(AccountConfigSettings, self).set_values()
+        res = super(AccountConfigSettings, self).set_values()
         company = self.company_id
         company.write({
             'xunnel_token': self.xunnel_token,
             'xunnel_testing': self.xunnel_testing
         })
+        return res
 
     @api.multi
     @assert_xunnel_token

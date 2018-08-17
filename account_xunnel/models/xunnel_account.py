@@ -18,7 +18,8 @@ class AccountJournal(models.Model):
                     ('online_identifier', '!=', False)], limit=1)
             is_online_bank = rec.bank_statements_source == 'online_sync'
             rec.has_synchronized_xunnel = (
-                is_online_bank and rec.account_online_journal_id and has_online_sync)
+                is_online_bank and rec.account_online_journal_id and
+                has_online_sync)
 
     has_synchronized_xunnel = fields.Boolean(
         help='Recognize if has synchronized with Xunnel',
