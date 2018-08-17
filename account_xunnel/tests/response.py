@@ -189,7 +189,7 @@ TRANSACTIONS = [
 
     {
         'dt_refresh': 1520290621,
-        'description': 'ACME Checking Transaction 5',
+        'description': 'ACME Checking Transaction 6',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
         'dt_transaction': 1398920400,
@@ -220,6 +220,43 @@ TRANSACTIONS = [
         'extra': None, 'reference': None, 'keywords': None,
         'amount': 15, 'is_disable': 0,
         'id_transaction': '5a9dcb3d244283f35a8c6e30',
+        'id_currency': '523a25953b8e77910e8b456c', 'currency': 'MXN',
+        'id_external': '', 'id_credential': '5ad5ad730c212a6a268b45e4',
+        'id_account_type': '520d3aa93b8e778e0d000000'},
+
+    {
+        'dt_refresh': 1520290621,
+        'description': 'ACME Checking Transaction 7',
+        'id_account': '5a9dcb3d244283f35a8c6e22',
+        'dt_disable': None,
+        'dt_transaction': 1413435600,
+        'attachments': [
+            {
+                'url': '/attachments/5a9dcb3d244283f35a8c6e61',
+                'mime': 'application/xml',
+                'file': ('ea15e1b7466114d5748dab655d15eca0e96'
+                         'f83738490e17adcd9e355012cb517.xml'),
+                'id_attachment_type': '56bcdfca784806d1378b4567',
+                'is_valid': 1,
+                'id_attachment': '5a9dcb3d244283f35a8c6e61'
+            },
+            {
+                'url': '/attachments/5a9dcb3d244283f35a8c6e65',
+                'mime': 'application/pdf',
+                'file': ('ea15e1b7466114d5748dab655d15eca0e96'
+                         'f83738490e17adcd9e355012cb517.pdf'),
+                'id_attachment_type': '56bcdfca784806d1378b4568',
+                'is_valid': 1,
+                'id_attachment': '5a9dcb3d244283f35a8c6e65'
+            }
+        ],
+        'id_user': '5ad5ad480c212ac0298b45f1',
+        'id_site_organization': '56cf4ff5784806152c8b4567',
+        'id_site': '58b884fc056f295aa1483a02',
+        'id_site_organization_type': '56cf4f5b784806cf028b4568',
+        'extra': None, 'reference': None, 'keywords': None,
+        'amount': 15, 'is_disable': 0,
+        'id_transaction': '5a9dcb3d244283f35a8c6e31',
         'id_currency': '523a25953b8e77910e8b456c', 'currency': 'MXN',
         'id_external': '', 'id_credential': '5ad5ad730c212a6a268b45e4',
         'id_account_type': '520d3aa93b8e778e0d000000'}

@@ -54,6 +54,7 @@ class ProviderAccount(models.Model):
             if starting_balance:
                 statement.write({'balance_start': starting_balance.amount})
                 starting_balance.unlink()
+                response -= 1
             last_date = line_statement_obj.search(
                 [('statement_id', '=', statement.id)], limit=1,
                 order='date desc').date
