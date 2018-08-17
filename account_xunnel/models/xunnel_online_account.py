@@ -32,40 +32,80 @@ class ProviderAccount(models.Model):
         if err:
             raise UserError(err)
         resp_json = json.loads(resp.get('response'))
-        transactions = []
+        transactions = self._process_transactions(resp_json)
+        if not transactions:
+            return 0
+        journal = self.journal_ids[0]
+        statement_obj = self.env['account.bank.statement']
+        line_statement_obj = self.env['account.bank.statement.line']
+        response = 0
+        for __, trans in sorted(transactions.items()):
+            response += statement_obj.online_sync_bank_statement(
+                trans, journal)
+            statement = statement_obj.search(
+                [('journal_id', '=', journal.id)],
+                order="id desc", limit=1)
+            starting_balance = line_statement_obj.search([
+                ('statement_id', '=', statement.id),
+                ('online_identifier', '=', False),
+                ('name', '=', _(
+                    'Opening statement: first synchronization')),
+                ], limit=1)
+            if starting_balance:
+                statement.write({'balance_start': starting_balance.amount})
+                starting_balance.unlink()
+            last_date = line_statement_obj.search(
+                [('statement_id', '=', statement.id)], limit=1,
+                order='date desc').date
+            statement.date = last_date
+            statement.line_ids.filtered('online_identifier').write({
+                'note': _('Transaction synchronized from Xunnel')})
+        return response
+
+    @api.multi
+    def _process_transactions(self, resp_json):
+        self.ensure_one()
         json_transactions = resp_json['transactions']
+        if not self.journal_ids or not json_transactions:
+            return False
+        journal = self.journal_ids[0]
+        transactions = {}
         for transaction in json_transactions:
+            date = datetime.fromtimestamp(int(transaction['dt_transaction']))
             trans = {
                 'id': transaction['id_transaction'],
-                'date': datetime.fromtimestamp(
-                    int(transaction['dt_transaction'])).strftime('%Y-%m-%d'),
+                'date': date.strftime('%Y-%m-%d'),
                 'description': transaction['description'],
                 'amount': transaction['amount'],
                 'end_amount': resp_json['balance'],
             }
+            manual_lines = self.env['account.bank.statement.line'].search([
+                ('journal_id', '=', journal.id),
+                ('date', '=', trans['date']),
+                ('amount', '=', trans['amount']),
+                ('online_identifier', '=', False)], limit=2)
+            if len(manual_lines) == 1:
+                manual_lines.online_identifier = trans['id']
+                manual_lines.name += ' - ' + trans['description']
+                continue
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
-            transactions.append(trans)
-        if not self.journal_ids or not transactions:
-            return 0
-        journal_id = self.journal_ids[0]
-        statement_obj = self.env['account.bank.statement']
-        line_statement_obj = self.env['account.bank.statement.line']
-        response = statement_obj.online_sync_bank_statement(
-            transactions, journal_id)
-        statement = statement_obj.search(
-            [('journal_id', '=', journal_id.id)],
-            order="date desc, id desc", limit=1)
-        starting_balance = line_statement_obj.search([
-            ('id', 'in', statement.line_ids.ids),
-            ('online_identifier', '=', False)], limit=1)
-        if starting_balance:
-            statement.write({'balance_start': starting_balance.amount})
-            starting_balance.unlink()
-        last_date = line_statement_obj.search(
-            [('id', 'in', statement.line_ids.ids)], limit=1,
-            order='date desc').date
-        statement.date = last_date
-        statement.line_ids.write({
-            'note': _('Transaction synchronized from Xunnel')})
-        return response
+            if journal.bank_statement_creation == 'day':
+                transactions.setdefault(
+                    date.strftime('%Y-%m-%d'), []).append(trans)
+            elif journal.bank_statement_creation == 'week':
+                week = date.isocalendar()[1]
+                transactions.setdefault(week, []).append(trans)
+            elif journal.bank_statement_creation == 'bimonthly':
+                if date.day > 15:
+                    transactions.setdefault(
+                        date.strftime('%Y-%m-15'), []).append(trans)
+                else:
+                    transactions.setdefault(
+                        date.strftime('%Y-%m-01'), []).append(trans)
+            elif journal.bank_statement_creation == 'month':
+                transactions.setdefault(
+                    date.strftime('%Y-%m'), []).append(trans)
+            else:
+                transactions.setdefault('transactions', []).append(trans)
+        return transactions
