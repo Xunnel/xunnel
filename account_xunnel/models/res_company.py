@@ -2,7 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from json import dumps
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 import logging
 import requests
@@ -24,6 +24,8 @@ class ResCompany(models.Model):
             response will be raised.
         """
         self.ensure_one()
+        if not self.xunnel_token:
+            raise UserError(_('You need to define Xunnel Token'))
         base = "https://xunnel.com/"
         if self.xunnel_testing:
             base = "https://ci.xunnel.com/"

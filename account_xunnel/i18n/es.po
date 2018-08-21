@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-10 14:57+0000\n"
-"PO-Revision-Date: 2018-08-10 14:57+0000\n"
+"POT-Creation-Date: 2018-08-21 15:17+0000\n"
+"PO-Revision-Date: 2018-08-21 15:17+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,8 +22,8 @@ msgstr "<i class=\"fa fa-refresh fa-fw\"/> Sincronizar bancos &amp; cuentas"
 
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.account_journal_dashboard_inherit_online_sync_id
-msgid "<small class=\"text-danger\" attrs=\"{'invisible': [('online_journal_last_sync', '!=', False)]}\">Online synchronization may duplicate the transactions added manually.</small>"
-msgstr "<small class=\"text-danger\" attrs=\"{'invisible': [('online_journal_last_sync', '!=', False)]}\">La sincronización en linea puede sobre duplicar las transacciones añadidas manualmente.</small>"
+msgid "<small class=\"text-danger\" attrs=\"{'invisible': [('has_synchronized_xunnel', '=', True)]}\">Online synchronization may duplicate the transactions added manually.</small>"
+msgstr "<small class=\"text-danger\" attrs=\"{'invisible': [('has_synchronized_xunnel', '=', True)]}\">La sincronización en línea puede duplicar las transacciones agregadas manualmente.</small>"
 
 #. module: account_xunnel
 #: model:ir.ui.view,arch_db:account_xunnel.view_account_journal_dashboard_kanban_xunnel
@@ -31,7 +31,7 @@ msgid "<span title=\"Latest synchronization\">Xunnel Last sync</span>"
 msgstr "<span title=\"Latest synchronization\">Última sincronización Xunnel</span>"
 
 #. module: account_xunnel
-#: code:addons/account_xunnel/models/account_config_settings.py:62
+#: code:addons/account_xunnel/models/account_config_settings.py:58
 #, python-format
 msgid "An error has occurred while synchronizing your banks. %s"
 msgstr "Ha sucedido un error mientras se sincronizaban los bancos. %s"
@@ -67,11 +67,9 @@ msgid "Enable/Disable Xunnel Test Environment."
 msgstr "Activa/Desactiva Ambiente de pruebas de Xunnel."
 
 #. module: account_xunnel
-#: model:ir.actions.server,name:account_xunnel.ir_cron_xunnel_transactions_ir_actions_server
-#: model:ir.cron,cron_name:account_xunnel.ir_cron_xunnel_transactions
-#: model:ir.cron,name:account_xunnel.ir_cron_xunnel_transactions
-msgid "Get Xunnel Banks"
-msgstr "Obtener bancos Xunnel"
+#: model:ir.model.fields,field_description:account_xunnel.field_account_journal_has_synchronized_xunnel
+msgid "Has Synchronized Xunnel"
+msgstr "Sincronizada con Xunnel"
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_account_online_journal
@@ -89,16 +87,6 @@ msgid "Key-like text for authentication in controllers."
 msgstr "Llave de autenticación para los controllers."
 
 #. module: account_xunnel
-#: model:ir.model.fields,field_description:account_xunnel.field_res_config_settings_xunnel_providers_last_sync
-msgid "Last synchronization with Xunnel"
-msgstr "Última sincronización con Xunnel"
-
-#. module: account_xunnel
-#: model:ir.model.fields,field_description:account_xunnel.field_res_company_xunnel_providers_last_sync
-msgid "Last synchronization with Xunnel."
-msgstr "Última sincronización con Xunnel Account."
-
-#. module: account_xunnel
 #: model:ir.model.fields,help:account_xunnel.field_res_config_settings_xunnel_succes_message
 msgid "Message for success in the configurations settings"
 msgstr "Mensaje de éxito in las configuraciónes"
@@ -114,13 +102,18 @@ msgid "Provider for online account synchronization"
 msgstr "Proveedor de sincronización de cuenta en línea"
 
 #. module: account_xunnel
-#: code:addons/account_xunnel/models/account_config_settings.py:65
+#: model:ir.model.fields,help:account_xunnel.field_account_journal_has_synchronized_xunnel
+msgid "Recognize if has synchronized with Xunnel"
+msgstr "Reconocer si se ha sincronizado con Xunnel"
+
+#. module: account_xunnel
+#: code:addons/account_xunnel/models/account_config_settings.py:61
 #, python-format
 msgid "Success! %s banks have been synchronized."
 msgstr "Éxito! %s bancos han sido sincronizados."
 
 #. module: account_xunnel
-#: code:addons/account_xunnel/models/xunnel_online_account.py:68
+#: code:addons/account_xunnel/models/xunnel_online_account.py:63
 #, python-format
 msgid "Transaction synchronized from Xunnel"
 msgstr "Transacción sincronizada desde Xunnel"
@@ -162,6 +155,12 @@ msgstr "Pruebas Xunnel"
 #: model:ir.model.fields,field_description:account_xunnel.field_res_config_settings_xunnel_token
 msgid "Xunnel Token"
 msgstr "Token Xunnel"
+
+#. module: account_xunnel
+#: code:addons/account_xunnel/models/res_company.py:28
+#, python-format
+msgid "You need to define Xunnel Token"
+msgstr "Debes defininir el Token de Xunnel"
 
 #. module: account_xunnel
 #: code:addons/account_xunnel/models/account_config_settings.py:14
