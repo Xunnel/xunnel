@@ -45,17 +45,7 @@ class ResCompany(models.Model):
         return response.json()
 
     @api.multi
-    def cron_get_xunnel_providers(self, provider=None):
-        """Sync all the providers from all companies that have xunnel_provider
-        """
-        for rec in self.search([('xunnel_token', '!=', False)]):
-            status, error = rec.sync_xunnel_providers(provider)
-            if status:
-                _logger.info(
-                    "Error while synchronizing providers: %s", str(error))
-
-    @api.multi
-    def sync_xunnel_providers(self, providers=None):
+    def _sync_xunnel_providers(self, providers=None):
         """Requests https://wwww.xunnel.com/ to retrive all providers
         related to the current company and check them in the database
         to create them if they're not. After sync journals.

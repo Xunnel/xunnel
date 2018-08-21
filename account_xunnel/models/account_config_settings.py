@@ -53,7 +53,7 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_providers(self):
-        status, response = self.company_id.sync_xunnel_providers()
+        status, response = self.company_id._sync_xunnel_providers()
         if not status:
             error = _(
                 "An error has occurred while synchronizing your banks. %s")

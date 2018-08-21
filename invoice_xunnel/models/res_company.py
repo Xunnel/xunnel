@@ -20,14 +20,14 @@ class ResCompany(models.Model):
         default='2018-01-01')
 
     @api.model
-    def cron_xunnel_sync(self):
+    def _cron_xunnel_sync(self):
         """Sync all the attachments from all companies that have xunnel_provider
         """
         for rec in self.search([('xunnel_token', '!=', False)]):
-            rec.sync_xunnel_attachments()
+            rec._sync_xunnel_attachments()
 
     @api.multi
-    def sync_xunnel_attachments(self):
+    def _sync_xunnel_attachments(self):
         """Requests https://wwww.xunnel.com/ to retrive all invoices
         related to the current company and check them in the database
         to create them if they're not. After refresh xunnel_last_sync

@@ -10,7 +10,7 @@
         <field name='numbercall'>-1</field>
         <field name='model_id' ref='account_xunnel.model_res_company'/>
         <field name='state'>code</field>
-        <field name='code'>model.cron_xunnel_sync()</field>
+        <field name='code'>model._cron_xunnel_sync()</field>
     </record>
 </odoo>
 

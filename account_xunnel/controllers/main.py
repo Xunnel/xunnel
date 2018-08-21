@@ -30,4 +30,4 @@ class MainController(Controller):
                 journal.retrieve_transactions(forced_params=journal_data)
         else:
             request.env[
-                'res.company'].sudo().cron_get_xunnel_providers(provider)
+                'res.company'].sudo()._sync_xunnel_providers(provider)

@@ -48,7 +48,7 @@ class TestXunnelAccount(TransactionCase):
 
         old_providers = len(self.env['account.online.provider'].search([]))
         old_journals = len(self.env['account.online.journal'].search([]))
-        self.company.sync_xunnel_providers()
+        self.company._sync_xunnel_providers()
         new_providers = len(self.env['account.online.provider'].search([]))
         new_journals = len(self.env['account.online.journal'].search([]))
         self.assertEquals(new_providers - old_providers, 1)

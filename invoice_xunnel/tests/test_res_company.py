@@ -31,7 +31,7 @@ class TestXunnelAccount(TransactionCase):
             text=attachments_response)
         old_sync = datetime.strptime('2018-01-01', '%Y-%m-%d')
         self.company.xunnel_last_sync = old_sync
-        self.company.sync_xunnel_attachments()
+        self.company._sync_xunnel_attachments()
         last_sync = datetime.strptime(
             self.company.xunnel_last_sync, '%Y-%m-%d')
         self.assertTrue(old_sync < last_sync)
@@ -51,7 +51,7 @@ class TestXunnelAccount(TransactionCase):
         old_sync = '1970-01-01'
         self.company.xunnel_last_sync = old_sync
         with self.assertRaisesRegexp(UserError, 'Expected error for testing'):
-            self.company.sync_xunnel_attachments()
+            self.company._sync_xunnel_attachments()
             final_attachments = attachments.search_count([])
             self.assertEquals(final_attachments - inital_attachments, 3)
         self.assertEquals(old_sync, self.company.xunnel_last_sync)

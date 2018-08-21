@@ -33,4 +33,4 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_attachments(self):
-        self.company_id.sync_xunnel_attachments()
+        self.company_id._sync_xunnel_attachments()

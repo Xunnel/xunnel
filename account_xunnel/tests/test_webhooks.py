@@ -36,7 +36,7 @@ class TestXunnelAccount(TransactionCase):
         providers_old_count = provider_obj.search_count(
             [('company_id', '=', self.company.id)])
         self.assertEqual(providers_old_count, 0)
-        self.company.cron_get_xunnel_providers(account_id)
+        self.company._sync_xunnel_providers(account_id)
         providers_new_count = provider_obj.search_count(
             [('company_id', '=', self.company.id)])
         self.assertEqual(providers_new_count, 2)
