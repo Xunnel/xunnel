@@ -51,7 +51,7 @@ class ResCompany(models.Model):
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             xml_obj = objectify.fromstring(xml)
-            dates.append(xml_obj.get('Fecha', ' ').replace('T', ' '))
+            dates.append(xml_obj.get('Fecha', ' '))
             uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
                 xml_obj).get('UUID')
             name = 'Xunnel_' + uuid
@@ -67,4 +67,4 @@ class ResCompany(models.Model):
                     'index_content': xml,
                     'mimetype': 'text/plain',
                 })
-        self.xunnel_last_sync = sorted(dates, reverse=True)[0]
+        self.xunnel_last_sync = max(dates).replace('T', ' ')
