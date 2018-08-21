@@ -13,8 +13,18 @@ class ProviderAccount(models.Model):
 
     @api.multi
     def retrieve_transactions(self, forced_params=None):
+        self.ensure_one()
         if self.account_online_provider_id.provider_type != 'xunnel':
             return super(ProviderAccount, self).retrieve_transactions()
+        resp_json = self._get_transactions(forced_params)
+        transactions = self._prepare_transactions(resp_json)
+        if not transactions:
+            return 0
+        response = self._process_transactions(transactions)
+        return response
+
+    @api.multi
+    def _get_transactions(self, forced_params):
         params = {
             'id_account': self.online_identifier,
             'id_credential':
@@ -31,41 +41,10 @@ class ProviderAccount(models.Model):
         err = resp.get('error')
         if err:
             raise UserError(err)
-        resp_json = json.loads(resp.get('response'))
-        transactions = self._process_transactions(resp_json)
-        if not transactions:
-            return 0
-        journal = self.journal_ids[0]
-        statement_obj = self.env['account.bank.statement']
-        line_statement_obj = self.env['account.bank.statement.line']
-        response = 0
-        for __, trans in sorted(transactions.items()):
-            response += statement_obj.online_sync_bank_statement(
-                trans, journal)
-            statement = statement_obj.search(
-                [('journal_id', '=', journal.id)],
-                order="id desc", limit=1)
-            starting_balance = line_statement_obj.search([
-                ('statement_id', '=', statement.id),
-                ('online_identifier', '=', False),
-                ('name', '=', _(
-                    'Opening statement: first synchronization')),
-                ], limit=1)
-            if starting_balance:
-                statement.write({'balance_start': starting_balance.amount})
-                starting_balance.unlink()
-                response -= 1
-            last_date = line_statement_obj.search(
-                [('statement_id', '=', statement.id)], limit=1,
-                order='date desc').date
-            statement.date = last_date
-            statement.line_ids.filtered('online_identifier').write({
-                'note': _('Transaction synchronized from Xunnel')})
-        return response
+        return json.loads(resp.get('response'))
 
     @api.multi
-    def _process_transactions(self, resp_json):
-        self.ensure_one()
+    def _prepare_transactions(self, resp_json):
         json_transactions = resp_json['transactions']
         if not self.journal_ids or not json_transactions:
             return False
@@ -110,3 +89,33 @@ class ProviderAccount(models.Model):
             else:
                 transactions.setdefault('transactions', []).append(trans)
         return transactions
+
+    @api.multi
+    def _process_transactions(self, transactions):
+        journal = self.journal_ids[0]
+        statement_obj = self.env['account.bank.statement']
+        line_statement_obj = self.env['account.bank.statement.line']
+        response = 0
+        for __, trans in sorted(transactions.items()):
+            response += statement_obj.online_sync_bank_statement(
+                trans, journal)
+            statement = statement_obj.search(
+                [('journal_id', '=', journal.id)],
+                order="id desc", limit=1)
+            starting_balance = line_statement_obj.search([
+                ('statement_id', '=', statement.id),
+                ('online_identifier', '=', False),
+                ('name', '=', _(
+                    'Opening statement: first synchronization')),
+                ], limit=1)
+            if starting_balance:
+                statement.write({'balance_start': starting_balance.amount})
+                starting_balance.unlink()
+                response -= 1
+            last_date = line_statement_obj.search(
+                [('statement_id', '=', statement.id)], limit=1,
+                order='date desc').date
+            statement.date = last_date
+            statement.line_ids.filtered('online_identifier').write({
+                'note': _('Transaction synchronized from Xunnel')})
+        return response
