@@ -18,7 +18,8 @@
     'data': [
         'views/account_config_settings.xml',
         'views/account_journal.xml',
-        'views/accountant_dashboard.xml'
+        'views/accountant_dashboard.xml',
+        'security/account_xunnel_security.xml',
     ],
     'demo': [
         'demo/res_company.xml',
