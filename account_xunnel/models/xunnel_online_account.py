@@ -34,7 +34,8 @@ class ProviderAccount(models.Model):
             params.update(forced_params)
         elif self.last_sync:
             params.update(
-                dt_transaction_from=mktime(self.last_sync.timetuple()))
+                dt_transaction_from=mktime(datetime.strptime(
+                    self.last_sync, '%Y-%m-%d').timetuple()))
         resp = self.env.user.company_id._xunnel(
             'get_xunnel_transactions', params)
         err = resp.get('error')
@@ -52,10 +53,9 @@ class ProviderAccount(models.Model):
         for transaction in json_transactions:
             date = datetime.fromtimestamp(int(transaction['dt_transaction']))
             trans = {
-                'name': transaction['description'],
-                'online_identifier': transaction['id_transaction'],
-                'date': date.date(),
-                # 'description': transaction['description'],
+                'id': transaction['id_transaction'],
+                'date': date.strftime('%Y-%m-%d'),
+                'description': transaction['description'],
                 'amount': transaction['amount'],
                 'end_amount': resp_json['balance'],
             }
@@ -65,8 +65,8 @@ class ProviderAccount(models.Model):
                 ('amount', '=', trans['amount']),
                 ('online_identifier', '=', False)], limit=2)
             if len(manual_lines) == 1:
-                manual_lines.online_identifier = trans['online_identifier']
-                manual_lines.name += ' - ' + trans['name']
+                manual_lines.online_identifier = trans['id']
+                manual_lines.name += ' - ' + trans['description']
                 continue
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']

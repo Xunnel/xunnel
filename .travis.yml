@@ -22,7 +22,7 @@ env:
   - PHANTOMJS_TESTS="0"
   - LINT_CHECK="0"
   - TESTS="0"
-  - VERSION="12.0"
+  - VERSION="11.0"
   - ODOO_REPO="Vauxoo/odoo"
 
   matrix:
