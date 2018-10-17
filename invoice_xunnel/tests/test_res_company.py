@@ -2,13 +2,13 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import os
-from datetime import datetime
 from json import dumps
+from requests_mock import mock
 
+from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 from odoo.tools import misc
-from requests_mock import mock
 
 
 class TestXunnelAccount(TransactionCase):
@@ -29,11 +29,10 @@ class TestXunnelAccount(TransactionCase):
         request.post(
             '%sget_invoices_sat' % self.url,
             text=attachments_response)
-        old_sync = datetime.strptime('2018-01-01', '%Y-%m-%d')
+        old_sync = fields.Date.to_date('2018-01-01')
         self.company.xunnel_last_sync = old_sync
         self.company._sync_xunnel_attachments()
-        last_sync = datetime.strptime(
-            self.company.xunnel_last_sync, '%Y-%m-%d')
+        last_sync = self.company.xunnel_last_sync
         self.assertTrue(old_sync < last_sync)
 
     @mock()
@@ -54,4 +53,5 @@ class TestXunnelAccount(TransactionCase):
             self.company._sync_xunnel_attachments()
             final_attachments = attachments.search_count([])
             self.assertEquals(final_attachments - inital_attachments, 3)
-        self.assertEquals(old_sync, self.company.xunnel_last_sync)
+        self.assertEquals(
+            old_sync, fields.Date.to_string(self.company.xunnel_last_sync))
