@@ -25,9 +25,10 @@
         <field name="inherit_id" ref="account_online_sync.account_journal_dashboard_inherit_online_sync" />
         <field name="arch" type="xml">
             <xpath expr="//t[starts-with(@t-if, 'record.synchronization_status.value !=')]" position="inside">
-                <div>
+                <div class="mb8">
                     <field name="has_synchronized_xunnel"  invisible="True"/>
-                    <small class="text-danger" attrs="{'invisible': [('has_synchronized_xunnel', '=', True)]}">Online synchronization may duplicate the transactions added manually.</small>
+                    <field name="account_online_journal_id"  invisible="True"/>
+                    <small class="text-danger" attrs="{'invisible': ['|', ('has_synchronized_xunnel', '=', True), ('account_online_journal_id', '=', False)]}">Online synchronization may duplicate the transactions added manually.</small>
                 </div>
             </xpath>
         </field>

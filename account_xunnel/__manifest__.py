@@ -17,9 +17,12 @@
     ],
     'data': [
         'views/account_config_settings.xml',
-        'views/account_journal.xml',
         'views/accountant_dashboard.xml',
         'security/account_xunnel_security.xml',
+        'views/assets.xml',
+    ],
+    'qweb': [
+        'views/account_templates.xml'
     ],
     'demo': [
         'demo/res_company.xml',

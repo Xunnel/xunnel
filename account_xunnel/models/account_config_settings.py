@@ -24,11 +24,12 @@ class AccountConfigSettings(models.TransientModel):
 
     xunnel_token = fields.Char(
         related='company_id.xunnel_token',
-        help="Key-like text for authentication in controllers.")
+        help="Key-like text for authentication in controllers.",
+        readonly=False)
     xunnel_testing = fields.Boolean(
-        help="Use Xunnel server testing?", related='company_id.xunnel_testing')
-    xunnel_succes_message = fields.Text(
-        help="Message for success in the configurations settings")
+        help="Use Xunnel server testing?",
+        related='company_id.xunnel_testing',
+        readonly=False)
 
     @api.model
     def get_values(self):
@@ -58,6 +59,13 @@ class AccountConfigSettings(models.TransientModel):
             error = _(
                 "An error has occurred while synchronizing your banks. %s")
             raise exceptions.UserError(error % response)
-        success = _(
+        message = _(
             "Success! %s banks have been synchronized.") % len(response)
-        self.xunnel_succes_message = success
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'account_xunnel.syncrhonized_accounts',
+            'name': _('Xunnel response.'),
+            'target': 'new',
+            'message': message,
+            'message_class': 'success',
+        }

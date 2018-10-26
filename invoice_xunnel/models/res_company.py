@@ -4,6 +4,7 @@
 import base64
 from codecs import BOM_UTF8
 from time import mktime
+from datetime import date
 
 from lxml import objectify
 from odoo import _, api, fields, models
@@ -17,7 +18,7 @@ class ResCompany(models.Model):
 
     xunnel_last_sync = fields.Date(
         string='Last Sync with Xunnel',
-        default='2018-01-01')
+        default=lambda _: date.today())
 
     @api.model
     def _cron_xunnel_sync(self):
@@ -36,18 +37,21 @@ class ResCompany(models.Model):
         if not self.vat and self.xunnel_token:
             raise UserError(
                 _('You need to define the VAT of your company.'))
-        response = self._xunnel(
-            'get_invoices_sat', dict(
-                last_sync=mktime(
-                    fields.Date.from_string(
-                        self.xunnel_last_sync).timetuple()),
-                vat=self.vat, xunnel_testing=self.xunnel_testing))
+        values = dict(
+            last_sync=False,
+            vat=self.vat,
+            xunnel_testing=self.xunnel_testing)
+        if self.xunnel_last_sync:
+            values.update(last_sync=mktime(
+                self.xunnel_last_sync.timetuple()))
+        response = self._xunnel('get_invoices_sat', values)
         err = response.get('error')
         if err:
             raise UserError(err)
         if response.get('response') is None:
             return True
         dates = []
+        created = 0
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             xml_obj = objectify.fromstring(xml)
@@ -58,6 +62,7 @@ class ResCompany(models.Model):
             attachment = self.env['ir.attachment'].search([
                 ('name', '=', name)])
             if not attachment:
+                created += 1
                 attachment.create({
                     'name': name,
                     'datas_fname': (
@@ -67,4 +72,5 @@ class ResCompany(models.Model):
                     'index_content': xml,
                     'mimetype': 'text/plain',
                 })
-        self.xunnel_last_sync = max(dates).replace('T', ' ')
+        self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
+        return created

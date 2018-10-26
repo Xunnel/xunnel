@@ -16,10 +16,7 @@
                                     <label for="xunnel_token"/>
                                     <field name="xunnel_token"/>
                                     <div class="text-muted" id="xunnel_token_help">User's private token authentication</div>
-                                    <div class="mt16 mb8" attrs="{'invisible':[('xunnel_succes_message', '=', False)]}">
-                                        <field class="text-success" name="xunnel_succes_message" readonly="1" />
-                                    </div>
-                                    <button name="sync_xunnel_providers" class="oe_highlight" type="object">
+                                    <button name="sync_xunnel_providers" class="oe_highlight mt16" type="object">
                                             <i class="fa fa-refresh fa-fw"></i> Synchronize banks &amp; accounts
                                     </button>
                                 </div>
