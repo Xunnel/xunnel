@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- pylint:disable=file-not-used -->
 <template xml:space="preserve">
     <t t-name="account_xunnel.synchronized_accounts">
         <div t-attf-class="alert alert-#{widget.message_class}">
