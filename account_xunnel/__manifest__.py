@@ -20,6 +20,11 @@
         'views/account_journal.xml',
         'views/accountant_dashboard.xml',
         'security/account_xunnel_security.xml',
+        'views/assets.xml',
+    ],
+    'qweb': [
+        'static/src/xml/configurations.xml'
+
     ],
     'demo': [
         'demo/res_company.xml',

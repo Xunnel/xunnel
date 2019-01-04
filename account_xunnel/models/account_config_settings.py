@@ -58,6 +58,13 @@ class AccountConfigSettings(models.TransientModel):
             error = _(
                 "An error has occurred while synchronizing your banks. %s")
             raise exceptions.UserError(error % response)
-        success = _(
-            "Success! %s banks have been synchronized.") % len(response)
-        self.xunnel_succes_message = success
+        message = _(
+            "%s banks have been synchronized.") % len(response)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'account_xunnel.syncrhonized_accounts',
+            'name': _('Xunnel Account success.'),
+            'target': 'new',
+            'message': message,
+            'message_class': 'success',
+        }

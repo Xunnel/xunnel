@@ -24,7 +24,10 @@ class ResCompany(models.Model):
         """Sync all the attachments from all companies that have xunnel_provider
         """
         for rec in self.search([('xunnel_token', '!=', False)]):
-            rec._sync_xunnel_attachments()
+            try:
+                rec._sync_xunnel_attachments()
+            except UserError:
+                continue
 
     @api.multi
     def _sync_xunnel_attachments(self):
@@ -48,6 +51,7 @@ class ResCompany(models.Model):
         if response.get('response') is None:
             return True
         dates = []
+        created = []
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             xml_obj = objectify.fromstring(xml)
@@ -58,7 +62,7 @@ class ResCompany(models.Model):
             attachment = self.env['ir.attachment'].search([
                 ('name', '=', name)])
             if not attachment:
-                attachment.create({
+                created_xml = attachment.create({
                     'name': name,
                     'datas_fname': (
                         name + '.xml'),
@@ -67,4 +71,6 @@ class ResCompany(models.Model):
                     'index_content': xml,
                     'mimetype': 'text/plain',
                 })
+                created.append(created_xml)
         self.xunnel_last_sync = max(dates).replace('T', ' ')
+        return created

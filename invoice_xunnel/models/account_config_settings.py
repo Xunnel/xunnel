@@ -1,7 +1,8 @@
 # Copyright 2018, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from odoo.addons.account_xunnel.models.account_config_settings import \
     assert_xunnel_token
 
@@ -33,4 +34,21 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_attachments(self):
-        self.company_id._sync_xunnel_attachments()
+        try:
+            created_xml = self.company_id._sync_xunnel_attachments()
+            message = _(
+                "%s XML have been downloaded from Xunnel.") % len(created_xml)
+            message_class = 'success'
+        except UserError as ex:
+            error = ex.value or ex.name
+            message = _(
+                "There was an error while downloading your XMLs. %s") % error
+            message_class = 'danger'
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'account_xunnel.syncrhonized_accounts',
+            'name': _('Xunnel Invoice.'),
+            'target': 'new',
+            'message': message,
+            'message_class': message_class,
+        }
