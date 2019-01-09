@@ -39,12 +39,12 @@ class ResCompany(models.Model):
         if not self.vat and self.xunnel_token:
             raise UserError(
                 _('You need to define the VAT of your company.'))
-        response = self._xunnel(
-            'get_invoices_sat', dict(
-                last_sync=mktime(
-                    fields.Date.from_string(
-                        self.xunnel_last_sync).timetuple()),
-                vat=self.vat, xunnel_testing=self.xunnel_testing))
+        params = {'vat': self.vat, 'xunnel_testing': self.xunnel_testing}
+        if self.xunnel_last_sync:
+            params.update(last_sync=mktime(
+                fields.Date.from_string(
+                    self.xunnel_last_sync).timetuple()))
+        response = self._xunnel('get_invoices_sat', params)
         err = response.get('error')
         if err:
             raise UserError(err)
