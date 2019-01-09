@@ -1,9 +1,12 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import logging
 from odoo import http
 from odoo.exceptions import UserError
 from odoo.http import request, Controller
+
+_logger = logging.getLogger(__name__)
 
 
 class MainController(Controller):
@@ -33,5 +36,9 @@ class MainController(Controller):
             try:
                 request.env[
                     'res.company'].sudo()._sync_xunnel_providers(provider)
-            except UserError:
-                pass
+            except UserError as error:
+                message_error = error.name or error.value
+                _logger.error(
+                    _("There was an error while "
+                      "synchronizing your banks: %s."),
+                    message_error)

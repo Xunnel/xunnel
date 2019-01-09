@@ -28,9 +28,6 @@ class XunnelProviderAccount(models.Model):
             }
             if online_journal:
                 online_journal.write(vals)
-                if online_journal.journal_ids:
-                    # previous check to avoid unnecesary requests
-                    online_journal.retrieve_transactions()
             else:
                 online_journal.create(vals)
 
