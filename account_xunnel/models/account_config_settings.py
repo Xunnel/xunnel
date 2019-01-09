@@ -53,18 +53,22 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_providers(self):
-        status, response = self.company_id._sync_xunnel_providers()
-        if not status:
-            error = _(
-                "An error has occurred while synchronizing your banks. %s")
-            raise exceptions.UserError(error % response)
-        message = _(
-            "%s banks have been synchronized.") % len(response)
+        try:
+            response = self.company_id._sync_xunnel_providers()
+            message = _(
+                "%s banks have been synchronized.") % len(response)
+            message_class = 'success'
+        except exceptions.UserError as error:
+            error_message = error.name or error.value
+            message = _(
+                "An error has occurred while"
+                " synchronizing your banks: %s.") % error_message
+            message_class = 'danger'
         return {
             'type': 'ir.actions.client',
             'tag': 'account_xunnel.syncrhonized_accounts',
-            'name': _('Xunnel Account success.'),
+            'name': _('Xunnel Account.'),
             'target': 'new',
             'message': message,
-            'message_class': 'success',
+            'message_class': message_class,
         }

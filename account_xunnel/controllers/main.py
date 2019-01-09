@@ -2,6 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import http
+from odoo.exceptions import UserError
 from odoo.http import request, Controller
 
 
@@ -29,5 +30,8 @@ class MainController(Controller):
                     [('online_identifier', '=', online_identifier)], limit=1)
                 journal.retrieve_transactions(forced_params=journal_data)
         else:
-            request.env[
-                'res.company'].sudo()._sync_xunnel_providers(provider)
+            try:
+                request.env[
+                    'res.company'].sudo()._sync_xunnel_providers(provider)
+            except UserError:
+                pass

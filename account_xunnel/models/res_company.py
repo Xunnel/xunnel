@@ -57,7 +57,7 @@ class ResCompany(models.Model):
         providers_response = self._xunnel('get_xunnel_providers', params)
         error = providers_response.get('error')
         if error:
-            return False, error
+            raise UserError(error)
         all_providers = providers_response.get('response')
         for provider in all_providers:
             provider.update(company_id=self.id, provider_type='xunnel')
@@ -70,4 +70,4 @@ class ResCompany(models.Model):
             else:
                 online_provider = online_provider.create(provider)
             online_provider.sync_journals()
-        return True, all_providers
+        return all_providers
