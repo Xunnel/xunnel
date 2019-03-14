@@ -50,12 +50,12 @@ class ProviderAccount(models.Model):
         journal = self.journal_ids[0]
         transactions = {}
         for transaction in json_transactions:
-            date = datetime.fromtimestamp(int(transaction['dt_transaction']))
+            date = datetime.strptime(
+                transaction['dt_authorization'], '%Y-%m-%d')
             trans = {
                 'name': transaction['description'],
                 'online_identifier': transaction['id_transaction'],
                 'date': date.date(),
-                # 'description': transaction['description'],
                 'amount': transaction['amount'],
                 'end_amount': resp_json['balance'],
             }
@@ -72,7 +72,7 @@ class ProviderAccount(models.Model):
                 trans['location'] = transaction['meta']['location']
             if journal.bank_statement_creation == 'day':
                 transactions.setdefault(
-                    date.strftime('%Y-%m-%d'), []).append(trans)
+                    transaction['dt_authorization'], []).append(trans)
             elif journal.bank_statement_creation == 'week':
                 week = date.isocalendar()[1]
                 transactions.setdefault(week, []).append(trans)
