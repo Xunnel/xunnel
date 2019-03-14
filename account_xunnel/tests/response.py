@@ -7,7 +7,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 1',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1412485200,
+        'dt_authorization': '2014-10-05',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e33',
@@ -44,7 +44,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 2',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1412312400,
+        'dt_authorization': '2014-10-03',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e3c',
@@ -81,7 +81,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 3',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1412226000,
+        'dt_authorization': '2014-10-02',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e45',
@@ -118,7 +118,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 4',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1412139600,
+        'dt_authorization': '2014-10-01',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e4e',
@@ -155,7 +155,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 5',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1398920400,
+        'dt_authorization': '2014-05-01',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e57',
@@ -192,7 +192,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 6',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1398920400,
+        'dt_authorization': '2014-05-01',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e60',
@@ -229,7 +229,7 @@ TRANSACTIONS = [
         'description': 'ACME Checking Transaction 7',
         'id_account': '5a9dcb3d244283f35a8c6e22',
         'dt_disable': None,
-        'dt_transaction': 1413435600,
+        'dt_authorization': '2014-10-16',
         'attachments': [
             {
                 'url': '/attachments/5a9dcb3d244283f35a8c6e61',
