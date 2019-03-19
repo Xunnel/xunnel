@@ -7,6 +7,7 @@ from time import mktime
 from datetime import date
 
 from lxml import objectify
+from lxml.etree import XMLSyntaxError
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -51,11 +52,17 @@ class ResCompany(models.Model):
         if response.get('response') is None:
             return True
         dates = []
-        created = 0
+        created = failed = 0
+        folder_id = self.env.ref('documents.documents_finance_folder')
+        tag_id = self.env.ref('invoice_xunnel.xunnel_xml_tag')
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
-            xml_obj = objectify.fromstring(xml)
-            dates.append(xml_obj.get('Fecha', ' '))
+            try:
+                xml_obj = objectify.fromstring(xml)
+            except XMLSyntaxError:
+                failed += 1
+                continue
+            dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
             uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
                 xml_obj).get('UUID')
             name = 'Xunnel_' + uuid
@@ -71,6 +78,11 @@ class ResCompany(models.Model):
                     'datas': base64.encodestring(bytes(xml)),
                     'index_content': xml,
                     'mimetype': 'text/plain',
+                    'folder_id': folder_id.id,
+                    'tag_ids': [(6, 0, tag_id.ids)],
                 })
         self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
-        return created
+        return {
+            'created': created,
+            'failed': failed,
+        }

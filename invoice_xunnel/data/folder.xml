@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="xunnel_xml_facet" model="documents.facet">
+        <field name="name">Xunnel</field>
+        <field name="sequence">1</field>
+        <field name="folder_id" ref="documents.documents_finance_folder"/>
+    </record>
+    <record id="xunnel_xml_tag" model="documents.tag">
+        <field name="name">Xunnel</field>
+        <field name="facet_id" ref="invoice_xunnel.xunnel_xml_facet"/>
+        <field name="sequence">99</field>
+    </record>
+    <record id="xml_folder_xml_to_invoice" model="documents.workflow.rule">
+        <field name="name">Convert to invoice(s)</field>
+        <field name="create_model">xunnel.invoice</field>
+        <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
+    </record>
+</odoo>

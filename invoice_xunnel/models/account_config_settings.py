@@ -36,13 +36,19 @@ class AccountConfigSettings(models.TransientModel):
     @assert_xunnel_token
     def sync_xunnel_attachments(self):
         result = self.company_id._sync_xunnel_attachments()
+        message_class = 'success'
         message = _(
-            "Success! %s xml have been downloaded.") % result
+            "%s xml have been downloaded.") % result.get('created')
+        failed = result.get('failed')
+        if failed:
+            message_class = 'warning'
+            message += _(
+                " Also %s files have failed at the conversion.") % failed
         return {
             'type': 'ir.actions.client',
             'tag': 'account_xunnel.syncrhonized_accounts',
             'name': _('Xunnel invoice response.'),
             'target': 'new',
             'message': message,
-            'message_class': 'success',
+            'message_class': message_class
         }

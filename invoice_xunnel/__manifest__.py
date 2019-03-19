@@ -13,11 +13,14 @@
     'license': 'LGPL-3',
     'depends': [
         'account_xunnel',
+        'documents',
         'l10n_mx_edi_vendor_bills',
     ],
     'data': [
         'data/ir_cron.xml',
+        'data/folder.xml',
         'views/account_config_settings.xml',
+        'views/assets.xml',
     ],
     'demo': [
         'demo/res_company.xml',
