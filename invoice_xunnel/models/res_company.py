@@ -6,6 +6,7 @@ from codecs import BOM_UTF8
 from time import mktime
 
 from lxml import objectify
+from lxml.etree import XMLSyntaxError
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -39,7 +40,11 @@ class ResCompany(models.Model):
         if not self.vat and self.xunnel_token:
             raise UserError(
                 _('You need to define the VAT of your company.'))
-        params = {'vat': self.vat, 'xunnel_testing': self.xunnel_testing}
+        params = {
+            'vat': self.vat,
+            'xunnel_testing': self.xunnel_testing,
+            'last_sync': False
+        }
         if self.xunnel_last_sync:
             params.update(last_sync=mktime(
                 fields.Date.from_string(
@@ -51,18 +56,22 @@ class ResCompany(models.Model):
         if response.get('response') is None:
             return True
         dates = []
-        created = []
+        created = failed = 0
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
-            xml_obj = objectify.fromstring(xml)
-            dates.append(xml_obj.get('Fecha', ' '))
+            try:
+                xml_obj = objectify.fromstring(xml)
+            except XMLSyntaxError:
+                failed += 1
+                continue
+            dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
             uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
                 xml_obj).get('UUID')
             name = 'Xunnel_' + uuid
             attachment = self.env['ir.attachment'].search([
                 ('name', '=', name)])
             if not attachment:
-                created_xml = attachment.create({
+                attachment.create({
                     'name': name,
                     'datas_fname': (
                         name + '.xml'),
@@ -71,6 +80,9 @@ class ResCompany(models.Model):
                     'index_content': xml,
                     'mimetype': 'text/plain',
                 })
-                created.append(created_xml)
-        self.xunnel_last_sync = max(dates).replace('T', ' ')
-        return created
+                created += 1
+        self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
+        return {
+            'created': created,
+            'failed': failed
+        }
