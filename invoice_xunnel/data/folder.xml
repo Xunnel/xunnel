@@ -5,8 +5,13 @@
         <field name="sequence">1</field>
         <field name="folder_id" ref="documents.documents_finance_folder"/>
     </record>
-    <record id="xunnel_xml_tag" model="documents.tag">
-        <field name="name">Xunnel</field>
+    <record id="without_invoice" model="documents.tag">
+        <field name="name">Without Invoice</field>
+        <field name="facet_id" ref="invoice_xunnel.xunnel_xml_facet"/>
+        <field name="sequence">98</field>
+    </record>
+    <record id="with_invoice" model="documents.tag">
+        <field name="name">With Invoice</field>
         <field name="facet_id" ref="invoice_xunnel.xunnel_xml_facet"/>
         <field name="sequence">99</field>
     </record>

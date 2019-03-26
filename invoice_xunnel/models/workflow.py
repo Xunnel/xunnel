@@ -25,5 +25,6 @@ class WorkflowActionRuleAccountInherit(models.Model):
             'context': {
                 'file_names': dumps(files),
                 'autofill_enable': True,
+                'l10n_mx_edi_invoice_type': 'in',
             }
         }

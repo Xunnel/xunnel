@@ -54,7 +54,7 @@ class ResCompany(models.Model):
         dates = []
         created = failed = 0
         folder_id = self.env.ref('documents.documents_finance_folder')
-        tag_id = self.env.ref('invoice_xunnel.xunnel_xml_tag')
+        tag_id = self.env.ref('invoice_xunnel.without_invoice')
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             try:
