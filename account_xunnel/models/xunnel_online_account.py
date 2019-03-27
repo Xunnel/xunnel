@@ -54,6 +54,7 @@ class ProviderAccount(models.Model):
                 transaction['dt_authorization'], '%Y-%m-%d')
             trans = {
                 'name': transaction['description'],
+                'ref': transaction['reference'],
                 'online_identifier': transaction['id_transaction'],
                 'date': date.date(),
                 'amount': transaction['amount'],
