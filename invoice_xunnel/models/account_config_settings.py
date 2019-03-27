@@ -1,7 +1,7 @@
 # Copyright 2018, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.addons.account_xunnel.models.account_config_settings import \
     assert_xunnel_token
 
@@ -35,20 +35,4 @@ class AccountConfigSettings(models.TransientModel):
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_attachments(self):
-        result = self.company_id._sync_xunnel_attachments()
-        message_class = 'success'
-        message = _(
-            "%s xml have been downloaded.") % result.get('created')
-        failed = result.get('failed')
-        if failed:
-            message_class = 'warning'
-            message += _(
-                " Also %s files have failed at the conversion.") % failed
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'account_xunnel.syncrhonized_accounts',
-            'name': _('Xunnel invoice response.'),
-            'target': 'new',
-            'message': message,
-            'message_class': message_class
-        }
+        return self.company_id.get_xml_sync_action()

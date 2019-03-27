@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-11 16:26+0000\n"
-"PO-Revision-Date: 2018-12-11 16:26+0000\n"
+"POT-Creation-Date: 2019-03-27 17:31+0000\n"
+"PO-Revision-Date: 2019-03-27 17:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,26 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: invoice_xunnel
+#: code:addons/invoice_xunnel/models/res_company.py:99
+#, python-format
+msgid " Also %s files have failed at the conversion."
+msgstr " Además %s archivos an fallado al convertirse."
+
+#. module: invoice_xunnel
+#: code:addons/invoice_xunnel/models/res_company.py:94
+#, python-format
+msgid "%s xml have been downloaded."
+msgstr "%s xml han sido descargados."
+
+#. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
 msgid "<i class=\"fa fa-refresh fa-fw\"/> Sync attachments"
 msgstr "<i class=\"fa fa-refresh fa-fw\"/> Sincronizar adjuntos"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_attachments_wizard_view
+msgid "Cancel"
+msgstr "Cancelar"
 
 #. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_res_company
@@ -26,13 +43,34 @@ msgid "Companies"
 msgstr "Compañías"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_attachments_wizard__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_res_config_settings
 msgid "Config Settings"
 msgstr "Opciones de Configuración"
 
 #. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_attachments_wizard_view
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: invoice_xunnel
+#: model:documents.workflow.rule,name:invoice_xunnel.xml_folder_xml_to_invoice
+msgid "Convert to invoice(s)"
+msgstr "Convertir a facuta(s)"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_attachments_wizard____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_res_company__xunnel_last_sync
 #: model:ir.model.fields,field_description:invoice_xunnel.field_res_config_settings__xunnel_last_sync
+#: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_attachments_wizard__date_from
 msgid "Last Sync with Xunnel"
 msgstr "Última sincronización con Xunnel"
 
@@ -42,12 +80,17 @@ msgid "SAT's invoices older than this date won't be fetched."
 msgstr "Facturas del SAT anteriores a esta fecha no serán recuperadas."
 
 #. module: invoice_xunnel
-#: code:addons/invoice_xunnel/models/account_config_settings.py:39
-#, python-format
-msgid "Success! %s xml have been downloaded."
-msgstr "Exito! %s xml han sido descargados."
+#: model:documents.tag,name:invoice_xunnel.with_invoice
+msgid "With Invoice"
+msgstr "Con factura"
 
 #. module: invoice_xunnel
+#: model:documents.tag,name:invoice_xunnel.without_invoice
+msgid "Without Invoice"
+msgstr "Sin factura"
+
+#. module: invoice_xunnel
+#: selection:documents.workflow.rule,create_model:0
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
 msgid "Xunnel Invoice"
 msgstr "Facturas Xunnel"
@@ -60,14 +103,25 @@ msgid "Xunnel Invoice - Sync"
 msgstr "Facturas Xunnel - Sincronización"
 
 #. module: invoice_xunnel
-#: code:addons/invoice_xunnel/models/account_config_settings.py:44
+#: model:ir.actions.act_window,name:invoice_xunnel.action_product_confirm_wizard
+msgid "Xunnel XML synchronization"
+msgstr "Xunnel sincronización de XML"
+
+#. module: invoice_xunnel
+#: code:addons/invoice_xunnel/models/res_company.py:104
 #, python-format
 msgid "Xunnel invoice response."
 msgstr "Respuesta de factura Xunnel."
 
 #. module: invoice_xunnel
-#: code:addons/invoice_xunnel/models/res_company.py:39
+#. openerp-web
+#: code:addons/invoice_xunnel/static/src/xml/templates.xml:5
+#, python-format
+msgid "Xunnel sync"
+msgstr "Xunnel sync"
+
+#. module: invoice_xunnel
+#: code:addons/invoice_xunnel/models/res_company.py:40
 #, python-format
 msgid "You need to define the VAT of your company."
 msgstr "Necesitas definir un RFC a tu compañía."
-

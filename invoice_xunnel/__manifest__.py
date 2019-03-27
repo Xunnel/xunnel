@@ -21,9 +21,13 @@
         'data/folder.xml',
         'views/account_config_settings.xml',
         'views/assets.xml',
+        'wizards/attachments.xml',
     ],
     'demo': [
         'demo/res_company.xml',
+    ],
+    'qweb': [
+        'static/src/xml/templates.xml'
     ],
     'installable': True,
 }
