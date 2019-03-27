@@ -78,7 +78,7 @@ class ResCompany(models.Model):
                     'type': 'binary',
                     'datas': base64.encodestring(bytes(xml)),
                     'index_content': xml,
-                    'mimetype': 'text/plain',
+                    'mimetype': 'application/xml',
                 })
                 created += 1
         self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
