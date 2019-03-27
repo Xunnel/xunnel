@@ -11,14 +11,20 @@ class AttachXmlsWizard(models.TransientModel):
         if not self.env.context.get('autofill_enable'):
             return response
         attachment_obj = self.env['ir.attachment']
+        invoice_obj = self.env['account.invoice']
         tag_id = self.env.ref('invoice_xunnel.with_invoice')
-        for invoice in response.get('invoices'):
+        invoice_files = response.get('invoices')
+        for invoice_file in invoice_files:
+            invoice_data = invoice_files[invoice_file]
+            invoice_id = invoice_data.get('invoice_id', False)
+            invoice = invoice_obj.browse(invoice_id)
             attachment = attachment_obj.search(
-                [('res_id', '=', invoice.id),
-                 ('res_model', '=', 'account.invoice')], limit=1)
+                [('name', '=', invoice_file)], limit=1)
             if not attachment:
                 continue
             attachment.write({
-                'tag_ids': [(6, None, tag_id.ids)]
+                'tag_ids': [(6, None, tag_id.ids)],
+                'res_id': invoice.id,
+                'res_model': 'account.invoice',
             })
         return response
