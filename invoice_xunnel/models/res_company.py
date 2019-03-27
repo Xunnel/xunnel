@@ -77,7 +77,7 @@ class ResCompany(models.Model):
                     'type': 'binary',
                     'datas': base64.encodestring(bytes(xml)),
                     'index_content': xml,
-                    'mimetype': 'text/plain',
+                    'mimetype': 'application/xml',
                     'folder_id': folder_id.id,
                     'tag_ids': [(6, 0, tag_id.ids)],
                 })
