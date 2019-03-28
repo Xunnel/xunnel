@@ -65,15 +65,14 @@ class ResCompany(models.Model):
             dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
             uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
                 xml_obj).get('UUID')
-            name = 'Xunnel_' + uuid
             attachment = self.env['ir.attachment'].search([
-                ('name', '=', name)])
+                ('name', '=', uuid)])
             if not attachment:
                 created += 1
                 attachment.create({
-                    'name': name,
+                    'name': uuid,
                     'datas_fname': (
-                        name + '.xml'),
+                        uuid + '.xml'),
                     'type': 'binary',
                     'datas': base64.encodestring(bytes(xml)),
                     'index_content': xml,
