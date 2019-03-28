@@ -16,6 +16,8 @@ class IrAttachment(models.Model):
         required=True,
         string="emitter")
     xunnel_attachment = fields.Boolean()
+    invoice_total_amount = fields.Float(
+        compute="_compute_emitter_partner_id")
 
     @api.multi
     @api.depends('datas')
@@ -31,7 +33,8 @@ class IrAttachment(models.Model):
                 ('vat', '=', rfc), '|',
                 ('supplier', '=', True), ('customer', '=', True)
             ], limit=1)
-            rec.emitter_partner_id = partner.id
+            rec.emitter_partner_id = partner.id,
+            rec.invoice_total_amount = xml.get('Total')
 
     @api.multi
     def get_xml_object(self, xml):

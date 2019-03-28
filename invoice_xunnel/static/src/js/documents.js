@@ -13,6 +13,10 @@ odoo.define('invoice_xunnel.documents', (require) => {
                         label: 'Emitter',
                         icon: 'fa fa-user-circle o_documents_folder_color'
                     });
+                    this._renderField('invoice_total_amount', {
+                        label: 'Total',
+                        icon: 'fa fa-usd o_documents_tag_color'
+                    });
                 }
             }
         }
