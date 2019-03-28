@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="xunnel_xml_facet" model="documents.facet">
-        <field name="name">Xunnel</field>
+        <field name="name">SAT</field>
         <field name="sequence">1</field>
         <field name="folder_id" ref="documents.documents_finance_folder"/>
     </record>
