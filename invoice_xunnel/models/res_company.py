@@ -71,6 +71,7 @@ class ResCompany(models.Model):
                 created += 1
                 attachment.create({
                     'name': uuid,
+                    'xunnel_attachment': True,
                     'datas_fname': (
                         uuid + '.xml'),
                     'type': 'binary',

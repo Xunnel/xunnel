@@ -4,3 +4,4 @@
 from . import account_config_settings
 from . import res_company
 from . import workflow
+from . import ir_attachment

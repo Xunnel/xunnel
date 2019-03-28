@@ -8,7 +8,6 @@ odoo.define('invoice_xunnel.xunnel_sync', (require) => {
             this._super.apply(this, arguments);
             if (this.$buttons) {
                 this.$buttons.find('.o_button_xunnel_sync').click(() => {
-                    console.log('xd');
                     this.do_action({
                         type: 'ir.actions.act_window',
                         res_model: 'xunnel.attachments.wizard',
