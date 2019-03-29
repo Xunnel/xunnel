@@ -12,7 +12,8 @@ class AttachXmlsWizard(models.TransientModel):
             return response
         attachment_obj = self.env['ir.attachment']
         invoice_obj = self.env['account.invoice']
-        tag_id = self.env.ref('invoice_xunnel.with_invoice')
+        invoice_tag = self.env.ref('invoice_xunnel.with_invoice')
+        no_invoice_tag = self.env.ref('invoice_xunnel.without_invoice')
         invoice_files = response.get('invoices')
         for invoice_file in invoice_files:
             invoice_data = invoice_files[invoice_file]
@@ -23,7 +24,7 @@ class AttachXmlsWizard(models.TransientModel):
             if not attachment:
                 continue
             attachment.write({
-                'tag_ids': [(6, None, tag_id.ids)],
+                'tag_ids': [(3, no_invoice_tag.id, None), (4, invoice_tag.id)],
                 'res_id': invoice.id,
                 'res_model': 'account.invoice',
             })

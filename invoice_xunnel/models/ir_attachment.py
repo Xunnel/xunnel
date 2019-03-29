@@ -1,6 +1,6 @@
 
 from odoo import models, fields, api
-from lxml import etree, objectify
+from lxml import objectify
 import base64
 import logging
 

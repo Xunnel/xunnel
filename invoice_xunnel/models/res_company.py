@@ -62,6 +62,8 @@ class ResCompany(models.Model):
             except XMLSyntaxError:
                 failed += 1
                 continue
+            xml_type = xml_obj.get('TipoDeComprobante', False)
+            tags_type = self.get_tag_map(xml_type) | tag_id
             dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
             uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
                 xml_obj).get('UUID')
@@ -79,7 +81,7 @@ class ResCompany(models.Model):
                     'index_content': xml,
                     'mimetype': 'application/xml',
                     'folder_id': folder_id.id,
-                    'tag_ids': [(6, 0, tag_id.ids)],
+                    'tag_ids': [(6, 0, tags_type.ids)],
                 })
         self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
         return {
@@ -106,3 +108,14 @@ class ResCompany(models.Model):
             'message': message,
             'message_class': message_class
         }
+
+    def get_tag_map(self, key):
+        default = self.env['documents.tag']
+        values = {
+            'I': self.env.ref('invoice_xunnel.ingreso_tag'),
+            'E': self.env.ref('invoice_xunnel.egreso_tag'),
+            'T': self.env.ref('invoice_xunnel.translado_tag'),
+            'P': self.env.ref('invoice_xunnel.reception_tag'),
+            'N': self.env.ref('invoice_xunnel.nomina_tag'),
+        }
+        return values.get(key, default)
