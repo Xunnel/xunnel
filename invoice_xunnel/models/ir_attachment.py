@@ -33,7 +33,7 @@ class IrAttachment(models.Model):
                 ('vat', '=', rfc), '|',
                 ('supplier', '=', True), ('customer', '=', True)
             ], limit=1)
-            rec.emitter_partner_id = partner.id,
+            rec.emitter_partner_id = partner.id
             rec.invoice_total_amount = xml.get('Total')
 
     @api.multi

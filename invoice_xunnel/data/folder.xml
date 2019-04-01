@@ -31,7 +31,7 @@
         <field name="sequence">101</field>
     </record>
     <record id="nomina_tag" model="documents.tag">
-        <field name="name">Roster</field>
+        <field name="name">Payroll</field>
         <field name="facet_id" ref="invoice_xunnel.xunnel_xml_facet"/>
         <field name="sequence">102</field>
     </record>

@@ -21,6 +21,7 @@
         'data/folder.xml',
         'views/account_config_settings.xml',
         'views/assets.xml',
+        'views/documents.xml',
         'wizards/attachments.xml',
     ],
     'demo': [

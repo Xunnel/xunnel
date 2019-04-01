@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="documents_view_kanban">
+        <field name="name">ir.attachment kanban</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="documents.documents_view_kanban"/>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban/templates//t[@t-set='binaryPreviewable']" position="replace">
+                <t t-set="binaryPreviewable"
+                    t-value="new RegExp('(image|video|application/pdf|application/xml|text)').test(record.mimetype.value) &amp;&amp; record.type.raw_value === 'binary'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
