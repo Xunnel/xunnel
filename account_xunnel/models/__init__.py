@@ -6,3 +6,4 @@ from . import res_company
 from . import xunnel_provider_account
 from . import xunnel_online_account
 from . import xunnel_account
+from . import account_bank_statement_line

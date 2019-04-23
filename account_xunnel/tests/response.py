@@ -6,6 +6,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 1',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-10-05',
         'attachments': [
@@ -43,6 +44,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 2',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-10-03',
         'attachments': [
@@ -80,6 +82,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 3',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-10-02',
         'attachments': [
@@ -117,6 +120,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 4',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-10-01',
         'attachments': [
@@ -154,6 +158,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 5',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-05-01',
         'attachments': [
@@ -191,6 +196,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 6',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-05-01',
         'attachments': [
@@ -228,6 +234,7 @@ TRANSACTIONS = [
         'dt_refresh': 1520290621,
         'description': 'ACME Checking Transaction 7',
         'id_account': '5a9dcb3d244283f35a8c6e22',
+        'card_number': '',
         'dt_disable': None,
         'dt_authorization': '2014-10-16',
         'attachments': [

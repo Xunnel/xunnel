@@ -59,6 +59,7 @@ class ProviderAccount(models.Model):
                 'date': date.date(),
                 'amount': transaction['amount'],
                 'end_amount': resp_json['balance'],
+                'card_number': transaction['card_number'],
             }
             manual_lines = self.env['account.bank.statement.line'].search([
                 ('journal_id', '=', journal.id),
