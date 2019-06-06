@@ -17,7 +17,6 @@
         'l10n_mx_edi_vendor_bills',
     ],
     'data': [
-        'data/ir_cron.xml',
         'data/folder.xml',
         'views/account_config_settings.xml',
         'views/assets.xml',

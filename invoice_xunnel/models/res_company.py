@@ -21,13 +21,6 @@ class ResCompany(models.Model):
         string='Last Sync with Xunnel',
         default=lambda _: date.today())
 
-    @api.model
-    def _cron_xunnel_sync(self):
-        """Sync all the attachments from all companies that have xunnel_provider
-        """
-        for rec in self.search([('xunnel_token', '!=', False)]):
-            rec._sync_xunnel_attachments()
-
     @api.multi
     def _sync_xunnel_attachments(self):
         """Requests https://wwww.xunnel.com/ to retrive all invoices
