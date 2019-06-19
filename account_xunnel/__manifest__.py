@@ -21,6 +21,7 @@
         'views/accountant_dashboard.xml',
         'security/account_xunnel_security.xml',
         'views/assets.xml',
+        'wizards/change_date.xml',
     ],
     'qweb': [
         'static/src/xml/configurations.xml'
