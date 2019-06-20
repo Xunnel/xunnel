@@ -6,7 +6,7 @@
     'summary': '''
         Use Xunnel Bank to retrieve bank statements.
     ''',
-    'version': '12.0.1.0.37',
+    'version': '12.0.1.0.38',
     'author': 'Jarsa Sistemas,Vauxoo',
     'category': 'Accounting',
     'website': 'http://www.jarsa.com.mx',
