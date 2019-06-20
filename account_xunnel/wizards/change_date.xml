@@ -5,7 +5,7 @@
         <field name="model">wizard.change.date</field>
         <field name="arch" type="xml">
             <form string="Import Bank Statements">
-                <h2>Select a bank statement file to import</h2>
+                <h2>Select a date to start syncing</h2>
                 <p>Only de statements after the date specified will be fetched at the synchronization</p>
                 <field name="sync_date" />
                 <footer>
