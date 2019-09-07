@@ -6,7 +6,7 @@
     'summary': '''
         Use Xunnel Invoice to retrieve invoices from SAT.
     ''',
-    'version': '12.0.1.0.38',
+    'version': '12.0.1.0.39',
     'author': 'Jarsa Sistemas,Vauxoo',
     'category': 'Accounting',
     'website': 'http://www.jarsa.com.mx',
