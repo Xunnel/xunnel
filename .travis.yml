@@ -19,24 +19,24 @@ python:
 
 env:
   global:
-  - PHANTOMJS_TESTS="0"
   - LINT_CHECK="0"
   - TESTS="0"
-  - VERSION="11.0"
-  - ODOO_REPO="Vauxoo/odoo"
 
   matrix:
   - LINT_CHECK="1"
   - TESTS="1"
 
 install:
+  - source ${TRAVIS_BUILD_DIR}/variables.sh
   - git clone --single-branch --depth=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
 
 script:
+  - source ${TRAVIS_BUILD_DIR}/variables.sh
   - pip3 install requests_mock
   - travis_run_tests
 
 after_success:
+  - source ${TRAVIS_BUILD_DIR}/variables.sh
   - travis_after_tests_success

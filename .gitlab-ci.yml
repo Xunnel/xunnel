@@ -4,15 +4,6 @@ stages:
   - build
   - upload_image
 
-variables:
-    PSQL_VERSION: "9.5"
-    VERSION: "11.0"
-    ODOO_REPO: "vauxoo/odoo"
-    ODOO_BRANCH: "11.0"
-    CUSTOMER: "vauxoo"
-    BASE_IMAGE: "vauxoo/odoo-110-image"
-    TRAVIS_PYTHON_VERSION: "3.5"
-
 lint:
   stage: test
   tags:
@@ -21,6 +12,7 @@ lint:
     LINT_CHECK: "1"
     TESTS: "0"
   script:
+    - source variables.sh
     - sudo apt-get update && sudo apt-get install -y dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
@@ -39,6 +31,7 @@ test:
     LINT_CHECK: "0"
     TESTS: "1"
   script:
+    - source variables.sh
     - pip3 install requests_mock
     - apt-get update && apt-get install -y tree dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
@@ -67,6 +60,7 @@ nodemo:
     OPTIONS: "--without-demo=all"
     INSTALL_OPTIONS: "--without-demo=all"
   script:
+    - source variables.sh
     - pip3 install requests_mock
     - apt-get update && apt-get install -y tree dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
@@ -87,6 +81,7 @@ build:
     INSTALL: "account_xunnel"
     CUSTOMER: "account_xunnel"
   script:
+    - source variables.sh
     - deployvcmd gitlab_tools check_keys
     - deployvcmd gitlab_tools test_images --psql_image='vauxoo/docker-postgresql:9.6-ci' --push_image
 
@@ -99,6 +94,7 @@ bump:
     - odoo
     - test
   script:
+    - source variables.sh
     - |
       case "$CI_COMMIT_MESSAGE" in
         *Bump*)
@@ -123,6 +119,7 @@ publish_coverage:
   dependencies:
     - test
   script:
+    - source variables.sh
     - deployvcmd gitlab_tools push_coverage
 
   environment:

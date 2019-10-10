@@ -1,0 +1,8 @@
+export PSQL_VERSION="9.5"
+export VERSION="11.0"
+export TRAVIS_PYTHON_VERSION="3.5"
+export ODOO_REPO="vauxoo/odoo"
+export ODOO_BRANCH="11.0"
+export BASE_IMAGE="vauxoo/odoo-110-image"
+export MAIN_APP="invoice_xunnel"
+export PHANTOMJS_TESTS="0"
