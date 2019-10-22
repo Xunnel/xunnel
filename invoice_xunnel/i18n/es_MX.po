@@ -63,6 +63,31 @@ msgid "Convert to invoice(s)"
 msgstr "Convertir a facuta(s)"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_ir_attachment__emitter_partner_id
+msgid "Emitter"
+msgstr "Emisor"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_ir_attachment__emitter_partner_id
+msgid "In case this is a CFDI file, stores emitter's name."
+msgstr "En el caso de que sea un CFDI, almacena el nombre del emisor."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_ir_attachment__stamp_date
+msgid "In case this is a CFDI file, stores invoice's stamp date."
+msgstr "En el caso de que sea un CFDI, almacena la fecha de timbrado de la factura."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_ir_attachment__invoice_total_amount
+msgid "In case this is a CFDI file, stores invoice's total amount."
+msgstr "En el caso de que sea un CFDI, almacena la cantidad total de la factura."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_ir_attachment__invoice_total_amount
+msgid "Invoice Total Amount"
+msgstr "Cantidad total de la factura"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_attachments_wizard____last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
@@ -78,6 +103,21 @@ msgstr "Última sincronización con Xunnel"
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
 msgid "SAT's invoices older than this date won't be fetched."
 msgstr "Facturas del SAT anteriores a esta fecha no serán recuperadas."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_ir_attachment__xunnel_attachment
+msgid "Specify if this is a XUNNEL attachment."
+msgstr "Especifica si es un anexo de XUNNEL"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_ir_attachment__stamp_date
+msgid "Stamp Date"
+msgstr "Fecha de Timbrado"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
+msgid "Total amount: $"
+msgstr "Cantidad total: $"
 
 #. module: invoice_xunnel
 #: model:documents.tag,name:invoice_xunnel.with_invoice
