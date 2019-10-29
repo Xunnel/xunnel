@@ -25,7 +25,8 @@ class IrAttachment(models.Model):
         store=True)
     stamp_date = fields.Datetime(
         compute="_compute_emitter_partner_id",
-        help="In case this is a CFDI file, stores invoice's stamp date.")
+        help="In case this is a CFDI file, stores invoice's stamp date.",
+        store=True)
 
     @api.multi
     @api.depends('datas')

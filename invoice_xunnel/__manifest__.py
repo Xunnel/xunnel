@@ -21,6 +21,7 @@
         'views/account_config_settings.xml',
         'views/assets.xml',
         'views/documents.xml',
+        'views/ir_attachment_views.xml',
         'wizards/attachments.xml',
     ],
     'demo': [
