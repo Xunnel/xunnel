@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="account_account_attachments" model="account.account">
+        <field name="name">Demo Bank Attachments Account</field>
+        <field name="code">101598</field>
+        <field name="user_type_id" ref="account.data_account_type_liquidity"></field>
+    </record>
+    <record id="account_account_webhooks" model="account.account">
+        <field name="name">Demo Bank Webhooks Account</field>
+        <field name="code">101599</field>
+        <field name="user_type_id" ref="account.data_account_type_liquidity"></field>
+    </record>
     <record id="account_journal_attachments" model="account.journal">
         <field name="name">Demo bank attachments</field>
         <field name="code">TESTB</field>
@@ -7,6 +17,8 @@
         <field name="company_id" ref="base.main_company"/>
         <field name="account_online_journal_id" ref="account_xunnel.online_journal_attachments"/>
         <field name="account_online_provider_id" ref="account_xunnel.online_provider_attachments"/>
+        <field name="default_debit_account_id" ref="account_xunnel.account_account_attachments"/>
+        <field name="default_credit_account_id" ref="account_xunnel.account_account_attachments"/>
         <field name="bank_statements_source">online_sync</field>
     </record>
     <record id="account_journal_webhooks" model="account.journal">
@@ -16,6 +28,8 @@
         <field name="company_id" ref="base.main_company"/>
         <field name="account_online_journal_id" ref="account_xunnel.online_journal_webhooks"/>
         <field name="account_online_provider_id" ref="account_xunnel.online_provider_webhooks"/>
+        <field name="default_debit_account_id" ref="account_xunnel.account_account_webhooks"/>
+        <field name="default_credit_account_id" ref="account_xunnel.account_account_webhooks"/>
         <field name="bank_statements_source">online_sync</field>
     </record>
 </odoo>

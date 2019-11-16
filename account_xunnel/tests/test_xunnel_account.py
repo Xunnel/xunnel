@@ -14,6 +14,12 @@ class TestXunnelAccount(TransactionCase):
         self.url = "https://ci.xunnel.com/"
         self.journal = self.env.ref(
             'account_xunnel.account_journal_attachments')
+        self.account = self.env['account.account'].create({
+            'name': 'Test Bank Attachments Account',
+            'code': 'X101598',
+            'user_type_id':  self.env.ref(
+                "account.data_account_type_liquidity").id,
+        })
 
     @mock()
     def test_01_retrieve_transactions_last_sync(self, request):

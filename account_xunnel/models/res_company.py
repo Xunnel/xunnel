@@ -2,7 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from json import dumps
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 import logging
 import requests
@@ -17,7 +17,6 @@ class ResCompany(models.Model):
     xunnel_token = fields.Char()
     xunnel_testing = fields.Boolean()
 
-    @api.multi
     def _xunnel(self, endpoint, payload=None):
         """_xunnel calls xunnel.com and returns it response.
             if is there any an exception. The error message within the API
@@ -44,7 +43,6 @@ class ResCompany(models.Model):
             raise UserError(error)
         return response.json()
 
-    @api.multi
     def _sync_xunnel_providers(self, providers=None):
         """Requests https://wwww.xunnel.com/ to retrive all providers
         related to the current company and check them in the database

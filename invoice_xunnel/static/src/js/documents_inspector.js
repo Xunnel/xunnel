@@ -1,12 +1,13 @@
-odoo.define('invoice_xunnel.documents', (require) => {
+odoo.define('invoice_xunnel.DocumentsInspector', function( require ) {
 
-    const DocumentsInspector = require('documents.DocumentsInspector');
+    var DocumentsInspector = require('documents.DocumentsInspector');
 
     DocumentsInspector.include({
-        _renderFields(){
+        _renderFields: function() {
             this._super();
-            const only_xunnel = this.records.filter(
-                    (record) => record.data.xunnel_attachment);
+            var only_xunnel = this.records.filter( function ( record ) { 
+                return record.data.xunnel_document;
+            });
             if(only_xunnel.length === 1){
                 this._renderField('emitter_partner_id', {
                     label: 'Emitter',
@@ -18,5 +19,5 @@ odoo.define('invoice_xunnel.documents', (require) => {
                 });
             }
         }
-    })
+    });
 });

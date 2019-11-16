@@ -4,14 +4,13 @@
 import json
 from datetime import datetime
 from time import mktime
-from odoo import api, models, _
+from odoo import models, _
 from odoo.exceptions import UserError
 
 
 class ProviderAccount(models.Model):
     _inherit = 'account.online.journal'
 
-    @api.multi
     def retrieve_transactions(self, forced_params=None):
         self.ensure_one()
         if self.account_online_provider_id.provider_type != 'xunnel':
@@ -23,7 +22,6 @@ class ProviderAccount(models.Model):
         response = self._process_transactions(transactions)
         return response
 
-    @api.multi
     def _get_transactions(self, forced_params):
         params = {
             'id_account': self.online_identifier,
@@ -42,7 +40,6 @@ class ProviderAccount(models.Model):
             raise UserError(err)
         return json.loads(resp.get('response'))
 
-    @api.multi
     def _prepare_transactions(self, resp_json):
         json_transactions = resp_json['transactions']
         if not self.journal_ids or not json_transactions:
@@ -92,7 +89,6 @@ class ProviderAccount(models.Model):
                 transactions.setdefault('transactions', []).append(trans)
         return transactions
 
-    @api.multi
     def _process_transactions(self, transactions):
         journal = self.journal_ids[0]
         statement_obj = self.env['account.bank.statement']

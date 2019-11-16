@@ -8,7 +8,7 @@ from datetime import date
 
 from lxml import objectify
 from lxml.etree import XMLSyntaxError
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 BOM_UTF8U = BOM_UTF8.decode('UTF-8')
@@ -21,8 +21,7 @@ class ResCompany(models.Model):
         string='Last Sync with Xunnel',
         default=lambda _: date.today())
 
-    @api.multi
-    def _sync_xunnel_attachments(self):
+    def _sync_xunnel_documents(self):
         """Requests https://wwww.xunnel.com/ to retrive all invoices
         related to the current company and check them in the database
         to create them if they're not. After refresh xunnel_last_sync
@@ -58,19 +57,17 @@ class ResCompany(models.Model):
             xml_type = xml_obj.get('TipoDeComprobante', False)
             tags_type = self.get_tag_map(xml_type) | tag_id
             dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
-            uuid = self.env['account.invoice'].l10n_mx_edi_get_tfd_etree(
+            uuid = self.env['account.move'].l10n_mx_edi_get_tfd_etree(
                 xml_obj).get('UUID')
-            attachment = self.env['ir.attachment'].search([
+            document = self.env['documents.document'].search([
                 ('name', '=', uuid)])
-            if not attachment:
+            if not document:
                 created += 1
-                attachment.create({
+                document.with_context(no_document=True).create({
                     'name': uuid,
-                    'xunnel_attachment': True,
-                    'datas_fname': (
-                        uuid + '.xml'),
+                    'xunnel_document': True,
                     'type': 'binary',
-                    'datas': base64.encodestring(bytes(xml)),
+                    'datas': base64.b64encode(bytes(xml)),
                     'index_content': xml,
                     'mimetype': 'application/xml',
                     'folder_id': folder_id.id,
@@ -82,9 +79,8 @@ class ResCompany(models.Model):
             'failed': failed,
         }
 
-    @api.multi
     def get_xml_sync_action(self):
-        result = self._sync_xunnel_attachments()
+        result = self._sync_xunnel_documents()
         message_class = 'success'
         message = _(
             "%s xml have been downloaded.") % result.get('created')

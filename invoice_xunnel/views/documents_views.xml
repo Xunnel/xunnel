@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record model="ir.ui.view" id="document_view_search">
+        <field name="name">documents.document search inherit</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_search"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search/group" position="before">
+                <field name="emitter_partner_id" string="Emitter"/>
+                <field name="invoice_total_amount" string="Total Amount"/>
+            </xpath>
+        </field>
+    </record>
     <record model="ir.ui.view" id="documents_view_kanban">
-        <field name="name">ir.attachment kanban</field>
-        <field name="model">ir.attachment</field>
-        <field name="inherit_id" ref="documents.documents_view_kanban"/>
+        <field name="name">documents.document kanban</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_kanban"/>
         <field name="priority">99</field>
         <field name="arch" type="xml">
             <xpath expr="//kanban/templates//t[@t-set='binaryPreviewable']" position="replace">

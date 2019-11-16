@@ -6,10 +6,10 @@
     'summary': '''
         Use Xunnel Invoice to retrieve invoices from SAT.
     ''',
-    'version': '12.0.1.0.44',
+    'version': '13.0.1.0.1',
     'author': 'Jarsa Sistemas,Vauxoo',
     'category': 'Accounting',
-    'website': 'http://www.jarsa.com.mx',
+    'website': 'http://www.xunnel.com',
     'license': 'LGPL-3',
     'depends': [
         'account_xunnel',
@@ -20,9 +20,8 @@
         'data/folder.xml',
         'views/account_config_settings.xml',
         'views/assets.xml',
-        'views/documents.xml',
-        'views/ir_attachment_views.xml',
-        'wizards/attachments.xml',
+        'views/documents_views.xml',
+        'wizards/documents.xml',
     ],
     'demo': [
         'demo/res_company.xml',

@@ -7,7 +7,7 @@ odoo.define('invoice_xunnel.documents_dashboard', (require) => {
             this._super.apply(this, arguments);
             _.defaults(this.fieldsInfo[this.viewType], _.pick(this.fields, [
                 'emitter_partner_id',
-                'xunnel_attachment',
+                'xunnel_document',
                 'invoice_total_amount',
             ]));
         }

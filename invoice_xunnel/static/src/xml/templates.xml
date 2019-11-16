@@ -10,8 +10,8 @@
     <t t-extend="DocumentViewer.Content">
         <t t-jquery=".o_viewer_pdf" t-operation="after">
             <div
-                class="mt32 o_viewer_xml" t-if="widget.activeAttachment.mimetype == 'application/xml'" 
-                t-attf-data-src="/web/content/#{widget.activeAttachment.id}?raw_html=1" />
+                class="mt32 o_viewer_xml" t-if="widget.activedocument.mimetype == 'application/xml'" 
+                t-attf-data-src="/web/content/documents.document/#{widget.activedocument.id}/datas?raw_html=1" />
         </t>
     </t>
     <t t-name="invoice_xunnel.xml_preview">

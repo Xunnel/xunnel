@@ -7,11 +7,13 @@ class AttachXmlsWizard(models.TransientModel):
 
     @api.model
     def check_xml(self, files, account_id=False):
-        response = super().check_xml(files=files, account_id=account_id)
+        response = super(
+            AttachXmlsWizard,
+            self).check_xml(files=files, account_id=account_id)
         if not self.env.context.get('autofill_enable'):
             return response
-        attachment_obj = self.env['ir.attachment']
-        invoice_obj = self.env['account.invoice']
+        document_obj = self.env['documents.document']
+        invoice_obj = self.env['account.move']
         invoice_tag = self.env.ref('invoice_xunnel.with_invoice')
         no_invoice_tag = self.env.ref('invoice_xunnel.without_invoice')
         invoice_files = response.get('invoices')
@@ -19,13 +21,13 @@ class AttachXmlsWizard(models.TransientModel):
             invoice_data = invoice_files[invoice_file]
             invoice_id = invoice_data.get('invoice_id', False)
             invoice = invoice_obj.browse(invoice_id)
-            attachment = attachment_obj.search(
+            document = document_obj.search(
                 [('name', '=', invoice_file)], limit=1)
-            if not attachment:
+            if not document:
                 continue
-            attachment.write({
+            document.write({
                 'tag_ids': [(3, no_invoice_tag.id, None), (4, invoice_tag.id)],
                 'res_id': invoice.id,
-                'res_model': 'account.invoice',
+                'res_model': 'account.move',
             })
         return response

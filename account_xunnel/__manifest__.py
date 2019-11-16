@@ -6,14 +6,21 @@
     'summary': '''
         Use Xunnel Bank to retrieve bank statements.
     ''',
-    'version': '12.0.1.0.44',
+    'version': '13.0.1.0.1',
     'author': 'Jarsa Sistemas,Vauxoo',
     'category': 'Accounting',
-    'website': 'http://www.jarsa.com.mx',
+    'website': 'http://www.xunnel.com',
     'license': 'LGPL-3',
     'depends': [
         'account_accountant',
+        'account_asset',
         'account_online_sync',
+    ],
+    'demo': [
+        'demo/res_company.xml',
+        'demo/online_providers.xml',
+        'demo/online_journals.xml',
+        'demo/account_journals.xml',
     ],
     'data': [
         'views/account_config_settings.xml',
@@ -24,12 +31,6 @@
     ],
     'qweb': [
         'views/account_templates.xml'
-    ],
-    'demo': [
-        'demo/res_company.xml',
-        'demo/online_providers.xml',
-        'demo/online_journals.xml',
-        'demo/account_journals.xml',
     ],
     'installable': True,
 }

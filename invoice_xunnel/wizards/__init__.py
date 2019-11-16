@@ -1,4 +1,4 @@
 
 
 from . import attach_xmls_wizard
-from . import attachments
+from . import documents

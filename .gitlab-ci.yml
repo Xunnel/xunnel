@@ -88,7 +88,7 @@ build:
 bump:
   stage: upload_image
   only:
-      - 12.0@vauxoo/xunnel-account
+      - 13.0@vauxoo/xunnel-account
   when: on_success
   tags:
     - odoo
@@ -105,10 +105,10 @@ bump:
           deployvcmd gitlab_tools check_keys
           git config --global user.email "coward@vauxoo.com"
           git config --global user.name "Coward - Auto release"
-          git clone -b 12.0 --single-branch git@git.vauxoo.com:vauxoo/xunnel-account.git
+          git clone -b 13.0 --single-branch git@git.vauxoo.com:vauxoo/xunnel-account.git
           cd xunnel-account
           bumpversion patch
-          git push origin 12.0
+          git push origin 13.0
           ;;
         esac
 

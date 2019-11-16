@@ -10,7 +10,7 @@ odoo.define('invoice_xunnel.xunnel_sync', (require) => {
                 this.$buttons.find('.o_button_xunnel_sync').click(() => {
                     this.do_action({
                         type: 'ir.actions.act_window',
-                        res_model: 'xunnel.attachments.wizard',
+                        res_model: 'xunnel.documents.wizard',
                         target: 'new',
                         views: [[false, 'form']]
                     });

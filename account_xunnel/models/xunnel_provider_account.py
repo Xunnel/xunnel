@@ -1,7 +1,7 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -10,7 +10,6 @@ class XunnelProviderAccount(models.Model):
 
     provider_type = fields.Selection(selection_add=[('xunnel', 'Xunnel')])
 
-    @api.multi
     def sync_journals(self):
         """Get all journals and check them in the database
         to create them if they're not.
@@ -34,7 +33,6 @@ class XunnelProviderAccount(models.Model):
             else:
                 online_journal.create(vals)
 
-    @api.multi
     def _get_journals(self):
         """Requests https://wwww.xunnel.com/ to retrive all journals
         related to the indicated provider.
@@ -47,7 +45,6 @@ class XunnelProviderAccount(models.Model):
             raise UserError(err)
         return res.get('response')
 
-    @api.multi
     def update_credentials(self):
         raise UserError(_(
             'Updating credentials is not allowed here. '

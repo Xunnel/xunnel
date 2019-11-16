@@ -9,12 +9,12 @@ class WorkflowActionRuleAccountInherit(models.Model):
     create_model = fields.Selection(
         selection_add=[('xunnel.invoice', 'Xunnel Invoice')])
 
-    def create_record(self, attachments=None):
-        response = super().create_record(attachments=attachments)
+    def create_record(self, documents=None):
+        response = super().create_record(documents=documents)
         if self.create_model != 'xunnel.invoice':
             return response
         files = []
-        for xml in attachments:
+        for xml in documents:
             content = xml.datas.decode() if xml.datas else ''
             files.append({'name': xml.name, 'text': content})
         return {

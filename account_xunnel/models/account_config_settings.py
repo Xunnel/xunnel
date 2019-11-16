@@ -1,7 +1,7 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models, exceptions, _
+from odoo import fields, models, exceptions, _
 
 
 def assert_xunnel_token(function):
@@ -31,7 +31,24 @@ class AccountConfigSettings(models.TransientModel):
         related='company_id.xunnel_testing',
         readonly=False)
 
-    @api.multi
+    def get_values(self):
+        res = super(AccountConfigSettings, self).get_values()
+        company = self.company_id
+        res.update(
+            xunnel_token=company.xunnel_token,
+            xunnel_testing=company.xunnel_testing
+        )
+        return res
+
+    def set_values(self):
+        res = super(AccountConfigSettings, self).set_values()
+        company = self.company_id
+        company.write({
+            'xunnel_token': self.xunnel_token,
+            'xunnel_testing': self.xunnel_testing
+        })
+        return res
+
     @assert_xunnel_token
     def sync_xunnel_providers(self):
         status, response = self.company_id._sync_xunnel_providers()

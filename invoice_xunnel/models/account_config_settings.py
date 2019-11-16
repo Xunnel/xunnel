@@ -1,7 +1,7 @@
 # Copyright 2018, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models
+from odoo import fields, models
 from odoo.addons.account_xunnel.models.account_config_settings import \
     assert_xunnel_token
 
@@ -14,7 +14,22 @@ class AccountConfigSettings(models.TransientModel):
         related='company_id.xunnel_last_sync',
         readonly=False)
 
-    @api.multi
+    def get_values(self):
+        res = super(AccountConfigSettings, self).get_values()
+        company = self.company_id
+        res.update(
+            xunnel_last_sync=company.xunnel_last_sync,
+        )
+        return res
+
+    def set_values(self):
+        res = super(AccountConfigSettings, self).set_values()
+        company = self.company_id
+        company.write({
+            'xunnel_last_sync': self.xunnel_last_sync,
+        })
+        return res
+
     @assert_xunnel_token
-    def sync_xunnel_attachments(self):
+    def sync_xunnel_documents(self):
         return self.company_id.get_xml_sync_action()

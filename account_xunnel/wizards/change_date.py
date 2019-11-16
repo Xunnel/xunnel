@@ -1,5 +1,5 @@
 
-from odoo import models, fields, api, _
+from odoo import models, fields, _
 from odoo.exceptions import ValidationError
 
 
@@ -9,7 +9,6 @@ class WizardChageDate(models.TransientModel):
 
     sync_date = fields.Date()
 
-    @api.multi
     def change_sync_date(self):
         active_id = self._context.get('active_id')
         journal = self.env['account.journal'].browse(active_id)

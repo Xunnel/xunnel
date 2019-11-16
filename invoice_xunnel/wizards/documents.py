@@ -1,10 +1,10 @@
 
-from odoo import models, api, fields
+from odoo import models, fields
 
 
-class AttachmentslsWizard(models.TransientModel):
-    _name = 'xunnel.attachments.wizard'
-    _description = 'Xunnel attachments sync'
+class DocumentsWizard(models.TransientModel):
+    _name = 'xunnel.documents.wizard'
+    _description = 'Xunnel documents sync'
 
     company_id = fields.Many2one(
         'res.company', required=True,
@@ -13,6 +13,5 @@ class AttachmentslsWizard(models.TransientModel):
         related='company_id.xunnel_last_sync',
         readonly=False)
 
-    @api.multi
-    def synchronize_attachments(self):
+    def synchronize_documents(self):
         return self.company_id.get_xml_sync_action()

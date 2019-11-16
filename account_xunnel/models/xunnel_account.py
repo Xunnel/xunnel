@@ -1,7 +1,7 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, models, fields
+from odoo import models, fields
 
 
 class AccountJournal(models.Model):
@@ -28,7 +28,6 @@ class AccountJournal(models.Model):
         related="account_online_journal_id.last_sync",
         track_visibility='always')
 
-    @api.multi
     def manual_sync(self):
         online_journal = self.account_online_journal_id
         if online_journal.account_online_provider_id.provider_type != 'xunnel':

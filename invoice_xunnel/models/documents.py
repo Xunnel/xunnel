@@ -8,8 +8,8 @@ from odoo import models, fields, api
 _logger = logging.getLogger(__name__)
 
 
-class IrAttachment(models.Model):
-    _inherit = 'ir.attachment'
+class Document(models.Model):
+    _inherit = 'documents.document'
 
     emitter_partner_id = fields.Many2one(
         'res.partner',
@@ -17,8 +17,8 @@ class IrAttachment(models.Model):
         string="Emitter",
         help="In case this is a CFDI file, stores emitter's name.",
         store=True)
-    xunnel_attachment = fields.Boolean(
-        help="Specify if this is a XUNNEL attachment.")
+    xunnel_document = fields.Boolean(
+        help="Specify if this is a XUNNEL document.")
     invoice_total_amount = fields.Float(
         compute="_compute_emitter_partner_id",
         help="In case this is a CFDI file, stores invoice's total amount.",
@@ -28,21 +28,19 @@ class IrAttachment(models.Model):
         help="In case this is a CFDI file, stores invoice's stamp date.",
         store=True)
 
-    @api.multi
     @api.depends('datas')
     def _compute_emitter_partner_id(self):
-        attachments = self.filtered(
-            lambda rec: rec.xunnel_attachment and rec.datas_fname and
-            rec.datas_fname.lower().endswith('xml'))
-        for rec in attachments:
+        documents = self.filtered(
+            lambda rec: rec.xunnel_document and rec.attachment_id and
+            rec.attachment_id.description and
+            'emitter' in rec.attachment_id.description)
+        for rec in documents:
             xml = rec.get_xml_object(rec.datas)
             if xml is None:
                 return
             rfc = xml.Emisor.get('Rfc', '').upper()
             partner = self.env['res.partner'].search([
-                ('vat', '=', rfc), '|',
-                ('supplier', '=', True), ('customer', '=', True)
-            ], limit=1)
+                ('vat', '=', rfc)], limit=1)
             stamp_date = xml.Complemento.xpath(
                 'tfd:TimbreFiscalDigital[1]',
                 namespaces={
@@ -54,7 +52,6 @@ class IrAttachment(models.Model):
             rec.invoice_total_amount = xml.get('Total')
             rec.stamp_date = datetime.strptime(stamp_date, "%Y-%m-%dT%H:%M:%S")
 
-    @api.multi
     def get_xml_object(self, xml):
         try:
             if isinstance(xml, bytes):

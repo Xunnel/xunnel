@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record id="xunnel_attachments_wizard_view" model="ir.ui.view">
-        <field name="name">xunnel.attachments.wizard.form</field>
-        <field name="model">xunnel.attachments.wizard</field>
+    <record id="xunnel_documents_wizard_view" model="ir.ui.view">
+        <field name="name">xunnel.documents.wizard.form</field>
+        <field name="model">xunnel.documents.wizard</field>
         <field name="arch" type="xml">
             <form>
                 <group>
@@ -10,7 +10,7 @@
                     <field name="date_from"/>
                 </group>
                 <footer>
-                    <button name="synchronize_attachments" type="object" string="Confirm" class="oe_highlight"/>
+                    <button name="synchronize_documents" type="object" string="Confirm" class="oe_highlight"/>
                     <button special="cancel" string="Cancel"/>
                 </footer>
             </form>
@@ -19,9 +19,9 @@
     <record id="action_product_confirm_wizard" model="ir.actions.act_window">
         <field name="name">Xunnel XML synchronization</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">xunnel.attachments.wizard</field>
+        <field name="res_model">xunnel.documents.wizard</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="invoice_xunnel.xunnel_attachments_wizard_view"/>
+        <field name="view_id" ref="invoice_xunnel.xunnel_documents_wizard_view"/>
         <field name="target">new</field>
     </record>
 </odoo>
