@@ -30,26 +30,6 @@ class AccountConfigSettings(models.TransientModel):
     xunnel_succes_message = fields.Text(
         help="Message for success in the configurations settings")
 
-    @api.model
-    def get_values(self):
-        res = super(AccountConfigSettings, self).get_values()
-        company = self.company_id
-        res.update(
-            xunnel_token=company.xunnel_token,
-            xunnel_testing=company.xunnel_testing
-        )
-        return res
-
-    @api.multi
-    def set_values(self):
-        res = super(AccountConfigSettings, self).set_values()
-        company = self.company_id
-        company.write({
-            'xunnel_token': self.xunnel_token,
-            'xunnel_testing': self.xunnel_testing
-        })
-        return res
-
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_providers(self):
