@@ -14,24 +14,6 @@ class AccountConfigSettings(models.TransientModel):
         related='company_id.xunnel_last_sync',
         readonly=False)
 
-    @api.model
-    def get_values(self):
-        res = super(AccountConfigSettings, self).get_values()
-        company = self.company_id
-        res.update(
-            xunnel_last_sync=company.xunnel_last_sync,
-        )
-        return res
-
-    @api.multi
-    def set_values(self):
-        res = super(AccountConfigSettings, self).set_values()
-        company = self.company_id
-        company.write({
-            'xunnel_last_sync': self.xunnel_last_sync,
-        })
-        return res
-
     @api.multi
     @assert_xunnel_token
     def sync_xunnel_attachments(self):
