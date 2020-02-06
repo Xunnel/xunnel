@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-extend="BillsListView.upload_button">
+    <t t-extend="BillsListView.buttons">
         <t t-jquery="button.o_button_upload_bill" t-operation="after">
             <button icon="fa-cloud-download" type="button" class="btn btn-secondary o_button_xunnel_sync">
                 Xunnel sync

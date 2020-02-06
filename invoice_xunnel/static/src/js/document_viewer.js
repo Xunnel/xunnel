@@ -8,10 +8,7 @@ odoo.define('invoice_xunnel.document_viewer', (require) => {
         xmlDependencies: [
             '/invoice_xunnel/static/src/xml/templates.xml'
         ],
-         events: Object.assign({
-            'click pre.prettyprint .atn, pre.prettyprint .atv': 'copy_attribute'
-        }, DocumentsViewer.prototype.events)
-        , init(parent, documents, activedocumentID){
+        init(parent, documents, activedocumentID){
             this._super.apply(this, arguments);
             this.document = _.filter(documents, function(document) {
                 var match = document.type == 'url' ? document.url.match("(youtu|.png|.jpg|.gif)") : document.mimetype.match("(image|video|application/pdf|text)");
@@ -53,6 +50,8 @@ odoo.define('invoice_xunnel.document_viewer', (require) => {
                 ajax.post(route, {}).then((view) => {
                     const html = qweb.render('invoice_xunnel.xml_preview', { view });
                     xmlViewer.html(PR.prettyPrintOne(html.trim()));
+                    xmlViewer.find('pre.prettyprint .atn, pre.prettyprint .atv').click(
+                        this.copy_attribute.bind(this))
                 });
             }
         }, _onClose(ev){

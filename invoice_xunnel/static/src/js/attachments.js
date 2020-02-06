@@ -1,7 +1,8 @@
 odoo.define('invoice_xunnel.xunnel_sync', (require) => {
     'use strict';
+    require('account.bills.tree')
     const viewRegistry = require('web.view_registry');
-    const BillsListView = viewRegistry.get('account_bills_tree');
+    const BillsListView = viewRegistry.get('account_tree');
     const BillsListController = BillsListView.prototype.config.Controller;
     BillsListController.include({
         renderButtons() {

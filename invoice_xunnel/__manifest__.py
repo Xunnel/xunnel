@@ -14,20 +14,22 @@
     'depends': [
         'account_xunnel',
         'documents',
-        'l10n_mx_edi_vendor_bills',
+        'l10n_mx_edi',
     ],
     'data': [
         'data/folder.xml',
+        'security/groups.xml',
         'views/account_config_settings.xml',
         'views/assets.xml',
         'views/documents_views.xml',
+        'wizards/attach_xmls_wizard_view.xml',
         'wizards/documents.xml',
     ],
     'demo': [
         'demo/res_company.xml',
     ],
     'qweb': [
-        'static/src/xml/templates.xml'
+        'static/src/xml/*.xml'
     ],
     'installable': True,
 }
