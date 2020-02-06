@@ -1,7 +1,7 @@
-odoo.define('invoice_xunnel.attach_xmls', (require) => {
+odoo.define('invoice_xunnel.l10n_mx_edi_vendor_bills_inherit', (require) => {
     'use strict';
 
-    const { attachXmlsWizard } = require('l10n_mx_edi_vendor_bills');
+    const { attachXmlsWizard } = require('invoice_xunnel.l10n_mx_edi_vendor_bills');
 
     attachXmlsWizard.include({
         start(){
