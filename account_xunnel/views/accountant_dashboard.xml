@@ -43,4 +43,18 @@
             </xpath>
         </field>
     </record>
+    <record id="account_journal_form_inherit_online_sync" model="ir.ui.view">
+        <field name="name">account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="priority">99</field>
+        <field name="inherit_id" ref="account_online_sync.account_journal_form_inherit_online_sync"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bank_statement_creation']" position="replace">
+                <field name="bank_statement_creation" attrs="{'invisible': [('bank_statements_source', '!=', 'online_sync')]}" string="Synchronization Frequency"/>
+            </xpath>
+            <xpath expr="//field[@name='account_online_journal_id']" position="replace">
+                <field name="account_online_journal_id" attrs="{'invisible': [('bank_statements_source', '!=', 'online_sync')]}"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
