@@ -12,5 +12,27 @@
             </xpath>
         </field>
     </record>
-
+    <record model="ir.ui.view" id="documents_search_inherit">
+        <field name="name">Documents search view inherit</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="documents.documents_view_search_inherit"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <xpath expr="//separator[3]" position="before">
+                <filter string="Has Vendor Bill" name="has_partner_invoice" domain="[('emitter_partner_id.supplier', '=', True),('res_name', '!=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="order_by_date_search">
+        <field name="name">Order by date view</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_search"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <xpath expr="//separator" position="after">
+                <filter string="Order Date" name="filter_stamp_date" date="stamp_date"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
