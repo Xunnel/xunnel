@@ -54,4 +54,19 @@
             </xpath>
         </field>
     </record>
+    <record model="ir.ui.view" id="documents_search_inherit">
+        <field name="name">Documents search view inherit</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.document_view_search"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <xpath expr="//separator" position="after">
+                <filter string="Order Date" name="filter_stamp_date" date="stamp_date"/>
+                <separator/>
+            </xpath>
+            <xpath expr="//separator[3]" position="before">
+                <filter string="Has Vendor Bill" name="has_partner_invoice" domain="[('tag_ids', 'in',%(invoice_xunnel.with_invoice)d)] "/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

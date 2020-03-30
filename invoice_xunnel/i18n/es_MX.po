@@ -84,8 +84,8 @@ msgstr "En el caso de que sea un CFDI, almacena la cantidad total de la factura.
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_ir_document__invoice_total_amount
-msgid "Invoice Total Amount"
-msgstr "Cantidad total de la factura"
+msgid "Total Amount"
+msgstr "Total de la factura"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard____last_update
@@ -165,3 +165,9 @@ msgstr "Xunnel sync"
 #, python-format
 msgid "You need to define the VAT of your company."
 msgstr "Necesitas definir un RFC a tu compañía."
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_search_inherit
+msgid "Has Vendor Bill"
+msgstr "Tiene Factura de Proveedor"
+

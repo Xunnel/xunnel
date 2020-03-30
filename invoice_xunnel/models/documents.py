@@ -20,6 +20,7 @@ class Document(models.Model):
     xunnel_document = fields.Boolean(
         help="Specify if this is a XUNNEL document.")
     invoice_total_amount = fields.Float(
+        string='Total Amount',
         compute="_compute_emitter_partner_id",
         help="In case this is a CFDI file, stores invoice's total amount.",
         store=True)
