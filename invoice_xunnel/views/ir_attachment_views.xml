@@ -19,7 +19,7 @@
         <field name="priority">16</field>
         <field name="arch" type="xml">
             <xpath expr="//separator[3]" position="before">
-                <filter string="Has Vendor Bill" name="has_partner_invoice" domain="[('emitter_partner_id.supplier', '=', True),('res_name', '!=', False)]"/>
+                <filter string="Has Vendor Bill" name="has_partner_invoice" domain="[('tag_ids', 'in',%(invoice_xunnel.with_invoice)d)]"/>
             </xpath>
         </field>
     </record>
