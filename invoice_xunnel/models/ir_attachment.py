@@ -127,6 +127,11 @@ class IrAttachment(models.Model):
         compute="_compute_emitter_partner_id",
         help="In case this is a CFDI file, stores invoice's stamp date.",
         store=True)
+    product_list = fields.Text(
+        compute="_compute_emitter_partner_id",
+        string='Products',
+        help="In case this is a CFDI file, show invoice's product list",
+    )
 
     @api.multi
     @api.depends('datas')
@@ -153,6 +158,11 @@ class IrAttachment(models.Model):
             rec.emitter_partner_id = partner.id
             rec.invoice_total_amount = xml.get('Total')
             rec.stamp_date = datetime.strptime(stamp_date, "%Y-%m-%dT%H:%M:%S")
+            product_list = []
+            for concepto in xml.Conceptos.iter(
+                    '{http://www.sat.gob.mx/cfd/3}Concepto'):
+                product_list.append(concepto.get('Descripcion'))
+            rec.product_list = json.dumps(product_list)
 
     @api.multi
     def get_xml_object(self, xml):

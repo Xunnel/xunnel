@@ -9,6 +9,7 @@ odoo.define('invoice_xunnel.documents_dashboard', (require) => {
                 'emitter_partner_id',
                 'xunnel_attachment',
                 'invoice_total_amount',
+                'product_list',
             ]));
         }
     });
