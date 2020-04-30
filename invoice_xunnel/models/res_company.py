@@ -92,7 +92,8 @@ class ResCompany(models.Model):
         if failed:
             message_class = 'warning'
             message += _(
-                " Also %s files have failed at the conversion.") % failed
+                "\nAlso %s files have failed at the conversion."
+                "\nWe sent you an email with the details of the failed invoices.") % failed
         return {
             'type': 'ir.actions.client',
             'tag': 'account_xunnel.syncrhonized_accounts',

@@ -16,6 +16,7 @@
         'account_online_sync',
     ],
     'data': [
+        'data/config_parameters.xml',
         'views/account_config_settings.xml',
         'views/accountant_dashboard.xml',
         'security/account_xunnel_security.xml',
