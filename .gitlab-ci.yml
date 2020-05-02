@@ -32,7 +32,6 @@ test:
     TESTS: "1"
   script:
     - source variables.sh
-    - pip3 install requests_mock
     - apt-get update && apt-get install -y tree dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
@@ -61,7 +60,6 @@ nodemo:
     INSTALL_OPTIONS: "--without-demo=all"
   script:
     - source variables.sh
-    - pip3 install requests_mock
     - apt-get update && apt-get install -y tree dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
