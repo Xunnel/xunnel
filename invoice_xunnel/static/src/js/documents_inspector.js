@@ -1,6 +1,7 @@
 odoo.define('invoice_xunnel.DocumentsInspector', function( require ) {
 
     var DocumentsInspector = require('documents.DocumentsInspector');
+    const {qweb} = require('web.core');
 
     DocumentsInspector.include({
         _renderFields: function() {
@@ -17,6 +18,12 @@ odoo.define('invoice_xunnel.DocumentsInspector', function( require ) {
                     label: 'Total',
                     icon: 'fa fa-usd o_documents_tag_color'
                 });
+
+                var $product = $(qweb.render('invoice_xunnel.product_list',{
+                    products: JSON.parse(only_xunnel[0].data.product_list)
+                }));
+
+                $product.appendTo(this.$('.o_inspector_product_list'));
             }
         }
     });

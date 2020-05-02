@@ -1,5 +1,6 @@
 from datetime import datetime
 import base64
+import json
 import logging
 from lxml import objectify
 
@@ -28,6 +29,12 @@ class Document(models.Model):
         compute="_compute_emitter_partner_id",
         help="In case this is a CFDI file, stores invoice's stamp date.",
         store=True)
+    product_list = fields.Text(
+        compute="_compute_product_list",
+        string='Products',
+        help="In case this is a CFDI file, show invoice's product list",
+        store=True,
+    )
 
     @api.depends('datas')
     def _compute_emitter_partner_id(self):
@@ -52,6 +59,20 @@ class Document(models.Model):
             rec.emitter_partner_id = partner.id
             rec.invoice_total_amount = xml.get('Total')
             rec.stamp_date = datetime.strptime(stamp_date, "%Y-%m-%dT%H:%M:%S")
+
+    @api.depends('datas')
+    def _compute_product_list(self):
+        documents = self.filtered(
+            lambda rec: rec.xunnel_document and rec.attachment_id)
+        for rec in documents:
+            xml = rec.get_xml_object(rec.datas)
+            if xml is None:
+                continue
+            product_list = []
+            for concepto in xml.Conceptos.iter(
+                    '{http://www.sat.gob.mx/cfd/3}Concepto'):
+                product_list += [concepto.get('Descripcion')]
+            rec.product_list = json.dumps(product_list)
 
     def get_xml_object(self, xml):
         try:

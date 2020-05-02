@@ -171,3 +171,13 @@ msgstr "Necesitas definir un RFC a tu compañía."
 msgid "Has Vendor Bill"
 msgstr "Tiene Factura de Proveedor"
 
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_ir_attachment__product_list
+msgid "In case this is a CFDI file, show invoice's product list"
+msgstr "En caso de que esto sea un CFDI, muestra la lista de productos de la factura"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_ir_attachment__product_list
+msgid "Products"
+msgstr "Productos"
+

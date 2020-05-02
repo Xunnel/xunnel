@@ -20,4 +20,26 @@
         </pre>
         <input type="text" id="copy" />
     </t>
+    <t t-name="invoice_xunnel.product_list">
+        <ul class="p-0 m-0 list-unstyled ">
+            <li class="ellipsis" t-foreach="products" t-as="product" t-esc="product" t-att-title="product"/>
+        </ul>
+    </t>
+    <t t-extend="documents.DocumentsInspector.documentsInfo">
+        <t t-jquery=".o_inspector_fields tbody tr.product_list" t-operation="replace"/>
+        <t t-jquery=".o_inspector_fields tbody tr.o_inspector_divider" t-operation="after">
+            <tr class="product_list">
+                <td class="o_inspector_label align-baseline">
+                    <span>
+                        <i class="o_documents_model_color fa fa-reorder o_documents_tag_color"></i>
+                        <label for="product_list">Products</label>
+                    </span>
+                </td>
+                <td class="o_inspector_value w-100">
+                    <div class="o_inspector_product_list"/>
+                </td>
+            </tr>
+        </t>
+    </t>
 </templates>
+
