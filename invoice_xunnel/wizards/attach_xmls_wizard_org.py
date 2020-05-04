@@ -586,7 +586,7 @@ class AttachXmlsWizard(models.TransientModel):
             'reference': '%s|%s' % (
                 self.get_xml_folio(xml),
                 uuid.split('-')[0]),
-            'payment_term_id': acc_pay_term.id,
+            'payment_term_id': (supplier.property_supplier_payment_term_id or acc_pay_term).id,
             'l10n_mx_edi_payment_method_id': payment_method_id.id,
             'l10n_mx_edi_usage': xml.Receptor.get('UsoCFDI'),
             'date_invoice': date_inv[0],
