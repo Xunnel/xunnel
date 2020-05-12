@@ -23,6 +23,7 @@
         'demo/account_journals.xml',
     ],
     'data': [
+        'data/config_parameters.xml',
         'views/account_config_settings.xml',
         'views/accountant_dashboard.xml',
         'security/account_xunnel_security.xml',

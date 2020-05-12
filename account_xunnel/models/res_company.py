@@ -25,9 +25,11 @@ class ResCompany(models.Model):
         self.ensure_one()
         if not self.xunnel_token:
             raise UserError(_('You need to define Xunnel Token'))
-        base = "https://xunnel.com/"
+        base = self.env['ir.config_parameter'].sudo().get_param(
+            'account_xunnel.xunnel_server_url')
         if self.xunnel_testing:
-            base = "https://ci.xunnel.com/"
+            base = self.env['ir.config_parameter'].sudo().get_param(
+                'account_xunnel.test_xunnel_server_url')
         origin_url = self.env['ir.config_parameter'].sudo().get_param(
             'web.base.url')
         response = requests.post(
