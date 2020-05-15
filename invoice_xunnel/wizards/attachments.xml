@@ -5,13 +5,25 @@
         <field name="model">xunnel.attachments.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <group>
-                    <field name="company_id" invisible="1"/>
-                    <field name="date_from"/>
-                </group>
+                <sheet>
+                    <group attrs="{'invisible': [('message', '!=', False)]}">
+                        <field name="company_id" invisible="1"/>
+                        <field name="date_from"/>
+                        <div class="text-muted">
+                            SAT's invoices older than this date won't be fetched.
+                        </div>
+                    </group>
+                    <group attrs="{'invisible': [('message', '=', False)]}">
+                        <div role="alert" class="alert alert-warning">
+                            <field readonly="1" name="message"/>
+                        </div>
+                    </group>
+                </sheet>
                 <footer>
-                    <button name="synchronize_attachments" type="object" string="Confirm" class="oe_highlight"/>
-                    <button special="cancel" string="Cancel"/>
+                    <field name="no_attachment_action" invisible="1" />
+                    <button attrs="{'invisible': [('message', '!=', False)]}" name="synchronize_attachments" type="object" string="Confirm" class="oe_highlight"/>
+                    <button attrs="{'invisible': ['|', ('message', '=', False),('no_attachment_action', '=', True)]}" name="open_attachments" type="object" string="See XMLs" class="oe_highlight"/>
+                    <button special="cancel" string="Close"/>
                 </footer>
             </form>
         </field>
@@ -24,4 +36,30 @@
         <field name="view_id" ref="invoice_xunnel.xunnel_attachments_wizard_view"/>
         <field name="target">new</field>
     </record>
+
+    <record id="documents_view_search" model="ir.ui.view">
+        <field name="name">attachments form</field>
+        <field name="model">ir.attachment</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="filter_downloaded_xml" domain="[('just_downloaded', '=', True)]" string="Downloaded XMLs" />
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="documents.document_action">
+        <field name="search_view_id" ref="invoice_xunnel.documents_view_search"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="document_action">
+      <field name="name">Documents</field>
+      <field name="res_model">ir.attachment</field>
+      <field name="view_mode">kanban</field>
+      <field name="view_id" ref="documents.documents_view_kanban"/>
+      <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
+        </field>
+    </record>
+
 </odoo>

@@ -15,6 +15,22 @@ _logger = logging.getLogger(__name__)
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
+    just_downloaded = fields.Boolean(
+        compute="_compute_just_downloaded",
+        search="_search_just_downloaded", store=False,
+        help="""Used to identify the just donwloaded attachments.
+ To evaluate if an attachment was just downloaded, we need to
+ check the current context.""")
+
+    def _compute_just_downloaded(self):
+        downloaded_ids = self._context.get('downloaded_invoice', [])
+        for rec in self:
+            rec.just_downloaded = rec.id in downloaded_ids
+
+    def _search_just_downloaded(self, operator, value):
+        operator = 'in' if value else 'not int'
+        return [('id', operator, self._context.get('downloaded_invoice', []))]
+
     @api.model
     def create(self, values):
         if 'datas' in values and self._validate_xml(values['datas']):

@@ -18,13 +18,13 @@
     ],
     'data': [
         'data/folder.xml',
-        'views/account_config_settings.xml',
         'views/assets.xml',
         'views/documents.xml',
         'views/ir_attachment_views.xml',
         'security/groups.xml',
         'wizards/attach_xmls_wizard_view.xml',
         'wizards/attachments.xml',
+        'views/account_config_settings.xml',
     ],
     'demo': [
         'demo/res_company.xml',
