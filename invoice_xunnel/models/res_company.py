@@ -44,7 +44,8 @@ class ResCompany(models.Model):
         if response.get('response') is None:
             return True
         dates = []
-        created = failed = 0
+        failed = 0
+        created = []
         folder_id = self.env.ref('documents.documents_finance_folder')
         tag_id = self.env.ref('invoice_xunnel.without_invoice')
         for item in response.get('response'):
@@ -62,8 +63,7 @@ class ResCompany(models.Model):
             document = self.env['documents.document'].search([
                 ('name', '=', uuid)])
             if not document:
-                created += 1
-                document.with_context(no_document=True).create({
+                document = document.with_context(no_document=True).create({
                     'name': uuid,
                     'xunnel_document': True,
                     'type': 'binary',
@@ -73,6 +73,7 @@ class ResCompany(models.Model):
                     'folder_id': folder_id.id,
                     'tag_ids': [(6, 0, tags_type.ids)],
                 })
+                created.append(document.id)
         self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
         return {
             'created': created,

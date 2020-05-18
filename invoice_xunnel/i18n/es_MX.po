@@ -552,7 +552,7 @@ msgid "SAT"
 msgstr ""
 
 #. module: invoice_xunnel
-#: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
 msgid "SAT's invoices older than this date won't be fetched."
 msgstr "Facturas del SAT anteriores a esta fecha no serán recuperadas."
 
@@ -777,3 +777,49 @@ msgstr ""
 #, python-format
 msgid "or Click to upload the files"
 msgstr ""
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
+msgid "See XMLs"
+msgstr "Ver XMLs"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_search_inherit
+msgid "Downloaded XMLs"
+msgstr "XMLs Descargados"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__message
+msgid "Used to show the synchronization status."
+msgstr "Se usa para mostrar el estado de sincronización."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__no_attachment_action
+msgid "Used to toggle the redirect to the attachments."
+msgstr "Se usa para alternar la redirección a los archivos adjuntos."
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
+msgid "Xunnel attachments"
+msgstr "Archivos adjuntos de Xunnel"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
+msgid "Download your SAT's invoices."
+msgstr "Descargar sus facturas del SAT"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
+msgid "Download attachments"
+msgstr "Descargar archivos adjuntos"
+
+#. module: invoice_xunnel
+#: code:addons/invoice_xunnel/wizards/documents.py:0
+#, python-format
+msgid " Also %s files have failed at the conversion."
+msgstr " Además %s archivos han fallado al convertirse."
