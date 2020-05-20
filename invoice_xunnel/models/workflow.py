@@ -19,7 +19,7 @@ class WorkflowActionRuleAccountInherit(models.Model):
             files.append({'name': xml.name, 'text': content})
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'attach.xmls.wizard',
+            'res_model': 'xunnel.attach.xmls.wizard',
             'target': 'new',
             'views': [[False, 'form']],
             'context': {

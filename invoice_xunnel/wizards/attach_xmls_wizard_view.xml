@@ -2,7 +2,7 @@
 <odoo>
     <record model="ir.ui.view" id="attach_xmls_wizard_form_view">
         <field name="name">attach_xmls_wizard_form</field>
-        <field name="model">attach.xmls.wizard</field>
+        <field name="model">xunnel.attach.xmls.wizard</field>
         <field name="arch" type="xml">
             <form class="form-xml">
                 <group class="wizard_fields">

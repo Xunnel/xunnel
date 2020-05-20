@@ -76,7 +76,7 @@ class IrAttachment(models.Model):
         partner = self.env['res.partner'].search([
             ('vat', '=ilike', xml_obj.Emisor.get('Rfc'))], limit=1)
         if not partner:
-            wizard_attachment = self.env['attach.xmls.wizard']
+            wizard_attachment = self.env['xunnel.attach.xmls.wizard']
             wizard_attachment.create_partner(datas, '')
         return {
             'description': json.dumps(

@@ -20,8 +20,8 @@ TYPE_CFDI22_TO_CFDI33 = {
 
 
 class AttachXmlsWizard(models.TransientModel):
-    _name = 'attach.xmls.wizard'
-    _description = "Attach xmls"
+    _name = 'xunnel.attach.xmls.wizard'
+    _description = "Xunnel's attach XMLs version"
 
     @api.model
     def _default_journal(self):

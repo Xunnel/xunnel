@@ -3,7 +3,7 @@ from odoo import models, api
 
 
 class AttachXmlsWizard(models.TransientModel):
-    _inherit = 'attach.xmls.wizard'
+    _inherit = 'xunnel.attach.xmls.wizard'
 
     @api.model
     def check_xml(self, files, account_id=False):

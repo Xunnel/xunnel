@@ -51,7 +51,7 @@ var attachXmlsWizard = FieldChar.extend({
                 this.removeWrongAlerts($(alertnode), filekey, true);
             }else if(type === 'supplier'){
                 self._rpc({
-                    model: 'attach.xmls.wizard',
+                    model: 'xunnel.attach.xmls.wizard',
                     method: 'create_partner',
                     args: [this.alerts_in_queue.alertHTML[filekey].xml64, filekey],
                     context: self.getParent().state.context,
@@ -219,7 +219,7 @@ var attachXmlsWizard = FieldChar.extend({
         ctx.journal_id = options.journal_id;
         ctx.omit_cfdi_related = options.omit_cfdi_related;
         self._rpc({
-            model: 'attach.xmls.wizard',
+            model: 'xunnel.attach.xmls.wizard',
             method: 'check_xml',
             args: [files],
             context: ctx,
@@ -370,7 +370,7 @@ var attachXmlsWizard = FieldChar.extend({
         var ctx = self.getParent().state.context;
         ctx.account_id = options.account_id;
         self._rpc({
-            model: 'attach.xmls.wizard',
+            model: 'xunnel.attach.xmls.wizard',
             method: function_def,
             args: [xml_file],
             context: ctx,
