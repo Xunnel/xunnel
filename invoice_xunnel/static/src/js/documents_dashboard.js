@@ -10,6 +10,7 @@ odoo.define('invoice_xunnel.documents_dashboard', (require) => {
                 'xunnel_attachment',
                 'invoice_total_amount',
                 'product_list',
+                'related_cfdi',
             ]));
         }
     });

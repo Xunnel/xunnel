@@ -23,6 +23,15 @@ odoo.define('invoice_xunnel.documents', (require) => {
                 }));
                 
                 $product.appendTo(this.$('.o_inspector_product_list'));
+
+                var related_cfdi = only_xunnel[0].data.related_cfdi;
+                if (related_cfdi) {
+                    var $related_cfdi = $(qweb.render('invoice_xunnel.related_cfdi',{
+                        cfdis: JSON.parse(only_xunnel[0].data.related_cfdi)
+                    }));
+
+                    $related_cfdi.appendTo(this.$('.related_cfdi'));
+                }
             }
         }
     })

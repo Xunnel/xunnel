@@ -148,6 +148,11 @@ class IrAttachment(models.Model):
         string='Products',
         help="In case this is a CFDI file, show invoice's product list",
     )
+    related_cfdi = fields.Text(
+        compute="_compute_emitter_partner_id",
+        string='Related CFDI',
+        help="Related CFDI of the XML file",
+    )
 
     @api.multi
     @api.depends('datas')
@@ -179,6 +184,14 @@ class IrAttachment(models.Model):
                     '{http://www.sat.gob.mx/cfd/3}Concepto'):
                 product_list.append(concepto.get('Descripcion'))
             rec.product_list = json.dumps(product_list)
+            try:
+                related_uuid = []
+                for related in xml.CfdiRelacionados.iter(
+                        '{http://www.sat.gob.mx/cfd/3}CfdiRelacionado'):
+                    related_uuid.append(related.get('UUID'))
+                    rec.related_cfdi = json.dumps(related_uuid)
+            except AttributeError:
+                rec.related_cfdi = None
 
     @api.multi
     def get_xml_object(self, xml):
