@@ -25,6 +25,16 @@
             <li class="ellipsis" t-foreach="products" t-as="product" t-esc="product" t-att-title="product"/>
         </ul>
     </t>
+    <t t-name="invoice_xunnel.related_cfdi">
+        <td class="o_inspector_label align-baseline">
+            <label>Related CFDI</label>
+        </td>
+        <td class="o_inspector_value w-100">
+            <ul class="p-0 m-0 list-unstyled ">
+                <li t-foreach="cfdis" t-as="cfdi" t-esc="cfdi"/>
+            </ul>
+        </td>
+    </t>
     <t t-extend="documents.DocumentsInspector.documentsInfo">
         <t t-jquery=".o_inspector_fields tbody tr.product_list" t-operation="replace"/>
         <t t-jquery=".o_inspector_fields tbody tr.o_inspector_divider" t-operation="after">
@@ -39,6 +49,9 @@
                     <div class="o_inspector_product_list"/>
                 </td>
             </tr>
+        </t>
+        <t t-jquery=".o_inspector_fields tbody" t-operation="append">
+            <tr class="related_cfdi o_inspector_custom_field"/>    
         </t>
     </t>
 </templates>

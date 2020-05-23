@@ -35,6 +35,12 @@ class Document(models.Model):
         help="In case this is a CFDI file, show invoice's product list",
         store=True,
     )
+    related_cfdi = fields.Text(
+        compute="_compute_related_cfdi",
+        string='Related CFDI',
+        help="Related CFDI of the XML file",
+        store=True,
+    )
     just_downloaded = fields.Boolean(
         compute="_compute_just_downloaded",
         search="_search_just_downloaded", store=False,
@@ -99,3 +105,20 @@ class Document(models.Model):
         except (AttributeError, SyntaxError):
             xml = False
         return xml
+
+    @api.depends('datas')
+    def _compute_related_cfdi(self):
+        documents = self.filtered(
+            lambda rec: rec.xunnel_document and rec.attachment_id)
+        for rec in documents:
+            xml = rec.get_xml_object(rec.datas)
+            if xml is None:
+                continue
+            try:
+                related_uuid = []
+                for related in xml.CfdiRelacionados.iter(
+                        '{http://www.sat.gob.mx/cfd/3}CfdiRelacionado'):
+                    related_uuid += [related.get('UUID')]
+                    rec.related_cfdi = json.dumps(related_uuid)
+            except AttributeError:
+                rec.related_cfdi = None
