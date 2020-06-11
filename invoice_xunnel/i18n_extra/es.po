@@ -29,3 +29,43 @@ msgstr "\n"
 msgid "Xunnel Invoice"
 msgstr "Xunnel Facturas"
 
+#. module: invoice_xunnel
+#: model:ir.ui.menu,name:invoice_xunnel.menu_atach_xmls_wizard
+msgid "Xunnel: Attach Multiple Supplier XML's"
+msgstr "Xunnel: Adjuntar Múltiples XML's de Proveedor"
+
+#. module: invoice_xunnel
+#: model:ir.actions.act_window,name:invoice_xunnel.attach_xmls_wizard_action
+msgid "Attach Supplier Files"
+msgstr "Adjuntar Archivos de Proveedor"
+
+#. module: invoice_xunnel
+#: model:ir.ui.view,arch_db:invoice_xunnel.attach_xmls_wizard_form_view
+msgid "Attach Supplier XML's"
+msgstr "Adjuntar XML's de Proveedor"
+
+#. module: invoice_xunnel
+#. openerp-web
+#: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:5
+#, python-format
+msgid "Drag and Drop your files here"
+msgstr "Arrastrar y soltar tus archivos aquí"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard_dragndrop
+msgid "Dragndrop"
+msgstr "Dragndrop"
+
+#. module: invoice_xunnel
+#. openerp-web
+#: code:addons/invoice_xunnel/static/src/js/attach_xmls.js:303
+#, python-format
+msgid "Error checking XML data."
+msgstr "Error revisando datos del XML."
+
+#. module: invoice_xunnel
+#. openerp-web
+#: code:addons/invoice_xunnel/static/src/js/attach_xmls.js:303
+#, python-format
+msgid "Error creating invoice."
+msgstr "Error creando factura."

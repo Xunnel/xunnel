@@ -13,13 +13,20 @@
     'license': 'LGPL-3',
     'depends': [
         'account_xunnel',
-        'l10n_mx_edi_vendor_bills',
+        'l10n_mx_edi',
     ],
     'data': [
+        'data/groups.xml',
+        'data/res_partner_category.xml',
         'views/account_config_settings.xml',
+        'views/assets.xml',
+        'wizards/attach_xmls_wizard_view.xml',
     ],
     'demo': [
         'demo/res_company.xml',
+    ],
+    'qweb': [
+        'static/src/xml/*.xml',
     ],
     'installable': True,
 }
