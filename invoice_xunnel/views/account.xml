@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="invoice_supplier_tree_inherit" model="ir.ui.view">
+        <field name="name">invoice.supplier.tree.inherit.button.sync</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class" add="invoice_xunnel_sync_button" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

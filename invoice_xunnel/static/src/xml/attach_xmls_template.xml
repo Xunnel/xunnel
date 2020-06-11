@@ -13,4 +13,9 @@
             </div>
         </div>
     </t>
+    <t t-name="invoice_xunnel.import_button">
+        <button type="button" class="btn btn-sm btn-default">
+            Sync XMLs
+        </button>
+    </t>
 </template>

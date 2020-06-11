@@ -16,11 +16,13 @@
         'l10n_mx_edi',
     ],
     'data': [
+        'views/assets.xml',
         'data/groups.xml',
         'data/res_partner_category.xml',
-        'views/account_config_settings.xml',
-        'views/assets.xml',
         'wizards/attach_xmls_wizard_view.xml',
+        'wizards/attachment.xml',
+        'views/account_config_settings.xml',
+        'views/account.xml',
     ],
     'demo': [
         'demo/res_company.xml',
