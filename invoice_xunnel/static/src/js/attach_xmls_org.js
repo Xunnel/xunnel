@@ -458,6 +458,6 @@ var attachXmlsWizard = FieldChar.extend({
     },
 });
 
-FieldRegistry.add('attach_xmls_wizard_widget', attachXmlsWizard);
+FieldRegistry.add('xunnel_attach_xmls_wizard_widget', attachXmlsWizard);
 return {attachXmlsWizard: attachXmlsWizard};
 });

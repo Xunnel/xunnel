@@ -15,7 +15,7 @@
                     </group>
                 </group>
                 <br/><br/><br/>
-                <field nolabel="1" name="dragndrop" widget="attach_xmls_wizard_widget" string="Attach Supplier XML's"/>
+                <field nolabel="1" name="dragndrop" widget="xunnel_attach_xmls_wizard_widget" string="Attach Supplier XML's"/>
                 <footer class="xml-footer"/>
             </form>
         </field>
