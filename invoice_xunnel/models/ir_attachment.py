@@ -202,5 +202,5 @@ class IrAttachment(models.Model):
                 'data:text/xml;base64,', ''))
             xml = objectify.fromstring(xml_str)
         except (AttributeError, SyntaxError):
-            xml = False
+            xml = None
         return xml
