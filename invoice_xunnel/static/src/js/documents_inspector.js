@@ -14,6 +14,10 @@ odoo.define('invoice_xunnel.DocumentsInspector', function( require ) {
                     label: 'Emitter',
                     icon: 'fa fa-user-circle o_documents_folder_color'
                 });
+                this._renderField('sat_status', {
+                    label: 'SAT status',
+                    icon: 'fa fa-bullseye'
+                });
                 this._renderField('invoice_total_amount', {
                     label: 'Total',
                     icon: 'fa fa-usd o_documents_tag_color'

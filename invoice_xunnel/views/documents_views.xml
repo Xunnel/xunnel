@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search/group" position="before">
                 <field name="emitter_partner_id" string="Emitter"/>
+                <field name="sat_status"/>
                 <field name="invoice_total_amount" string="Total Amount"/>
             </xpath>
         </field>
@@ -33,6 +34,9 @@
             <xpath expr="//kanban//div[hasclass('o_kanban_details')]//div[hasclass('o_kanban_record_body')]" position="inside">
                 <p t-if="record.emitter_partner_id.raw_value" class="mb-0">
                     <field name="name" class="o_text_overflow"/>
+                </p>
+                <p t-if="record.sat_status.raw_value" class="mb-0">
+                    Sat staus: $ <field name="sat_status"/>
                 </p>
                 <p t-if="record.invoice_total_amount.raw_value" class="mb-0">
                     Total amount: $ <field name="invoice_total_amount"/>

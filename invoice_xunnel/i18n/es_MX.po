@@ -848,3 +848,43 @@ msgstr ""
 #, python-format
 msgid "or Click to upload the files"
 msgstr ""
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__sat_status
+msgid "Sat Status"
+msgstr "Estado del SAT"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
+msgid "Sat staus: $"
+msgstr "Estado del SAT: $"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__not_found
+msgid "Not Found"
+msgstr "No encontrado"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__undefined
+msgid "Not Synced Yet"
+msgstr "Aún sin sincronizar"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__cancelled
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_documents_document__sat_status
+msgid "Refers to the status of the invoice inside the SAT system."
+msgstr "Refiere al estado del documento dentro del systema del SAT"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__none
+msgid "State not defined"
+msgstr "Estado no definido"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__valid
+msgid "Valid"
+msgstr "Válido"
