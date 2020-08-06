@@ -6,7 +6,7 @@
     'summary': '''
         Use Xunnel Bank to retrieve bank statements.
     ''',
-    'version': '13.0.1.0.10',
+    'version': '13.0.1.0.11',
     'author': 'Jarsa Sistemas,Vauxoo',
     'category': 'Accounting',
     'website': 'http://www.xunnel.com',
@@ -26,7 +26,6 @@
         'data/config_parameters.xml',
         'views/account_config_settings.xml',
         'views/accountant_dashboard.xml',
-        'security/account_xunnel_security.xml',
         'views/assets.xml',
         'wizards/change_date.xml',
     ],
