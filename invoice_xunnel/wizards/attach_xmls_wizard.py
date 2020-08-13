@@ -1,4 +1,4 @@
-
+# pylint: skip-file
 from odoo import models, api
 
 
