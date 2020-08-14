@@ -736,6 +736,11 @@ msgid "Xunnel: Allow to omit validations in the invoice generation"
 msgstr ""
 
 #. module: invoice_xunnel
+#: model:res.groups,name:invoice_xunnel.group_for_sync_invoices
+msgid "Xunnel: Allows a user to modify the last sync date for Xunnel synchronization."
+msgstr "Xunnel: Permite al usuario modificar la fecha de última sincronización."
+
+#. module: invoice_xunnel
 #. openerp-web
 #: code:addons/invoice_xunnel/static/src/js/attach_xmls_org.js:74
 #, python-format
