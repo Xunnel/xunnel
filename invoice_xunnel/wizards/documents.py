@@ -7,8 +7,7 @@ class DocumentsWizard(models.TransientModel):
     _description = 'Xunnel documents sync'
 
     company_id = fields.Many2one(
-        'res.company', required=True,
-        default=lambda self: self.env.user.company_id)
+        'res.company', required=True, default=lambda self: self.env.company)
     date_from = fields.Date(
         related='company_id.xunnel_last_sync',
         readonly=False)

@@ -1,0 +1,2 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+xunnel_sync_user,xunnel_sync_user,model_res_company,group_for_sync_invoices,1,1,0,0

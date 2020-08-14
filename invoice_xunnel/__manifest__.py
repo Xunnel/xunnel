@@ -19,6 +19,7 @@
     'data': [
         'data/folder.xml',
         'security/groups.xml',
+        'security/ir.model.access.csv',
         'views/assets.xml',
         'views/documents_views.xml',
         'wizards/attach_xmls_wizard_view.xml',
