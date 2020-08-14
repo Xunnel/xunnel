@@ -26,6 +26,7 @@ class Document(models.Model):
         ],
         compute='_compute_sat_status',
         default='undefined',
+        store=True,
         help='Refers to the status of the invoice inside the SAT system.')
     emitter_partner_id = fields.Many2one(
         'res.partner',
@@ -98,11 +99,15 @@ class Document(models.Model):
 
     @api.depends('datas')
     def _compute_sat_status(self):
-        for rec in self.filtered('xunnel_document'):
+        for rec in self:
+            if not rec.xunnel_document:
+                rec.sat_status = 'none'
+                continue
             xml = rec.get_xml_object(rec.datas)
-            if not xml:
-                return
-            rec.sat_status = self.l10n_mx_edi_update_sat_status_xml(xml)
+            if xml:
+                rec.sat_status = self.l10n_mx_edi_update_sat_status_xml(xml)
+            else:
+                rec.sat_status = 'none'
 
     def l10n_mx_edi_update_sat_status_xml(self, xml):
         """Check SAT WS to make sure the invoice is valid.
