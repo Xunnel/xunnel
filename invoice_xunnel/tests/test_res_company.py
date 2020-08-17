@@ -19,7 +19,7 @@ class TestXunnelAccount(TransactionCase):
         self.company = self.env['res.company'].browse(
             self.ref('base.main_company'))
 
-    @mock()
+    @mock(real_http=True)
     def test_01_sync_xunnel_attachments(self, request=None):
         """Test requesting all transactions from an account and
         making a bank statement. Also checks last_sync's refreshed.
@@ -35,7 +35,7 @@ class TestXunnelAccount(TransactionCase):
         last_sync = self.company.xunnel_last_sync
         self.assertTrue(old_sync < last_sync)
 
-    @mock()
+    @mock(real_http=True)
     def test_02_sync_xunnel_attachments(self, request):
         """Test a bad requesting transactions. Also checks
         last_sync is not refreshed. Six attachments are returned

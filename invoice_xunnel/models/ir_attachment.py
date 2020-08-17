@@ -140,7 +140,8 @@ class IrAttachment(models.Model):
         ],
         default='undefined',
         compute='_compute_sat_status',
-        help='Refers to the status of the invoice inside the SAT system.')
+        help='Refers to the status of the invoice inside the SAT system.',
+        store=True)
     emitter_partner_id = fields.Many2one(
         'res.partner',
         compute="_compute_emitter_partner_id",
@@ -210,7 +211,8 @@ class IrAttachment(models.Model):
 
     @api.depends('datas')
     def _compute_sat_status(self):
-        for rec in self.filtered('xunnel_attachment'):
+        for rec in self.filtered(
+                lambda r: r.xunnel_attachment and r.url != 'nocompute'):
             xml = rec.get_xml_object(rec.datas)
             if not xml:
                 return
