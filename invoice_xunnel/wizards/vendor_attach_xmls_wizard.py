@@ -150,20 +150,22 @@ class AttachXmlsWizard(models.TransientModel):
                 name = '%s(%s%%)' % (tax['tax'], tax['rate'])
 
                 tax_get = self.env['account.tax'].search(domain, limit=1)
+                taxes_to_omit = self.get_taxes_to_omit()
 
-                if not tax_group_id or not tax_get:
+                if (not tax_group_id or not tax_get) and tax.get('tax', False) not in taxes_to_omit:
                     taxes_list['wrong_taxes'].append(name)
                     continue
                 # TODO review if this validation of account in taxes is correct
                 tax_account = tax_get.invoice_repartition_line_ids.filtered(
                     lambda rec: rec.repartition_type == 'tax')
-                if not tax_account:
+                if not tax_account and tax.get('tax', '') not in taxes_to_omit:
                     taxes_list['withno_account'].append(
                         name if name else tax['tax'])
                 else:
                     tax['id'] = tax_get.id
                     tax['account'] = tax_account.id
                     tax['name'] = name if name else tax['tax']
+                    tax['for_expenses'] = not bool(tax_get)
                     taxes_list['taxes_ids'][index].append(tax)
         return taxes_list
 
@@ -181,6 +183,7 @@ class AttachXmlsWizard(models.TransientModel):
             return taxes_list
         local_taxes = local_taxes[0]
         tax_obj = self.env['account.tax']
+        taxes_to_omit = self.get_taxes_to_omit()
         if hasattr(local_taxes, 'RetencionesLocales'):
             for local_ret in local_taxes.RetencionesLocales:
                 name = local_ret.get('ImpLocRetenido')
@@ -191,15 +194,16 @@ class AttachXmlsWizard(models.TransientModel):
                     '|',
                     ('name', '=', name),
                     ('amount', '=', tasa)], limit=1)
-                if not tax and name not in self.get_taxes_to_omit():
+                if not tax and name not in taxes_to_omit:
                     taxes_list['wrong_taxes'].append(name)
                     continue
-                if tax and not tax.account_id:
+                tax_account = tax.invoice_repartition_line_ids.filtered(lambda rec: rec.repartition_type == 'tax')
+                if not tax_account and name not in taxes_to_omit:
                     taxes_list['withno_account'].append(name)
                     continue
                 taxes_list['taxes'].append((0, 0, {
                     'tax_id': tax.id,
-                    'account_id': tax.account_id.id,
+                    'account_id': tax_account.id,
                     'name': name,
                     'amount': float(local_ret.get('Importe')) * -1,
                     'for_expenses': not bool(tax),
@@ -214,15 +218,16 @@ class AttachXmlsWizard(models.TransientModel):
                     '|',
                     ('name', '=', name),
                     ('amount', '=', tasa)], limit=1)
-                if not tax and name not in self.get_taxes_to_omit():
+                if not tax and name not in taxes_to_omit:
                     taxes_list['wrong_taxes'].append(name)
                     continue
-                if tax and not tax.account_id:
+                tax_account = tax.invoice_repartition_line_ids.filtered(lambda rec: rec.repartition_type == 'tax')
+                if not tax_account and name not in taxes_to_omit:
                     taxes_list['withno_account'].append(name)
                     continue
                 taxes_list['taxes'].append((0, 0, {
                     'tax_id': tax.id,
-                    'account_id': tax.account_id.id,
+                    'account_id': tax_account.id,
                     'name': name,
                     'amount': float(local_tras.get('Importe')),
                     'for_expenses': not bool(tax),
@@ -556,7 +561,20 @@ class AttachXmlsWizard(models.TransientModel):
                 discount = (float(rec.get('Descuento', '0.0')) / amount) * 100
 
             domain_uom = [('name', '=ilike', uom)]
-            line_taxes = [tax['id'] for tax in taxes.get(idx, [])]
+            line_taxes = taxes.get(idx, [])
+            taxes_for_expenses = [
+                line_taxes.pop(line_taxes.index(tax))
+                for tax in line_taxes
+                if tax.get('for_expenses')
+            ]
+            invoice_line_ids.extend([(0, 0, {
+                'account_id': account_id,
+                'name': tax.get('name'),
+                'quantity': 1,
+                'price_unit': tax.get('amount'),
+            }) for tax in taxes_for_expenses])
+
+            line_tax_ids = [tax['id'] for tax in taxes.get(idx, [])]
             code_sat = sat_code_obj.search([('code', '=', uom_code)], limit=1)
             domain_uom = [('l10n_mx_edi_code_sat_id', '=', code_sat.id)]
             uom_id = uom_obj.with_context(
@@ -582,7 +600,7 @@ class AttachXmlsWizard(models.TransientModel):
                 'name': name,
                 'quantity': float(quantity),
                 'product_uom_id': uom_id.id,
-                'tax_ids': [(6, 0, line_taxes)],
+                'tax_ids': [(6, 0, line_tax_ids)],
                 'price_unit': float(price),
                 'discount': discount,
             }))
@@ -616,10 +634,6 @@ class AttachXmlsWizard(models.TransientModel):
 
         local_taxes = self.get_local_taxes(xml).get('taxes', [])
         if local_taxes:
-            invoice_id.write({
-                'tax_line_ids': [_tax for _tax in local_taxes if not _tax[-1].get(
-                    'for_expenses')],
-            })
             invoice_id.write({
                 'invoice_line_ids': [(0, 0, {
                     'account_id': account_id,
