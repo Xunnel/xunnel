@@ -689,7 +689,6 @@ class AttachXmlsWizard(models.TransientModel):
                 'refund_invoice_ids': [(4, invoice_id.id, 0)]
             })
         invoice_id.l10n_mx_edi_update_sat_status()
-        invoice_id._recompute_tax_lines()
         return {'key': True, 'invoice_id': invoice_id.id}
 
     @api.model

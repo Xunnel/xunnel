@@ -506,7 +506,6 @@ class AttachXmlsWizard(models.TransientModel):
         invoice_id.l10n_mx_edi_cfdi = xml_str.decode('UTF-8')
         invoice_id.generate_xml_attachment()
         self._assign_cfdi_related(xml, invoice_id)
-        invoice_id._recompute_tax_lines()
         total_xml = float(xml.get('Total', xml.get('total')))
         if invoice_id.amount_total != total_xml:
             invoice_id.create_adjustment_line(total_xml)
