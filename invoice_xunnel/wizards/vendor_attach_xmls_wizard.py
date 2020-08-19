@@ -686,7 +686,7 @@ class AttachXmlsWizard(models.TransientModel):
             related_invoices = related_invoices.filtered(
                 lambda inv: inv.l10n_mx_edi_cfdi_uuid == xml_related_uuid)
             related_invoices.write({
-                'refund_invoice_ids': [(4, invoice_id.id, 0)]
+                'reversal_move_id': [(4, invoice_id.id, 0)]
             })
         invoice_id.l10n_mx_edi_update_sat_status()
         return {'key': True, 'invoice_id': invoice_id.id}
