@@ -281,7 +281,7 @@ class AttachXmlsWizard(models.TransientModel):
         related_invoices = related_invoices.filtered(
             lambda inv: inv.l10n_mx_edi_cfdi_uuid == xml_related_uuid)
         if related_invoices:
-            related_invoices.refund_invoice_ids |= invoice
+            related_invoices.reversal_move_id |= invoice
         return True
 
     @api.model
