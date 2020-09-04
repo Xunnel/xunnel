@@ -34,7 +34,10 @@ class AccountInvoice(models.Model):
             'res_id': self.id,
         }
         self.l10n_mx_edi_cfdi_name = fname
-        return self.env['ir.attachment'].with_context({}).create(data_attach)
+        res = self.env['ir.attachment'].with_context({}).create(data_attach)
+        if self._context.get('l10n_mx_edi_invoice_type') == 'out':
+            self.l10n_mx_edi_pac_status = 'signed'
+        return res
 
     def create_adjustment_line(self, xml_amount):
         """If the invoice has difference with the total in the CFDI is
@@ -53,6 +56,21 @@ class AccountInvoice(models.Model):
             'invoice_id': self.id,
         })
         return True
+
+    def post(self):
+        if self._context.get('l10n_mx_edi_invoice_type') == 'out':
+            attach_invoices = self.filtered(
+                lambda inv: inv.state == 'draft' and inv.l10n_mx_edi_pac_status == 'signed')
+            attachs = [(inv, inv.l10n_mx_edi_retrieve_last_attachment()) for inv in attach_invoices]
+            res = super().post()
+            for inv, att in attachs:
+                att.name = inv.l10n_mx_edi_cfdi_name
+            return res
+        # Sync SAT status if not set yet (Vendor Bills)
+        res = super(AccountInvoice, self).post()
+        vendor_bills = self.filtered(lambda inv: inv.is_purchase_document() and inv.l10n_mx_edi_cfdi_name)
+        vendor_bills.l10n_mx_edi_update_sat_status()
+        return res
 
 
 class AccountMoveLine(models.Model):
