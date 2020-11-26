@@ -16,7 +16,7 @@ lint:
     - sudo apt-get update && sudo apt-get install -y dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
-    - pip install deployv-addon-gitlab-tools
+    - pip3 install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
     - travis_install_nightly
     - travis_run_tests
@@ -35,7 +35,7 @@ test:
     - apt-get update && apt-get install -y tree dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
-    - pip install deployv-addon-gitlab-tools
+    - pip3 install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
     - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
     - travis_install_nightly
@@ -63,7 +63,7 @@ nodemo:
     - apt-get update && apt-get install -y tree dos2unix
     - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
     - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
-    - pip install deployv-addon-gitlab-tools
+    - pip3 install deployv-addon-gitlab-tools
     - deployvcmd gitlab_tools check_keys
     - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
     - travis_install_nightly
@@ -98,8 +98,8 @@ bump:
         *Bump*)
           ;;
         *)
-          pip install -U deployv-addon-gitlab-tools
-          pip install -U bumpversion
+          pip3 install -U deployv-addon-gitlab-tools
+          pip3 install -U bumpversion
           deployvcmd gitlab_tools check_keys
           git config --global user.email "coward@vauxoo.com"
           git config --global user.name "Coward - Auto release"
