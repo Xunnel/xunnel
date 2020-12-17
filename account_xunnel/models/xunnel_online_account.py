@@ -33,7 +33,7 @@ class ProviderAccount(models.Model):
         elif self.last_sync:
             params.update(
                 dt_transaction_from=mktime(self.last_sync.timetuple()))
-        resp = self.env.user.company_id._xunnel(
+        resp = self.env.company._xunnel(
             'get_xunnel_transactions', params)
         err = resp.get('error')
         if err:
