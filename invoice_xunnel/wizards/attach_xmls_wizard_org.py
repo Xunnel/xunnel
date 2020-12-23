@@ -297,10 +297,12 @@ class AttachXmlsWizard(models.TransientModel):
             [('name', '=', xml_currency)], limit=1)
         xml_related_uuid = False
         if xml_type_of_document == 'E' and hasattr(xml, 'CfdiRelacionados'):
-            xml_related_uuid = xml.CfdiRelacionados.CfdiRelacionado.get('UUID')
-            related_invoice = xml_related_uuid in inv_obj.search([
+            xml_related_uuid = xml.CfdiRelacionados.CfdiRelacionado.get('UUID').lower()
+            related_invoice_uuids = inv_obj.search([
                 ('l10n_mx_edi_cfdi_name', '!=', False),
                 ('type', '=', 'in_invoice')]).mapped('l10n_mx_edi_cfdi_uuid')
+            related_invoice_uuids = [uuid.lower() for uuid in related_invoice_uuids]
+            related_invoice = xml_related_uuid in related_invoice_uuids
         omit_cfdi_related = self._context.get('omit_cfdi_related')
         force_save = False
         if self.env.user.has_group(
