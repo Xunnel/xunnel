@@ -301,7 +301,7 @@ class AttachXmlsWizard(models.TransientModel):
             related_invoice_uuids = inv_obj.search([
                 ('l10n_mx_edi_cfdi_name', '!=', False),
                 ('type', '=', 'in_invoice')]).mapped('l10n_mx_edi_cfdi_uuid')
-            related_invoice_uuids = [uuid.lower() for uuid in related_invoice_uuids]
+            related_invoice_uuids = [uuid.lower() for uuid in related_invoice_uuids if uuid]
             related_invoice = xml_related_uuid in related_invoice_uuids
         omit_cfdi_related = self._context.get('omit_cfdi_related')
         force_save = False
