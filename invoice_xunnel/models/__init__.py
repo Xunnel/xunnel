@@ -6,3 +6,4 @@ from . import workflow
 from . import documents
 from . import account_invoice
 from . import ir_attachment
+from . import res_config_settings

@@ -21,6 +21,10 @@ class ResCompany(models.Model):
         string='Last Sync with Xunnel',
         default=lambda _: date.today())
 
+    l10n_mx_edi_fuel_code_sat_ids = fields.Many2many(
+        'l10n_mx_edi.product.sat.code', string='SAT fuel codes',
+        domain=[('applies_to', '=', 'product')])
+
     def _sync_xunnel_documents(self):
         """Requests https://wwww.xunnel.com/ to retrive all invoices
         related to the current company and check them in the database

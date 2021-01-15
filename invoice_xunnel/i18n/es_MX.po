@@ -245,6 +245,11 @@ msgid ""
 msgstr ""
 
 #. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
+msgid "<span class=\"o_form_label\">Fuel SAT Codes</span>"
+msgstr "<span class=\"o_form_label\">Códigos SAT de combustible</span>"
+
+#. module: invoice_xunnel
 #. openerp-web
 #: code:addons/invoice_xunnel/static/src/js/attach_xmls_org.js:0
 #, python-format
@@ -334,6 +339,11 @@ msgstr "Compañías"
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__company_id
 msgid "Company"
 msgstr "Compañía"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
+msgid "Configure the fuel SAT Codes."
+msgstr "Configure los códigos SAT de combustible."
 
 #. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
@@ -588,6 +598,12 @@ msgstr "CFDI Relacionado"
 #: model:ir.model.fields,help:invoice_xunnel.field_documents_document__related_cfdi
 msgid "Related CFDI of the XML file"
 msgstr "CFDI Relacionado al archivo XML"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_res_company__l10n_mx_edi_fuel_code_sat_ids
+#: model:ir.model.fields,field_description:invoice_xunnel.field_res_config_settings__l10n_mx_edi_fuel_code_sat_ids
+msgid "SAT fuel codes"
+msgstr "Códigos SAT de Combustible"
 
 #. module: invoice_xunnel
 #: model:documents.facet,name:invoice_xunnel.xunnel_xml_facet
