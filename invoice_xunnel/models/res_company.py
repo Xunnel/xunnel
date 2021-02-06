@@ -55,6 +55,7 @@ class ResCompany(models.Model):
         for item in response.get('response'):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             try:
+                xml = xml.replace(b'xmlns:schemaLocation', b'xsi:schemaLocation')
                 xml_obj = objectify.fromstring(xml)
             except XMLSyntaxError:
                 failed += 1
