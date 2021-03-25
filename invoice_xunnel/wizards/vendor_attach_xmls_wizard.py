@@ -479,15 +479,15 @@ class AttachXmlsWizard(models.TransientModel):
         return {'wrongfiles': wrongfiles,
                 'invoices': invoices}
 
-    def get_default_analytic(self, product, supplier):
+    def get_default_analytic(self, product, supplier, account_id):
         try:
             analytic_default = self.env['account.analytic.default']
         except BaseException:
             return False
         default_analytic = (
             analytic_default.account_get(
-                product.id, supplier.id, self.env.user.id,
-                fields.Date.today(), self.env.company.id) or False)
+                product_id=product.id, partner_id=supplier.id, account_id=account_id, user_id=self.env.user.id,
+                date=fields.Date.today(), company_id=self.env.company.id) or False)
         return default_analytic
 
     def create_invoice(
@@ -591,7 +591,7 @@ class AttachXmlsWizard(models.TransientModel):
                     'product_uom_id': uom_id.id,
                     'price_unit': float(rec.get('Importe', 0)) - price,
                 }))
-            default_analytic = self.get_default_analytic(product_id, supplier)
+            default_analytic = self.get_default_analytic(product_id, supplier, account_id)
             invoice_line_ids.append((0, 0, {
                 'product_id': product_id.id,
                 'account_id': account_id,
