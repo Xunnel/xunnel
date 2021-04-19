@@ -282,6 +282,7 @@ class AttachXmlsWizard(models.TransientModel):
             inv and inv.commercial_partner_id.vat or '').upper()
         inv_amount = inv.amount_total
         inv_folio = inv.invoice_payment_ref or ''
+        diff = inv.journal_id.l10n_mx_edi_amount_authorized_diff or 1
         domain = [('l10n_mx_edi_cfdi_name', '!=', False)]
         if exist_supplier:
             domain += [('partner_id', 'child_of', exist_supplier.id)]
@@ -331,9 +332,9 @@ class AttachXmlsWizard(models.TransientModel):
              {'folio': (xml_serie_folio, inv_folio)}),
             ((inv_id and inv_vat_emitter != xml_vat_emitter), {
                 'rfc_supplier': (xml_vat_emitter, inv_vat_emitter)}),
-            ((inv_id and not float_is_zero(
-                float(inv_amount) - xml_amount, precision_digits=2)),
-                {'amount': (xml_amount, inv_amount)}),
+            ((inv_id and abs(round(float(inv_amount)-float(
+                xml_amount), 2)) > diff), {
+                    'amount': (xml_amount, inv_amount)}),
             ((xml_related_uuid and not related_invoice and not force_save),
              {'invoice_not_found': xml_related_uuid}),
             ((not omit_cfdi_related and xml_type_of_document == 'E' and
