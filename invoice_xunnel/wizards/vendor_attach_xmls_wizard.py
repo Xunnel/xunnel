@@ -7,6 +7,7 @@ import base64
 from lxml import etree, objectify
 
 from odoo import _, api, fields, models
+from odoo.tools import date_utils
 from odoo.tools.float_utils import float_is_zero
 from odoo.tools import float_round
 from odoo.exceptions import UserError
@@ -268,7 +269,8 @@ class AttachXmlsWizard(models.TransientModel):
              ('company_id', '=', False),
              ('company_id', '=', self.env.company.id)], limit=1)
         xml_folio = xml.get('Folio', '')
-        invoice = self._search_invoice(exist_supplier, xml_amount, xml_serie_folio, xml_folio)
+        xml_date = xml.get('Fecha', '')
+        invoice = self._search_invoice(exist_supplier, xml_amount, xml_serie_folio, xml_folio, xml_date)
         exist_reference = invoice if invoice and xml_uuid != invoice.l10n_mx_edi_cfdi_uuid else False  # noqa
         if exist_reference and not exist_reference.l10n_mx_edi_cfdi_uuid:
             inv = exist_reference
@@ -399,7 +401,7 @@ class AttachXmlsWizard(models.TransientModel):
         return vat_emitter, vat_receiver, amount, currency, version,\
             name_supplier, document_type, uuid, folio, taxes
 
-    def _search_invoice(self, exist_supplier, amount, serie_folio, folio):
+    def _search_invoice(self, exist_supplier, amount, serie_folio, folio, xml_date):
         inv_obj = self.env['account.move']
         domain = [
             '|', ('partner_id', 'child_of', exist_supplier.id),
@@ -416,6 +418,25 @@ class AttachXmlsWizard(models.TransientModel):
         domain.append(('amount_total', '<=', amount + 1))
         domain.append(('l10n_mx_edi_cfdi_name', '=', False))
         domain.append(('state', '!=', 'cancel'))
+        domain.append(('type', 'in', ('in_invoice', 'in_refund')))
+        omit_state_in_invoices = self.env['ir.config_parameter'].sudo().get_param(
+            'omit_state_in_invoices', '')
+        if omit_state_in_invoices:
+            omit_state_in_invoices = omit_state_in_invoices.split(",")
+            domain.append(('state', 'not in', omit_state_in_invoices))
+            domain.append(('invoice_payment_state', 'not in', omit_state_in_invoices))
+
+        date_type = self.env['ir.config_parameter'].sudo().get_param(
+            'l10n_mx_edi_vendor_bills_force_use_date')
+        xml_date = fields.datetime.strptime(xml_date, '%Y-%m-%dT%H:%M:%S').date()
+
+        if date_type == "day":
+            domain.append(('invoice_date', '=', xml_date))
+        elif date_type == "month":
+            invoice_date = date_utils.get_month(xml_date)
+            domain.append(('invoice_date', '>=', invoice_date[0]))
+            domain.append(('invoice_date', '<=', invoice_date[1]))
+
         return inv_obj.search(domain, limit=1)
 
     @api.model
