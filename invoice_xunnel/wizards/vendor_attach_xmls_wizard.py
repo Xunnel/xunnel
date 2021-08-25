@@ -295,7 +295,7 @@ class AttachXmlsWizard(models.TransientModel):
         uuid_dupli = xml_uuid in inv_obj.search(domain).mapped(
             'l10n_mx_edi_cfdi_uuid')
         mxns = [
-            'mxp', 'mxn', 'pesos', 'peso mexicano', 'pesos mexicanos', 'mn']
+            'mxp', 'mxn', 'pesos', 'peso mexicano', 'pesos mexicanos', 'mn', 'nacional']
         xml_currency = 'MXN' if xml_currency.lower(
         ) in mxns else xml_currency
 
@@ -597,6 +597,31 @@ class AttachXmlsWizard(models.TransientModel):
             }) for tax in taxes_for_expenses])
 
             line_tax_ids = [tax['id'] for tax in taxes.get(idx, [])]
+            if xml.get('version') == '3.2':
+                # Global tax used for each line since that a manual tax line
+                # won't have base amount assigned.
+                tax_path = '//cfdi:Impuestos/cfdi:Traslados/cfdi:Traslado'
+                tax_obj = self.env['account.tax']
+                for global_tax in xml.xpath(tax_path, namespaces=xml.nsmap):
+                    tax_name = global_tax.attrib.get('impuesto')
+                    tax_percent = float(global_tax.attrib.get('tasa'))
+                    tax_group_id = self.env['account.tax.group'].search(
+                        [('name', 'ilike', tax_name)])
+                    tax_domain = [
+                        ('type_tax_use', '=', 'purchase'),
+                        ('company_id', '=', self.env.company.id),
+                        ('tax_group_id', 'in', tax_group_id.ids),
+                        ('amount_type', '=', 'percent'),
+                        ('amount', '=', tax_percent),
+                    ]
+                    tax = tax_obj.search(tax_domain, limit=1)
+                    if not tax:
+                        return {
+                            'key': False,
+                            'taxes': ['%s(%s%%)' % (tax_name, tax_percent)],
+                        }
+                    line_tax_ids.append(tax.id)
+
             code_sat = sat_code_obj.search([('code', '=', uom_code)], limit=1)
             domain_uom = [('l10n_mx_edi_code_sat_id', '=', code_sat.id)]
             uom_id = uom_obj.with_context(
@@ -665,31 +690,6 @@ class AttachXmlsWizard(models.TransientModel):
                 }) for _tax in local_taxes if _tax[-1].get('for_expenses')],
             })
         if xml.get('version') == '3.2':
-            # Global tax used for each line since that a manual tax line
-            # won't have base amount assigned.
-            tax_path = '//cfdi:Impuestos/cfdi:Traslados/cfdi:Traslado'
-            tax_obj = self.env['account.tax']
-            for global_tax in xml.xpath(tax_path, namespaces=xml.nsmap):
-                tax_name = global_tax.attrib.get('impuesto')
-                tax_percent = float(global_tax.attrib.get('tasa'))
-                tax_group_id = self.env['account.tax.group'].search(
-                    [('name', 'ilike', tax_name)])
-                tax_domain = [
-                    ('type_tax_use', '=', 'purchase'),
-                    ('company_id', '=', self.env.company.id),
-                    ('tax_group_id', 'in', tax_group_id.ids),
-                    ('amount_type', '=', 'percent'),
-                    ('amount', '=', tax_percent),
-                ]
-                tax = tax_obj.search(tax_domain, limit=1)
-                if not tax:
-                    return {
-                        'key': False,
-                        'taxes': ['%s(%s%%)' % (tax_name, tax_percent)],
-                    }
-                invoice_id.invoice_line_ids.write({
-                    'invoice_line_tax_ids': [(4, tax.id)]})
-
             # Global discount used for each line
             # Decimal rounding wrong values could be imported will fix manually
             discount_amount = float(xml.attrib.get('Descuento', 0))
