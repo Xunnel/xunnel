@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="allow_force_invoice_generation" model="res.groups">
-        <field name="name">Xunnel: Allow to omit validations in the invoice generation</field>
-    </record>
-    <record id="group_for_sync_invoices" model="res.groups">
-        <field name="name">Xunnel: Allows a user to modify the last sync date for Xunnel synchronization.</field>
-    </record>
-</odoo>

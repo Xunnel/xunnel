@@ -1,3 +1,2 @@
 enterprise git@github.com:Vauxoo/enterprise.git
 mexico git@git.vauxoo.com:vauxoo/mexico.git
-vendor-bills git@git.vauxoo.com:vauxoo/vendor-bills.git

@@ -2,8 +2,8 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import base64
-import logging
 import json
+import logging
 
 from lxml import objectify
 from odoo import api, models
@@ -85,8 +85,7 @@ class IrAttachment(models.Model):
 
     @api.model
     def _prepare_description_attachment(self, xml):
-        # TODO: Check if we can avoid use enterprise.
-        cfdi = self.env['account.move'].l10n_mx_edi_get_tfd_etree(xml)
+        cfdi = self.env['res.company'].l10n_mx_edi_get_tfd_etree(xml)
         data = {
             'date': xml.get('Fecha', ' ').replace('T', ' '),
             'number': xml.get('Folio', ''),

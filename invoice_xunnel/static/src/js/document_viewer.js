@@ -1,6 +1,6 @@
 odoo.define('invoice_xunnel.document_viewer', (require) => {
 
-    const DocumentsViewer = require('mail.DocumentViewer');
+    const DocumentsViewer = require('@mail/js/document_viewer')[Symbol.for("default")];
     const ajax = require('web.ajax');
     const { qweb } = require('web.core');
 

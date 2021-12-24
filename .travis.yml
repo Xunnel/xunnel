@@ -4,23 +4,21 @@ sudo: false
 cache:
   apt: true
   directories:
-    - $HOME/.pip-cache/
+    - $HOME/.cache/pip
 
 addons:
+  postgresql: "11"
   apt:
     packages:
       - expect-dev
-      - python-lxml
-      - python-simplejson
-      - python-yaml
+      - openssl
 
 python:
-  - "3.6"
+  - "3.7"
 
 env:
   global:
-  - LINT_CHECK="0"
-  - TESTS="0"
+  - TESTS="0" LINT_CHECK="0"
 
   matrix:
   - LINT_CHECK="1"
@@ -28,15 +26,17 @@ env:
 
 install:
   - source ${TRAVIS_BUILD_DIR}/variables.sh
+  - export TRAVIS_PYTHON_VERSION="3.7"
   - git clone --single-branch --depth=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
 
 script:
   - source ${TRAVIS_BUILD_DIR}/variables.sh
-  - pip3 install requests_mock
+  - export TRAVIS_PYTHON_VERSION="3.7"
   - travis_run_tests
 
 after_success:
   - source ${TRAVIS_BUILD_DIR}/variables.sh
+  - export TRAVIS_PYTHON_VERSION="3.7"
   - travis_after_tests_success

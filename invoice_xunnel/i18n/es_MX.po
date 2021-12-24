@@ -371,24 +371,29 @@ msgstr "Crear"
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__create_uid
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__create_date
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__display_name
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nombre para mostrar"
 
 #. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_documents_document
 msgid "Document"
 msgstr "Documento"
+
+#. module: invoice_xunnel
+#: model:ir.ui.menu,name:invoice_xunnel.xunnel_download_invoices
+msgid "Download SAT XML"
+msgstr "Descargar SAT XMLs"
 
 #. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.view_account_config_settings_xunnel_invoice
@@ -410,7 +415,7 @@ msgstr "XMLs Descargados"
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
 #, python-format
 msgid "Drag and Drop your files here"
-msgstr ""
+msgstr "Arrastre y suelte sus archivos aquí"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__dragndrop
@@ -420,39 +425,39 @@ msgstr ""
 #. module: invoice_xunnel
 #: model:documents.tag,name:invoice_xunnel.egreso_tag
 msgid "Egress"
-msgstr ""
+msgstr "Egreso"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__emitter_partner_id
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.document_view_search
 msgid "Emitter"
-msgstr ""
+msgstr "Emisor"
 
 #. module: invoice_xunnel
 #: model:documents.tag,name:invoice_xunnel.ingreso_tag
 msgid "Entry"
-msgstr ""
+msgstr "Entrada"
 
 #. module: invoice_xunnel
 #. openerp-web
 #: code:addons/invoice_xunnel/static/src/js/attach_xmls_org.js:0
 #, python-format
 msgid "Error checking XML data."
-msgstr ""
+msgstr "Error revisando la infromación XML"
 
 #. module: invoice_xunnel
 #. openerp-web
 #: code:addons/invoice_xunnel/static/src/js/attach_xmls_org.js:0
 #, python-format
 msgid "Error creating invoice."
-msgstr ""
+msgstr "Error al crear factura."
 
 #. module: invoice_xunnel
 #. openerp-web
 #: code:addons/invoice_xunnel/static/src/js/attach_xmls_org.js:0
 #, python-format
 msgid "Error creating supplier."
-msgstr ""
+msgstr "Error al crear proveedor."
 
 #. module: invoice_xunnel
 #: code:addons/invoice_xunnel/wizards/attach_xmls_wizard_org.py:0
@@ -500,7 +505,7 @@ msgstr "Información"
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__journal_id
 msgid "Journal"
-msgstr ""
+msgstr "Diario"
 
 #. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_account_move
@@ -515,7 +520,7 @@ msgstr "Apunte contable"
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__just_downloaded
 msgid "Just Downloaded"
-msgstr ""
+msgstr "Recien Descargado"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard____last_update
@@ -533,18 +538,18 @@ msgstr "Última sincronización con Xunnel"
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__write_uid
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultima actualización por"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__write_date
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultima actualización el"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__message
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__no_attachment_action
@@ -571,7 +576,7 @@ msgstr ""
 #. module: invoice_xunnel
 #: model:documents.tag,name:invoice_xunnel.nomina_tag
 msgid "Payroll"
-msgstr ""
+msgstr "Nómina"
 
 #. module: invoice_xunnel
 #. openerp-web
@@ -579,12 +584,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__product_list
 #, python-format
 msgid "Products"
-msgstr ""
+msgstr "Productos"
 
 #. module: invoice_xunnel
 #: model:documents.tag,name:invoice_xunnel.reception_tag
 msgid "Reception"
-msgstr ""
+msgstr "Recepción"
 
 #. module: invoice_xunnel
 #. openerp-web
@@ -632,7 +637,7 @@ msgstr "Ver XMLs"
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
 #, python-format
 msgid "Show invoices"
-msgstr ""
+msgstr "Mostrar facturas"
 
 #. module: invoice_xunnel
 #: code:addons/invoice_xunnel/wizards/attach_xmls_wizard_org.py:0
@@ -653,7 +658,7 @@ msgstr ""
 #. module: invoice_xunnel
 #: model:ir.model.fields,help:invoice_xunnel.field_documents_document__xunnel_document
 msgid "Specify if this is a XUNNEL document."
-msgstr ""
+msgstr "Especifica si este es un documento Xunnel."
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__stamp_date
@@ -706,7 +711,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__invoice_total_amount
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.document_view_search
 msgid "Total Amount"
-msgstr ""
+msgstr "Cantidad total"
 
 #. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban

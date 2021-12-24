@@ -1,14 +1,19 @@
-from datetime import datetime
 import base64
 import json
 import logging
+from datetime import datetime
+
 import requests
 from lxml import objectify
-
-from odoo import models, fields, api, tools
-from odoo.addons.l10n_mx_edi.models.account_invoice import CFDI_SAT_QR_STATE
+from odoo import api, fields, models, tools
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_repr
+
+CFDI_SAT_QR_STATE = {
+    'No Encontrado': 'not_found',
+    'Cancelado': 'cancelled',
+    'Vigente': 'valid',
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -57,21 +62,6 @@ class Document(models.Model):
         help="Related CFDI of the XML file",
         store=True,
     )
-    just_downloaded = fields.Boolean(
-        compute="_compute_just_downloaded",
-        search="_search_just_downloaded", store=False,
-        help="""Used to identify the just donwloaded attachments.
- To evaluate if an attachment was just downloaded, we need to
- check the current context.""")
-
-    def _compute_just_downloaded(self):
-        downloaded_ids = self._context.get('downloaded_invoice', [])
-        for rec in self:
-            rec.just_downloaded = rec.id in downloaded_ids
-
-    def _search_just_downloaded(self, operator, value):
-        operator = 'in' if value else 'not int'
-        return [('id', operator, self._context.get('downloaded_invoice', []))]
 
     @api.depends('datas')
     def _compute_emitter_partner_id(self):
@@ -104,7 +94,7 @@ class Document(models.Model):
                 rec.sat_status = 'none'
                 continue
             xml = rec.get_xml_object(rec.datas)
-            if xml:
+            if xml is not None:
                 rec.sat_status = self.l10n_mx_edi_update_sat_status_xml(xml)
             else:
                 rec.sat_status = 'none'
@@ -129,11 +119,9 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
         customer_rfc = xml.Receptor.get('Rfc', '').upper()
         amount = float(xml.get('Total', 0.0))
         uuid = xml.get('UUID', '')
-        currency = self.env['res.currency'].search([
-            ('name', '=', xml.get('Moneda', 'MXN'))
-        ])
+        currency = self.env['res.currency'].search([('name', '=', xml.get('Moneda', 'MXN'))])
         precision = currency.decimal_places if currency else 0
-        tfd = self.env['account.move'].l10n_mx_edi_get_tfd_etree(xml)
+        tfd = self.env['res.company'].l10n_mx_edi_get_tfd_etree(xml)
         uuid = tfd.get('UUID', '')
         total = float_repr(amount, precision_digits=precision)
         params = '?re=%s&amp;rr=%s&amp;tt=%s&amp;id=%s' % (
@@ -185,16 +173,14 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
 
     @api.depends('datas')
     def _compute_related_cfdi(self):
-        documents = self.filtered(
-            lambda rec: rec.xunnel_document and rec.attachment_id)
+        documents = self.filtered(lambda rec: rec.xunnel_document and rec.attachment_id)
         for rec in documents:
             xml = rec.get_xml_object(rec.datas)
             if xml is None:
                 continue
             try:
                 related_uuid = []
-                for related in xml.CfdiRelacionados.iter(
-                        '{http://www.sat.gob.mx/cfd/3}CfdiRelacionado'):
+                for related in xml.CfdiRelacionados.iter('{http://www.sat.gob.mx/cfd/3}CfdiRelacionado'):
                     related_uuid += [related.get('UUID')]
                     rec.related_cfdi = json.dumps(related_uuid)
             except AttributeError:
