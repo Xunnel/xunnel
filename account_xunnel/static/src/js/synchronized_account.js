@@ -5,7 +5,7 @@ odoo.define('account_xunnel.synchronized_accounts', (require) => {
     const core = require('web.core');
 
     const SyncrhonizedAccounts = Action.extend({
-        template: 'account_xunnel.synchronized_accounts',
+        template: 'account_xunnel.synchronized_accounts_template',
         init(parent, ctx){
             this.message = ctx.message;
             this.message_class = ctx.message_class;

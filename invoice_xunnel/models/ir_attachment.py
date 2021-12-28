@@ -2,8 +2,8 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import base64
-import logging
 import json
+import logging
 
 from lxml import objectify
 from odoo import api, models
@@ -25,15 +25,13 @@ class IrAttachment(models.Model):
         no_mx_rec = self
         for rec in self:
             datas = values['datas'] if 'datas' in values else rec.datas
-            if (('description' in values or 'datas' in values) and
-                    self._validate_xml(datas)):
+            if (('description' in values or 'datas' in values) and self._validate_xml(datas)):
                 description = self._create_description(datas)
                 rec_values = values.copy()
                 rec_values.update(description)
                 super(IrAttachment, rec).write(rec_values)
                 no_mx_rec -= rec
-            elif ('datas' in values and rec.mimetype == 'application/xml' and
-                    not self._validate_xml(datas)):
+            elif ('datas' in values and rec.mimetype == 'application/xml' and not self._validate_xml(datas)):
                 rec_values = values.copy()
                 rec_values.update({
                     'description': False,
@@ -68,8 +66,7 @@ class IrAttachment(models.Model):
         except (SyntaxError, ValueError) as err:
             _logger.error(str(err))
             return {}
-        if (xml_obj.get('Version') != '3.3' or
-                xml_obj.get('TipoDeComprobante') != 'I'):
+        if (xml_obj.get('Version') != '3.3' or xml_obj.get('TipoDeComprobante') != 'I'):
             return {}
         partner = self.env['res.partner'].search([
             ('vat', '=ilike', xml_obj.Emisor.get('Rfc'))], limit=1)
@@ -85,8 +82,8 @@ class IrAttachment(models.Model):
 
     @api.model
     def _prepare_description_attachment(self, xml):
-        # TODO: Check if we can avoid use enterprise.
-        cfdi = self.env['account.move'].l10n_mx_edi_get_tfd_etree(xml)
+
+        cfdi = self.env['res.company'].l10n_mx_edi_get_tfd_etree(xml)
         data = {
             'date': xml.get('Fecha', ' ').replace('T', ' '),
             'number': xml.get('Folio', ''),
