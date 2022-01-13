@@ -56,6 +56,7 @@ class AccountOnlineAccount(models.Model):
                 'end_amount': resp_json['balance'],
                 'card_number': transaction['card_number'],
             }
+
             manual_lines = self.env['account.bank.statement.line'].search([
                 ('journal_id', '=', journal.id),
                 ('date', '=', trans['date']),
@@ -63,7 +64,7 @@ class AccountOnlineAccount(models.Model):
                 ('online_identifier', '=', False)], limit=2)
             if len(manual_lines) == 1:
                 manual_lines.online_identifier = trans['online_identifier']
-                manual_lines.name += ' - ' + trans['name']
+                manual_lines.name += ' - ' + trans['payment_ref']
                 continue
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
