@@ -7,7 +7,6 @@
             <form>
                 <sheet>
                     <group attrs="{'invisible': [('message', '!=', False)]}">
-                        <field name="company_id" invisible="1"/>
                         <field name="date_from"/>
                         <div class="text-muted">
                             SAT's invoices older than this date won't be fetched.
