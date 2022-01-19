@@ -66,9 +66,7 @@ class Document(models.Model):
     @api.depends('datas')
     def _compute_emitter_partner_id(self):
         documents = self.filtered(
-            lambda rec: rec.xunnel_document and rec.attachment_id and
-            rec.attachment_id.description and
-            'emitter' in rec.attachment_id.description)
+            lambda rec: rec.xunnel_document and rec.attachment_id)
         for rec in documents:
             xml = rec.get_xml_object(rec.datas)
             if xml is None:
