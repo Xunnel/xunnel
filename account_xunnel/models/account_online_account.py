@@ -56,7 +56,6 @@ class AccountOnlineAccount(models.Model):
                 'end_amount': resp_json['balance'],
                 'card_number': transaction['card_number'],
             }
-
             manual_lines = self.env['account.bank.statement.line'].search([
                 ('journal_id', '=', journal.id),
                 ('date', '=', trans['date']),
@@ -68,17 +67,17 @@ class AccountOnlineAccount(models.Model):
                 continue
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
-            if journal.bank_statement_creation == 'day':
+            if journal.bank_statement_creation_groupby == 'day':
                 transactions.setdefault(transaction['dt_authorization'], []).append(trans)
-            elif journal.bank_statement_creation == 'week':
+            elif journal.bank_statement_creation_groupby == 'week':
                 week = date.isocalendar()[1]
                 transactions.setdefault(week, []).append(trans)
-            elif journal.bank_statement_creation == 'bimonthly':
+            elif journal.bank_statement_creation_groupby == 'bimonthly':
                 if date.day > 15:
                     transactions.setdefault(date.strftime('%Y-%m-15'), []).append(trans)
                 else:
                     transactions.setdefault(date.strftime('%Y-%m-01'), []).append(trans)
-            elif journal.bank_statement_creation == 'month':
+            elif journal.bank_statement_creation_groupby == 'month':
                 transactions.setdefault(date.strftime('%Y-%m'), []).append(trans)
             else:
                 transactions.setdefault('transactions', []).append(trans)
