@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <form string="Import Bank Statements">
                 <sheet>
+                    <field name="xunnel_token" invisible="True" />
                     <p attrs="{'invisible': [('xunnel_token', '=', False)]}">
-                        You are about to download the bank accounts related to the connection token:
-                        <field class="d-inline-block font-weight-bold" readonly="1" name="xunnel_token"/>.
+                        You are about to download your bank accounts.
                         <br/>
                         <br/>
                         Are you sure you want to do this action? Press the cancel button to abort the process.

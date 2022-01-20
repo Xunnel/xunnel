@@ -66,16 +66,20 @@ class Document(models.Model):
     @api.depends('datas')
     def _compute_emitter_partner_id(self):
         documents = self.filtered(
-            lambda rec: rec.xunnel_document and rec.attachment_id and
-            rec.attachment_id.description and
-            'emitter' in rec.attachment_id.description)
+            lambda rec: rec.xunnel_document and rec.attachment_id)
         for rec in documents:
             xml = rec.get_xml_object(rec.datas)
             if xml is None:
                 return
             rfc = xml.Emisor.get('Rfc', '').upper()
+            name = xml.Emisor.get('Nombre', '').upper()
             partner = self.env['res.partner'].search([
                 ('vat', '=', rfc)], limit=1)
+            if not partner:
+                partner = partner.create({
+                    'vat': rfc,
+                    'name': name,
+                })
             stamp_date = xml.Complemento.xpath(
                 'tfd:TimbreFiscalDigital[1]',
                 namespaces={
