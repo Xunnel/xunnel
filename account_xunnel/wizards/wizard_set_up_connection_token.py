@@ -6,5 +6,7 @@ class WizardNewtoken(models.TransientModel):
     _description = """Wizard to set the Xunnel Token of your company, this is given when you
     create a company at https://www.xunnel.com/"""
 
-    company_id = fields.Many2one('res.company', default=lambda self: self.env.company, readonly=True)
-    xunnel_token = fields.Char(related='company_id.xunnel_token', readonly=False)
+    xunnel_token = fields.Char(default=lambda self: self.env.company.xunnel_token, readonly=False)
+
+    def confirm(self):
+        self.env.company.sudo().xunnel_token = self.xunnel_token

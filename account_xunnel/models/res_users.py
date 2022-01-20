@@ -14,6 +14,6 @@ class ResUsers(models.Model):
         res = self.env.company._xunnel('account_manager/info')
         info = res.get('response', {})
         if not info.get('token'):
-            raise UserError(msg)
+            raise UserError(res.get('error'))
         info['locale'] = self.env.context.get('lang', 'en_US').split('_')[0]
         return info
