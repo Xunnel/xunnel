@@ -411,9 +411,9 @@ msgstr ""
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_download_bank_accounts_form_view
 msgid ""
-"You are about to download the bank accounts related to the connection token:"
+"You are about to download your bank accounts."
 msgstr ""
-"Estas a punto de descargar la cuentas de banco relacionadas al token:"
+"Estas a punto de descargar la cuentas de tu banco."
 
 #. module: account_xunnel
 #: code:addons/account_xunnel/models/res_users.py:0
