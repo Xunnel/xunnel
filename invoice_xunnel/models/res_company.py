@@ -67,10 +67,11 @@ class ResCompany(models.Model):
                 continue
             dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
             uuid = self.l10n_mx_edi_get_tfd_etree(xml_obj).get('UUID')
-            document = self.env['documents.document'].search([('name', '=', uuid), ('name', '!=', False)])
+            datas_fname = "%s.xml" % (uuid)
+            document = self.env['documents.document'].search([('name', '=', datas_fname), ('name', '!=', False)])
             if not document:
                 document = document.with_context(xml_obj=xml_obj, no_document=True).create({
-                    'name': uuid,
+                    'name': datas_fname,
                     'xunnel_document': True,
                     'type': 'binary',
                     'datas': base64.b64encode(bytes(xml)),
