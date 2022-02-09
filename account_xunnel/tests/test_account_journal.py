@@ -54,21 +54,21 @@ class TestAccountJournal(TransactionCase):
                     'foreign_currency_id': currency.id,
                     'amount': 1250.0,
                     'amount_currency': 2500.0,
-                    'online_identifier': 'test',
+                    'online_transaction_identifier': 'test',
                 }),
                 (0, 0, {
                     'date': '2019-01-01',
                     'payment_ref': 'line_2',
                     'partner_id': partner.id,
                     'amount': 2000.0,
-                    'online_identifier': 'test',
+                    'online_transaction_identifier': 'test',
                 }),
                 (0, 0, {
                     'date': '2019-01-01',
                     'payment_ref': 'line_3',
                     'partner_id': partner.id,
                     'amount': 4000.0,
-                    'online_identifier': 'test',
+                    'online_transaction_identifier': 'test',
                 }),
             ],
         })
@@ -90,7 +90,9 @@ class TestAccountJournal(TransactionCase):
         self.env.user.company_id.xunnel_token = 'test token'
         transactions = self.journal.manual_sync()
         self.assertNotEqual(online_journal.last_refresh, False)
-        self.assertEqual(transactions, 7)
+        # Although there are only 7 transactions at the response file an opening transaction
+        # is created when a user sync for the first time inside a journal
+        self.assertEqual(transactions, 8)
 
     @mock()
     def test_03_bad_retrieve_transactions_last_sync(self, request):
@@ -120,7 +122,7 @@ class TestAccountJournal(TransactionCase):
             text=dumps(dict(response=dumps({
                 'balance': 0,
                 'transactions': response.TRANSACTIONS}))))
-        self.journal.bank_statement_creation = 'month'
+        self.journal.bank_statement_creation_groupby = 'month'
         statement = self.env['account.bank.statement'].create({
             'line_ids': [(0, 0, {
                 'name': 'Transaction 1',
@@ -132,7 +134,7 @@ class TestAccountJournal(TransactionCase):
             'journal_id': self.journal.id,
         })
         line = statement.line_ids
-        self.assertFalse(line.online_identifier)
+        self.assertFalse(line.online_transaction_identifier)
 
     @mock()
     def test_05_duplicate_manual_transactions(self, request):
@@ -144,7 +146,7 @@ class TestAccountJournal(TransactionCase):
             text=dumps(dict(response=dumps({
                 'balance': 0,
                 'transactions': response.TRANSACTIONS}))))
-        self.journal.bank_statement_creation = 'month'
+        self.journal.bank_statement_creation_groupby = 'month'
         statement = self.env['account.bank.statement'].create({
             'name': 'online sync',
             'line_ids': [(0, 0, {
@@ -162,14 +164,13 @@ class TestAccountJournal(TransactionCase):
             'journal_id': self.journal.id,
         })
         self.journal.manual_sync()
-        lines = statement.line_ids.filtered(lambda l: not l.online_identifier)
+        lines = statement.line_ids.filtered(lambda l: not l.online_transaction_identifier)
         self.assertEqual(len(lines), 2)
-        # self.assertNotEqual(len(statement.line_ids), 2)
 
     @mock()
     def test_06_statements_by_month_period(self, request):
         """Test to validate the creation of bank statements depending on the
-        configuration of of the journal bank_statement_creation field.
+        configuration of of the journal bank_statement_creation_groupby field.
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
@@ -182,7 +183,7 @@ class TestAccountJournal(TransactionCase):
     @mock()
     def test_07_statements_by_day_period(self, request):
         """Test to validate the creation of bank statements depending on the
-        configuration of of the journal bank_statement_creation field.
+        configuration of of the journal bank_statement_creation_groupby field.
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
@@ -195,7 +196,7 @@ class TestAccountJournal(TransactionCase):
     @mock()
     def test_08_statements_by_week_period(self, request):
         """Test to validate the creation of bank statements depending on the
-        configuration of of the journal bank_statement_creation field.
+        configuration of of the journal bank_statement_creation_groupby field.
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
@@ -208,7 +209,7 @@ class TestAccountJournal(TransactionCase):
     @mock()
     def test_09_statements_by_bimonth_period(self, request):
         """Test to validate the creation of bank statements depending on the
-        configuration of of the journal bank_statement_creation field.
+        configuration of of the journal bank_statement_creation_groupby field.
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
@@ -221,6 +222,12 @@ class TestAccountJournal(TransactionCase):
     def process_statements_by_period(self, period):
         statement_obj = self.env['account.bank.statement']
         statement_obj.search([('journal_id', '=', self.journal.id)]).unlink()
-        self.journal.bank_statement_creation = period
+        self.journal.bank_statement_creation_groupby = period
         self.journal.manual_sync()
-        return statement_obj.search([('journal_id', '=', self.journal.id), ('name', '!=', ('Opening statement'))])
+        statements = statement_obj.search([('journal_id', '=', self.journal.id)])
+        expected_statements = []
+        for statement in statements:
+            if 'Opening statement: first synchronization' not in statement.line_ids.mapped('payment_ref'):
+                expected_statements.append(statement)
+
+        return expected_statements

@@ -50,19 +50,18 @@ class AccountOnlineAccount(models.Model):
             trans = {
                 'ref': transaction['reference'],
                 'payment_ref': transaction['reference'],
-                'online_identifier': transaction['id_transaction'],
+                'online_transaction_identifier': transaction['id_transaction'],
                 'date': date.date(),
                 'amount': transaction['amount'],
-                'end_amount': resp_json['balance'],
                 'card_number': transaction['card_number'],
             }
             manual_lines = self.env['account.bank.statement.line'].search([
                 ('journal_id', '=', journal.id),
                 ('date', '=', trans['date']),
                 ('amount', '=', trans['amount']),
-                ('online_identifier', '=', False)], limit=2)
+                ('online_transaction_identifier', '=', False)], limit=2)
             if len(manual_lines) == 1:
-                manual_lines.online_identifier = trans['online_identifier']
+                manual_lines.online_transaction_identifier = trans['online_transaction_identifier']
                 manual_lines.name += ' - ' + trans['payment_ref']
                 continue
             if 'meta' in transaction and 'location' in transaction['meta']:
@@ -88,19 +87,14 @@ class AccountOnlineAccount(models.Model):
         statement_obj = self.env['account.bank.statement']
         line_statement_obj = self.env['account.bank.statement.line']
         response = 0
-        ending_balance = False
-        for item in transactions.items():
-            for trans in item[1]:
-                if 'end_amount' in trans:
-                    ending_balance = trans.pop('end_amount')
         last_date = None
         for __, trans in sorted(transactions.items()):
-            response += statement_obj.online_sync_bank_statement(trans, journal, ending_balance)
+            response += len(statement_obj._online_sync_bank_statement(trans, self))
             statement = statement_obj.search([('journal_id', '=', journal.id)], order="id desc", limit=1)
             starting_balance = line_statement_obj.search([
                 ('statement_id', '=', statement.id),
-                ('online_identifier', '=', False),
-                ('name', '=', _(
+                ('online_transaction_identifier', '=', False),
+                ('payment_ref', '=', _(
                     'Opening statement: first synchronization')),
                 ], limit=1)
             if starting_balance:
@@ -111,7 +105,7 @@ class AccountOnlineAccount(models.Model):
                 [('statement_id', '=', statement.id)], limit=1,
                 order='date desc').date
             statement.date = last_date
-            statement.line_ids.filtered('online_identifier').write(
+            statement.line_ids.filtered('online_transaction_identifier').write(
                 {'narration': _('Transaction synchronized from Xunnel')})
         if last_date:
             self.last_sync = last_date
