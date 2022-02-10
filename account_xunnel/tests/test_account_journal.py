@@ -87,7 +87,9 @@ class TestAccountJournal(TransactionCase):
         self.env.user.company_id.xunnel_token = 'test token'
         transactions = self.journal.manual_sync()
         self.assertNotEqual(online_journal.last_refresh, False)
-        self.assertEqual(len(transactions), 5)
+        # Although there are only 7 transactions at the response file an opening transaction
+        # is created when a user sync for the first time inside a journal
+        self.assertEqual(transactions, 8)
 
     @mock()
     def test_03_bad_retrieve_transactions_last_sync(self, request):
@@ -102,7 +104,10 @@ class TestAccountJournal(TransactionCase):
         online_journal = self.journal.account_online_account_id
         # To test if manual_sync its executed before is assigned to a journal
         online_journal.last_sync = False
+        online_journal.journal_ids = False
+        statements = online_journal._retrieve_transactions()
         self.assertFalse(online_journal.last_sync)
+        self.assertEqual(statements, 0)
 
     @mock()
     def test_04_link_manual_transactions(self, request):
@@ -131,7 +136,7 @@ class TestAccountJournal(TransactionCase):
     @mock()
     def test_05_duplicate_manual_transactions(self, request):
         """Test to validate if you create more than one equal statement line
-        manually, it should let that records an create new transactions.
+        manually, it should let that records and create new transactions.
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
@@ -170,7 +175,7 @@ class TestAccountJournal(TransactionCase):
                 'balance': 0,
                 'transactions': response.TRANSACTIONS}))))
         month = self.process_statements_by_period('month')
-        self.assertEqual(len(month), 3)
+        self.assertEqual(len(month), 2)
 
     @mock()
     def test_07_statements_by_day_period(self, request):
@@ -183,7 +188,7 @@ class TestAccountJournal(TransactionCase):
                 'balance': 0,
                 'transactions': response.TRANSACTIONS}))))
         day = self.process_statements_by_period('day')
-        self.assertEqual(len(day), 7)
+        self.assertEqual(len(day), 6)
 
     @mock()
     def test_08_statements_by_week_period(self, request):
@@ -196,7 +201,7 @@ class TestAccountJournal(TransactionCase):
                 'balance': 0,
                 'transactions': response.TRANSACTIONS}))))
         week = self.process_statements_by_period('week')
-        self.assertEqual(len(week), 4)
+        self.assertEqual(len(week), 3)
 
     @mock()
     def test_09_statements_by_bimonth_period(self, request):
@@ -209,11 +214,17 @@ class TestAccountJournal(TransactionCase):
                 'balance': 0,
                 'transactions': response.TRANSACTIONS}))))
         bimonthly = self.process_statements_by_period('bimonthly')
-        self.assertEqual(len(bimonthly), 4)
+        self.assertEqual(len(bimonthly), 3)
 
     def process_statements_by_period(self, period):
         statement_obj = self.env['account.bank.statement']
         statement_obj.search([('journal_id', '=', self.journal.id)]).unlink()
         self.journal.bank_statement_creation_groupby = period
         self.journal.manual_sync()
-        return statement_obj.search([('journal_id', '=', self.journal.id), ('name', '!=', ('Opening statement'))])
+        statements = statement_obj.search([('journal_id', '=', self.journal.id)])
+        expected_statements = []
+        for statement in statements:
+            if 'Opening statement: first synchronization' not in statement.line_ids.mapped('payment_ref'):
+                expected_statements.append(statement)
+
+        return expected_statements

@@ -60,8 +60,8 @@ class AccountOnlineAccount(models.Model):
                 ('amount', '=', trans['amount']),
                 ('online_transaction_identifier', '=', False)], limit=2)
             if len(manual_lines) == 1:
-                manual_lines.online_identifier = trans['online_identifier']
-                manual_lines.name += ' - ' + trans['name']
+                manual_lines.online_transaction_identifier = trans['online_transaction_identifier']
+                manual_lines.name += ' - ' + trans['payment_ref']
                 continue
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
@@ -88,12 +88,12 @@ class AccountOnlineAccount(models.Model):
         response = 0
         last_date = None
         for __, trans in sorted(transactions.items()):
-            response = statement_obj._online_sync_bank_statement(trans, self)
+            response += len(statement_obj._online_sync_bank_statement(trans, self))
             statement = statement_obj.search([('journal_id', '=', journal.id)], order="id desc", limit=1)
             starting_balance = line_statement_obj.search([
                 ('statement_id', '=', statement.id),
                 ('online_transaction_identifier', '=', False),
-                ('name', '=', _(
+                ('payment_ref', '=', _(
                     'Opening statement: first synchronization')),
                 ], limit=1)
             if starting_balance:

@@ -11,15 +11,12 @@ class AccountJournal(models.Model):
     def _compute_has_synchronized_xunnel(self):
         for rec in self:
             statement = self.env['account.bank.statement'].search(
-                [('journal_id', '=', rec.id)],
-                order="date desc, id desc", limit=1)
-            has_online_sync = statement and self.env[
-                'account.bank.statement.line'].search([
-                    ('statement_id', '=', statement.id),
-                    ('online_transaction_identifier', '!=', False)], limit=1)
+                [('journal_id', '=', rec.id)], order="date desc, id desc", limit=1)
+            has_online_sync = statement and self.env['account.bank.statement.line'].search([
+                ('statement_id', '=', statement.id),
+                ('online_transaction_identifier', '!=', False)], limit=1)
             is_online_bank = rec.bank_statements_source == 'online_sync'
-            rec.has_synchronized_xunnel = (
-                is_online_bank and has_online_sync)
+            rec.has_synchronized_xunnel = (is_online_bank and has_online_sync)
 
     has_synchronized_xunnel = fields.Boolean(
         help='Recognize if has synchronized with Xunnel',
