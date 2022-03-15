@@ -184,6 +184,7 @@ class TestCaseDocuments(TransactionCase):
         })
         partner = self.env['res.partner'].search([], limit=1)
         partner.vat = 'MXGODE561231GR8'
+        partner.supplier_rank += 1
         document_test._compute_emitter_partner_id()
         self.assertEqual(document_test.emitter_partner_id, partner)
         self.assertEqual(document_test.invoice_total_amount, 666.66)
