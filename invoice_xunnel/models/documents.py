@@ -72,14 +72,10 @@ class Document(models.Model):
             if xml is None:
                 return
             rfc = xml.Emisor.get('Rfc', '').upper()
-            name = xml.Emisor.get('Nombre', '').upper()
             partner = self.env['res.partner'].search([
-                ('vat', '=', rfc)], limit=1)
-            if not partner:
-                partner = partner.create({
-                    'vat': rfc,
-                    'name': name,
-                })
+                ('vat', '=', rfc), '|',
+                ('supplier_rank', '>', 0), ('customer_rank', '>', 0)
+            ], limit=1)
             stamp_date = xml.Complemento.xpath(
                 'tfd:TimbreFiscalDigital[1]',
                 namespaces={

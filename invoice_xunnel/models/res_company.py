@@ -6,8 +6,7 @@ from codecs import BOM_UTF8
 from datetime import date
 from time import mktime
 
-from lxml import objectify
-from lxml.etree import XMLSyntaxError
+from lxml import etree, objectify
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -62,7 +61,7 @@ class ResCompany(models.Model):
             try:
                 xml = xml.replace(b'xmlns:schemaLocation', b'xsi:schemaLocation')
                 xml_obj = objectify.fromstring(xml)
-            except XMLSyntaxError:
+            except etree.XMLSyntaxError:
                 failed += 1
                 continue
             dates.append(xml_obj.get('Fecha', xml_obj.get('fecha', ' ')))
