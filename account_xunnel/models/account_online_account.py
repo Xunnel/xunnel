@@ -61,7 +61,8 @@ class AccountOnlineAccount(models.Model):
                 ('online_transaction_identifier', '=', False)], limit=2)
             if len(manual_lines) == 1:
                 manual_lines.online_transaction_identifier = trans['online_transaction_identifier']
-                manual_lines.name += ' - ' + trans['payment_ref']
+                if manual_lines.name:
+                    manual_lines.name += ' - ' + trans['payment_ref']
                 continue
             if 'meta' in transaction and 'location' in transaction['meta']:
                 trans['location'] = transaction['meta']['location']
