@@ -33,7 +33,7 @@ class ResCompany(models.Model):
                 'Xunnel-Token': str(self.xunnel_token),
                 'Xunnel-Origin': origin_url
             },
-            data=dumps(payload) if payload else None)
+            data=dumps(payload) if payload else None, timeout=60)
         try:
             response.raise_for_status()
         except HTTPError as error:
