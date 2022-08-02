@@ -48,7 +48,7 @@ class AccountOnlineAccount(models.Model):
             date = datetime.strptime(transaction['dt_authorization'], '%Y-%m-%d')
             trans = {
                 'ref': transaction['reference'],
-                'payment_ref': transaction['reference'],
+                'payment_ref': transaction['description'],
                 'online_transaction_identifier': transaction['id_transaction'],
                 'date': date.date(),
                 'amount': transaction['amount'],
