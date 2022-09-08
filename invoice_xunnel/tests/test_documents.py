@@ -87,6 +87,7 @@ class TestCaseDocuments(TransactionCase):
             self.ref('base.main_company'))
         self.company.xunnel_token = 'test'
         self.company_id = self.company.id
+        self.company.vat = 'MXGODE561231GR8'
         self.folder_a = self.env['documents.folder'].create({
             'name': 'folder A',
         })

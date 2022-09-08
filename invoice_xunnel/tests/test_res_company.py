@@ -29,6 +29,7 @@ class TestXunnelAccount(TransactionCase):
         request.post('%sget_invoices_sat' % self.url, text=documents_response)
         old_sync = fields.Date.to_date('2018-01-01')
         self.company.xunnel_last_sync = old_sync
+        self.company.vat = 'MXGODE561231GR8'
         self.company._sync_xunnel_documents()
         last_sync = self.company.xunnel_last_sync
         self.assertTrue(old_sync < last_sync)
@@ -49,6 +50,7 @@ class TestXunnelAccount(TransactionCase):
         old_sync = '1970-01-01'
         self.company.xunnel_last_sync = old_sync
         with self.assertRaisesRegex(UserError, 'Expected error for testing'):
+            self.company.vat = 'MXGODE561231GR8'
             self.company._sync_xunnel_documents()
             final_documents = documents.search_count([])
             self.assertEquals(final_documents - inital_documents, 3)
