@@ -68,7 +68,7 @@ class IrAttachment(models.Model):
         except (SyntaxError, ValueError) as err:
             _logger.error(str(err))
             return {}
-        if (xml_obj.get('Version') != '3.3' or
+        if (xml_obj.get('Version') not in ['3.3', '4.0'] or
                 xml_obj.get('TipoDeComprobante') != 'I'):
             return {}
         partner = self.env['res.partner'].search([
