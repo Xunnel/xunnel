@@ -210,7 +210,7 @@ class AttachXmlsWizard(models.TransientModel):
                 {'supplier': (xml_vat_receiver, inv_vat_receiver)}),
             ((not inv_id and exist_reference),
                 {'reference': (xml_name_supplier, xml_folio)}),
-            (version != '3.3', {'version': True}),
+            (version not in ['3.3', '4.0'], {'version': True}),
             ((not inv_id and not exist_supplier),
                 {'supplier': xml_name_supplier}),
             ((not inv_id and xml_currency and not exist_currency),
