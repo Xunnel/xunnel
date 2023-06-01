@@ -6,7 +6,7 @@
     "summary": """
         Use Xunnel Invoice to retrieve invoices from SAT.
     """,
-    "version": "15.0.1.0.0",
+    "version": "16.0.1.0.0",
     "author": "Jarsa Sistemas, Vauxoo",
     "category": "Accounting",
     "website": "http://www.xunnel.com",
@@ -14,7 +14,6 @@
     "depends": [
         "account_xunnel",
         "documents",
-        "l10n_mx_edi",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -22,23 +21,18 @@
         "wizards/documents.xml",
         "views/xunnel_menuitems.xml",
     ],
-    "demo": [
-        "demo/res_company.xml",
-    ],
     "assets": {
         "web.assets_backend": [
-            "/invoice_xunnel/static/src/css/style.css",
-            "/invoice_xunnel/static/src/less/main.less",
             "/invoice_xunnel/static/src/lib/google_pretty_print.js",
             "/invoice_xunnel/static/src/lib/notify.min.js",
-            "/invoice_xunnel/static/src/js/attach_xmls_org.js",
-            "/invoice_xunnel/static/src/js/attach_xmls.js",
+            "/invoice_xunnel/static/src/scss/main.scss",
+            "/invoice_xunnel/static/src/js/models/documents.js",
+            "/invoice_xunnel/static/src/js/models/attachment_viewer_viewable.js",
+            "/invoice_xunnel/static/src/js/components/attachment_viewer.xml",
             "/invoice_xunnel/static/src/js/documents_inspector.js",
-            "/invoice_xunnel/static/src/js/document_viewer.js",
-            "/invoice_xunnel/static/src/js/documents_dashboard.js",
-        ],
-        "web.assets_qweb": [
-            "/invoice_xunnel/static/src/xml/*.xml",
+            "/invoice_xunnel/static/src/js/documents_attachment_viewer.js",
+            "/invoice_xunnel/static/src/js/documents_kanban_record.js",
+            "/invoice_xunnel/static/src/xml/templates.xml",
         ],
     },
     "installable": True,

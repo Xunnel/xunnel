@@ -1,6 +1,5 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-
 import os
 from json import dumps, loads
 from unittest.mock import Mock
@@ -8,7 +7,7 @@ from unittest.mock import Mock
 from requests_mock import mock
 
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 from odoo.tools import misc
 
 from . import response
@@ -16,6 +15,7 @@ from . import response
 requests = Mock()
 
 
+@tagged("res_company")
 class TestResCompany(TransactionCase):
     def setUp(self):
         super().setUp()

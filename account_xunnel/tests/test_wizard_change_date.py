@@ -1,7 +1,8 @@
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 
+@tagged("wizard_change_date")
 class TestWizardChangeDate(TransactionCase):
     def setUp(self):
         super().setUp()
@@ -42,7 +43,3 @@ class TestWizardChangeDate(TransactionCase):
         journal.bank_statements_source = False
         with self.assertRaises(ValidationError):
             wizard.with_context(active_id=journal.id).change_sync_date()
-
-        journal.bank_statements_source = "online_sync"
-        wizard.with_context(active_id=journal.id).change_sync_date()
-        self.assertEqual(str(online_journal.last_sync), "2021-10-10")

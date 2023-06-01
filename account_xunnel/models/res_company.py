@@ -19,9 +19,9 @@ class ResCompany(models.Model):
     xunnel_token = fields.Char()
 
     def _xunnel(self, endpoint, payload=None):
-        """_xunnel calls xunnel.com and returns it response.
-        if is there any an exception. The error message within the API
-        response will be raised.
+        """Call the xunnel.com API and returns it's response.
+
+        If is there any an exception, the error message within the API response will be raised.
         """
         self.ensure_one()
         if not self.xunnel_token:
@@ -32,6 +32,7 @@ class ResCompany(models.Model):
             str(base) + endpoint,
             headers={"Xunnel-Token": str(self.xunnel_token), "Xunnel-Origin": origin_url},
             data=dumps(payload) if payload else None,
+            timeout=300,
         )
         try:
             response.raise_for_status()

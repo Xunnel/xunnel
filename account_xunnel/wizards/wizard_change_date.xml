@@ -28,11 +28,16 @@
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />
         <field name="arch" type="xml">
-            <xpath expr='//div[@name="bank_cash_commands"]' position="before">
-                <a
-                    type="action"
-                    name="%(account_xunnel.change_xunnel_last_sync_date_action)d"
-                >Xunnel synchronization date</a>
+            <xpath
+                expr="//div[hasclass('o_kanban_manage_new')]/div[hasclass('o_kanban_card_manage_title')]"
+                position="after"
+            >
+                <div t-if="journal_type == 'bank'" name="xunnel_sync_date">
+                    <a
+                        type="action"
+                        name="%(account_xunnel.change_xunnel_last_sync_date_action)d"
+                    >Xunnel synchronization date</a>
+                </div>
             </xpath>
         </field>
     </record>

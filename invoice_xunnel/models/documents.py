@@ -22,51 +22,6 @@ _logger = logging.getLogger(__name__)
 class Document(models.Model):
     _inherit = "documents.document"
 
-    sat_status = fields.Selection(
-        selection=[
-            ("none", "State not defined"),
-            ("undefined", "Not Synced Yet"),
-            ("not_found", "Not Found"),
-            ("cancelled", "Cancelled"),
-            ("valid", "Valid"),
-        ],
-        compute="_compute_sat_status",
-        default="undefined",
-        store=True,
-        help="Refers to the status of the invoice inside the SAT system.",
-    )
-    emitter_partner_id = fields.Many2one(
-        "res.partner",
-        compute="_compute_emitter_partner_id",
-        string="Emitter",
-        help="In case this is a CFDI file, stores emitter's name.",
-        store=True,
-    )
-    xunnel_document = fields.Boolean(help="Specify if this is a XUNNEL document.")
-    invoice_total_amount = fields.Float(
-        string="Total Amount",
-        compute="_compute_emitter_partner_id",
-        help="In case this is a CFDI file, stores invoice's total amount.",
-        store=True,
-    )
-    stamp_date = fields.Datetime(
-        compute="_compute_emitter_partner_id",
-        help="In case this is a CFDI file, stores invoice's stamp date.",
-        store=True,
-    )
-    product_list = fields.Text(
-        compute="_compute_product_list",
-        string="Products",
-        help="In case this is a CFDI file, show invoice's product list",
-        store=True,
-    )
-    related_cfdi = fields.Text(
-        compute="_compute_related_cfdi",
-        string="Related CFDI",
-        help="Related CFDI of the XML file",
-        store=True,
-    )
-
     @api.depends("datas")
     def _compute_emitter_partner_id(self):
         documents = self.filtered(lambda rec: rec.xunnel_document and rec.attachment_id)
@@ -134,7 +89,7 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
             soap_xml = requests.post(
                 "https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc?wsdl",
                 data=soap_env,
-                timeout=20,
+                timeout=300,
                 headers={
                     "SOAPAction": "http://tempuri.org/IConsultaCFDIService/Consulta",
                     "Content-Type": "text/xml; charset=utf-8",
@@ -180,8 +135,53 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
                 continue
             try:
                 related_uuid = []
-                for related in xml.CfdiRelacionados.iter("{http://www.sat.gob.mx/cfd/3}CfdiRelacionado"):
-                    related_uuid += [related.get("UUID")]
+                for doc in xml.CfdiRelacionados.CfdiRelacionado:
+                    related_uuid += [doc.get("UUID")]
                     rec.related_cfdi = json.dumps(related_uuid)
             except AttributeError:
                 rec.related_cfdi = None
+
+    sat_status = fields.Selection(
+        selection=[
+            ("none", "State not defined"),
+            ("undefined", "Not Synced Yet"),
+            ("not_found", "Not Found"),
+            ("cancelled", "Cancelled"),
+            ("valid", "Valid"),
+        ],
+        compute="_compute_sat_status",
+        default="undefined",
+        store=True,
+        help="Refers to the status of the invoice inside the SAT system.",
+    )
+    emitter_partner_id = fields.Many2one(
+        "res.partner",
+        compute="_compute_emitter_partner_id",
+        string="Emitter",
+        help="In case this is a CFDI file, stores emitter's name.",
+        store=True,
+    )
+    xunnel_document = fields.Boolean(help="Specify if this is a document downloaded with Xunnel.")
+    invoice_total_amount = fields.Float(
+        string="Total Amount",
+        compute="_compute_emitter_partner_id",
+        help="In case this is a CFDI file, stores invoice's total amount.",
+        store=True,
+    )
+    stamp_date = fields.Datetime(
+        compute="_compute_emitter_partner_id",
+        help="In case this is a CFDI file, stores invoice's stamp date.",
+        store=True,
+    )
+    product_list = fields.Text(
+        compute="_compute_product_list",
+        string="Products",
+        help="In case this is a CFDI file, show invoice's product list",
+        store=True,
+    )
+    related_cfdi = fields.Text(
+        compute="_compute_related_cfdi",
+        string="Related CFDI",
+        help="Related CFDI of the XML file",
+        store=True,
+    )

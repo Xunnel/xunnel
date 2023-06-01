@@ -67,20 +67,7 @@ class AccountOnlineAccount(models.Model):
                 continue
             if "meta" in transaction and "location" in transaction["meta"]:
                 trans["location"] = transaction["meta"]["location"]
-            if journal.bank_statement_creation_groupby == "day":
-                transactions.setdefault(transaction["dt_authorization"], []).append(trans)
-            elif journal.bank_statement_creation_groupby == "week":
-                week = date.isocalendar()[1]
-                transactions.setdefault(week, []).append(trans)
-            elif journal.bank_statement_creation_groupby == "bimonthly":
-                if date.day > 15:
-                    transactions.setdefault(date.strftime("%Y-%m-15"), []).append(trans)
-                else:
-                    transactions.setdefault(date.strftime("%Y-%m-01"), []).append(trans)
-            elif journal.bank_statement_creation_groupby == "month":
-                transactions.setdefault(date.strftime("%Y-%m"), []).append(trans)
-            else:
-                transactions.setdefault("transactions", []).append(trans)
+            transactions.setdefault("transactions", []).append(trans)
         return transactions
 
     def _process_transactions(self, transactions):
@@ -90,7 +77,7 @@ class AccountOnlineAccount(models.Model):
         response = 0
         last_date = None
         for __, trans in sorted(transactions.items()):
-            response += len(statement_obj._online_sync_bank_statement(trans, self))
+            response += len(line_statement_obj._online_sync_bank_statement(trans, self))
             statement = statement_obj.search([("journal_id", "=", journal.id)], order="id desc", limit=1)
             starting_balance = line_statement_obj.search(
                 [

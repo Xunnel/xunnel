@@ -68,7 +68,7 @@ class AccountOnlineLink(models.Model):
 
     def update_credentials(self):
         raise UserError(
-            _("Updating credentials is not allowed here. " "Please go to https://www.xunnel.com/ to achieve that.")
+            _("Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that.")
         )
 
     def _retrieve_transactions(self, forced_params=None):
@@ -95,8 +95,7 @@ class AccountOnlineLink(models.Model):
     def xunnel_exception(self):
         raise UserError(
             _(
-                """Xunnel bank: Unsupported operation.
-
-Please check our documentation in: https://xunnel.com/en_US/user-manual"""
+                "Xunnel bank: Unsupported operation.\
+                Please check our documentation in: https://xunnel.com/en_US/user-manual"
             )
         )

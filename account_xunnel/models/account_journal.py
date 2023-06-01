@@ -34,9 +34,9 @@ class AccountJournal(models.Model):
         if res == 0:
             raise ValidationError(
                 _(
-                    """No item was found in the period of time that you choose, please change the \
-                                    Xunnel Synchronization Date of the journal or check if its associated  account \
-                                    has transactions at www.xunnel.com"""
+                    """No item was found in the period of time that you choose, please change the
+                Xunnel Synchronization Date of the journal or check if its associated  account
+                has transactions at www.xunnel.com"""
                 )
             )
         return res

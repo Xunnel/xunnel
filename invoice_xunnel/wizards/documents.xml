@@ -8,15 +8,15 @@
                 <sheet>
                     <group attrs="{'invisible': [('message', '!=', False)]}">
                         <field name="date_from" />
-                        <div class="text-muted">
-                            SAT's invoices older than this date won't be fetched.
-                        </div>
                     </group>
-                    <group attrs="{'invisible': [('message', '=', False)]}">
+                    <div class="text-muted" attrs="{'invisible': [('message', '!=', False)]}">
+                        SAT's invoices older than this date won't be fetched.
+                    </div>
+                    <div attrs="{'invisible': [('message', '=', False)]}">
                         <div role="alert" class="alert alert-warning">
                             <field readonly="1" name="message" />
                         </div>
-                    </group>
+                    </div>
                 </sheet>
                 <footer>
                     <field name="no_attachment_action" invisible="1" />

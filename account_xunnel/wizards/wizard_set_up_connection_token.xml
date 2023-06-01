@@ -7,16 +7,26 @@
         <field name="arch" type="xml">
             <form create="0">
                 <sheet>
-                    <group>
-                        <div class="col-6">
+                    <div class="d-flex">
+                        <div class="col-5">
                             <h4>Super secret token</h4>
                             <small class="text-muted">
-                                Type here the code you were given when you first created you connection token in
-                                <a target="_blank" href="https://www.xunnel.com/">https://www.xunnel.com/</a>.
+                                Type here the token of your company in <a
+                                    target="_blank"
+                                    href="https://www.xunnel.com/"
+                                >https://www.xunnel.com/</a>.
                             </small>
-                            <field password="True" class="mt-4" name="xunnel_token" nolabel="1" />
                         </div>
-                    </group>
+                        <div class="col-7 mx-4">
+                            <field
+                                password="True"
+                                class="mt-4"
+                                name="xunnel_token"
+                                nolabel="1"
+                                placeholder="*****************"
+                            />
+                        </div>
+                    </div>
                 </sheet>
                 <footer class="text-right">
                     <button name="confirm" string="Save" class="btn btn-primary __css_btn_xunnel__" type="object" />

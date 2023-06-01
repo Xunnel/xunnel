@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="xunnel.AttachmentViewer" owl="1" t-inherit="mail.AttachmentViewer" t-inherit-mode="extension">
+        <!-- this xpath adds an iframe to previsualize the content of an XML in the documents dashboard -->
+        <xpath expr="//div[hasclass('o_AttachmentViewer_main')]" position="inside">
+            <t t-if="attachmentViewer.attachmentViewerViewable.isXml">
+                <iframe
+                    class="o_AttachmentViewer_view o_AttachmentViewer_viewIframe o_AttachmentViewer_isXml o_text w-75 h-100 border-0"
+                    t-att-src="attachmentViewer.attachmentViewerViewable.defaultSource"
+                />
+            </t>
+        </xpath>
+    </t>
+</templates>

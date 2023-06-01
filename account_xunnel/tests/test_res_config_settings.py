@@ -1,11 +1,11 @@
 import os
 from json import dumps, loads
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from requests_mock import mock
 
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 from odoo.tools import misc
 
 from . import response
@@ -13,6 +13,7 @@ from . import response
 requests = Mock()
 
 
+@tagged("res_config_settings")
 class TestResConfigSettings(TransactionCase):
     def setUp(self):
         super().setUp()
@@ -20,20 +21,9 @@ class TestResConfigSettings(TransactionCase):
         self.company = self.env.user.company_id
         self.config_settings = self.env["res.config.settings"].create({})
 
-    def test_01_create(self):
-        vals_1 = {
-            "xunnel_token": "test token from vals",
-        }
-        config_settings_1 = self.config_settings.create(vals_1)
-        self.assertEqual(config_settings_1.xunnel_token, "test token from vals")
-        vals_2 = {}
-        self.config_settings.xunnel_token = "test token"
-        config_settings_2 = self.config_settings.create(vals_2)
-        self.assertEqual(config_settings_2.xunnel_token, "test token")
-
     @mock()
-    def test_02_sync_xunnel_providers(self, request=None):
-        self.config_settings.xunnel_token = False
+    def test_01_sync_xunnel_providers(self, request=None):
+        self.company.xunnel_token = False
         with self.assertRaises(UserError):
             self.config_settings.sync_xunnel_providers()
 
@@ -47,7 +37,7 @@ class TestResConfigSettings(TransactionCase):
         request.post("%sget_xunnel_providers" % self.url, text=dumps(dict(response=response.PROVIDERS)))
         request.post("%sget_xunnel_journals" % self.url, text=_response)
 
-        self.config_settings.xunnel_token = "test token"
+        self.company.xunnel_token = "test token"
 
         expected_res = {
             "type": "ir.actions.client",
@@ -59,3 +49,9 @@ class TestResConfigSettings(TransactionCase):
 
         res = self.config_settings.sync_xunnel_providers()
         self.assertEqual(res, expected_res)
+
+    @patch("odoo.addons.account_xunnel.models.res_company.ResCompany._sync_xunnel_providers")
+    def test_02_sync_xunnel_providers_error(self, patch_sync_xunnel_providers):
+        patch_sync_xunnel_providers.return_value = False, False
+        with self.assertRaises(UserError):
+            self.env["res.config.settings"].sync_xunnel_providers()

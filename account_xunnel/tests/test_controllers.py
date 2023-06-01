@@ -1,12 +1,13 @@
 from unittest.mock import patch
 
-from odoo.tests.common import HttpCase
+from odoo.tests.common import HttpCase, tagged
 from odoo.tools import config
 
 HOST = "127.0.0.1"
 PORT = config["http_port"]
 
 
+@tagged("controllers")
 class TestController(HttpCase):
     def setUp(self):
         super().setUp()

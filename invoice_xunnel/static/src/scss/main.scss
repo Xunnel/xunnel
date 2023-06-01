@@ -1,0 +1,25 @@
+// DOCUMENTS ATTACHMENT VIEWER
+.o_AttachmentViewer_isXml {
+    background: white;
+}
+
+pre.prettyprint {
+    border: 0;
+    .atn, .atv{
+        &:hover {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    }
+}
+
+.o_inspector_label {
+    font-size: 11px;
+}
+
+div[name='sat_status'] > select.o_input {
+    color: white !important;
+    option {
+        color: black !important;
+    }
+}

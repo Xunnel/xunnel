@@ -1,6 +1,6 @@
 import base64
 
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 EMPTY_INVOICE = base64.b64encode(
     bytes(
@@ -105,6 +105,7 @@ INVOICE = base64.b64encode(
 )
 
 
+@tagged("ir_attachment")
 class TestIrAttachment(TransactionCase):
     def setUp(self):
         super().setUp()
@@ -142,7 +143,7 @@ class TestIrAttachment(TransactionCase):
 
     def test_02_create_description(self):
         """Case 1: A document with empty invoice is sent to _create_description, this should return an empty dict
-        returned by the condition that's not met ´xml_obj.get('Version') != '3.3'´ on the method
+        returned by the condition that's not met xml_obj.get('Version') != '3.3' on the method
         """
         res_1 = self.attachment_3._create_description(self.attachment_3.datas)
         self.assertEqual(res_1, {})

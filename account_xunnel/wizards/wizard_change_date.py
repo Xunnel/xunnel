@@ -15,10 +15,10 @@ class WizardChageDate(models.TransientModel):
         online_account = journal.account_online_account_id
         if not online or not online_account:
             message = _(
-                    "The journal is not correctly configurated. Please"
-                    " check that the bank feed is set to 'Automated"
-                    " Bank Synchronization' and an online acount is "
-                    " configurated for this journal."
+                "The journal is not correctly configurated. Please"
+                " check that the bank feed is set to 'Automated"
+                " Bank Synchronization' and an online acount is "
+                " configurated for this journal."
             )
             raise ValidationError(message)
         online_account.sudo().last_sync = self.sync_date

@@ -1,7 +1,7 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import _, api, exceptions, fields, models
+from odoo import _, exceptions, models
 
 
 def assert_xunnel_token(function):
@@ -13,7 +13,7 @@ def assert_xunnel_token(function):
     def wraper(self):
         if not self.company_id.xunnel_token and not self.env.company.xunnel_token:
             raise exceptions.UserError(
-                _("Your company doesn't have a Xunnel Token " "established. Please add one before trying manual sync.")
+                _("Your company doesn't have a Xunnel Token established. Please add one before trying manual sync.")
             )
         return function(self)
 
@@ -22,20 +22,6 @@ def assert_xunnel_token(function):
 
 class AccountConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
-
-    xunnel_token = fields.Char(
-        related="company_id.xunnel_token", help="Key-like text for authentication in controllers.", readonly=False
-    )
-
-    @api.model
-    def create(self, vals):
-        self.env.company.write(
-            {
-                "xunnel_token": vals.get("xunnel_token") or self.env.company.xunnel_token,
-            }
-        )
-        vals.pop("xunnel_token", None)
-        return super().create(vals)
 
     @assert_xunnel_token
     def sync_xunnel_providers(self):

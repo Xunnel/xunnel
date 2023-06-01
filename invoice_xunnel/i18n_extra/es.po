@@ -28,4 +28,3 @@ msgstr "\n"
 #: model:ir.module.module,shortdesc:base.module_invoice_xunnel
 msgid "Xunnel Invoice"
 msgstr "Xunnel Facturas"
-

@@ -6,13 +6,14 @@ from unittest.mock import Mock
 
 from requests_mock import mock
 
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 from . import webhook_responses
 
 requests = Mock()
 
 
+@tagged("webhooks")
 class TestWebhooks(TransactionCase):
     def setUp(self):
         super().setUp()

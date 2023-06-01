@@ -15,12 +15,19 @@ _logger = logging.getLogger(__name__)
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
 
-    @api.model
-    def create(self, values):
-        if "datas" in values and self._validate_xml(values["datas"]):
-            description = self._create_description(values["datas"])
-            values.update(description)
-        return super().create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for record in records:
+            is_xunnel_record = (
+                record.res_model == "documents.document"
+                and self.env[record.res_model].browse(record.res_id).xunnel_document
+            )
+            if is_xunnel_record:
+                if record.datas and self._validate_xml(record.datas):
+                    description = self._create_description(record.datas)
+                    record.update(description)
+        return records
 
     def write(self, values):
         no_mx_rec = self

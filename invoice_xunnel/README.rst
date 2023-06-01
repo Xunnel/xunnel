@@ -4,7 +4,7 @@
 Invoice Xunnel
 ==============
 
-This app allows you to synchronize your invoices/documents from Xunnel with Odoo
+This app allows you to synchronize your XML documents from the SAT page using Xunnel with Odoo
 
 **How To Use It**
 -----------------
