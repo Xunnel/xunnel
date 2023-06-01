@@ -22,7 +22,7 @@
     background: #f5f5f5;
 }
 .dnd_out, .dnd_inside{
-    padding: 80px 0px;   
+    padding: 80px 0px;
 }
 .dnd_out{
     border: 3px dotted #d0d0d0;

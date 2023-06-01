@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class WizardNewtoken(models.TransientModel):
-    _name = 'wizard.set.up.connection.token'
+    _name = "wizard.set.up.connection.token"
     _description = """Wizard to set the Xunnel Token of your company, this is given when you
     create a company at https://www.xunnel.com/"""
 

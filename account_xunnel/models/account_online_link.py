@@ -9,30 +9,30 @@ from odoo.exceptions import UserError
 
 
 class AccountOnlineLink(models.Model):
-    _inherit = 'account.online.link'
+    _inherit = "account.online.link"
 
     is_xunnel = fields.Boolean()
 
     def _fetch_odoo_fin(self, url, data=None, ignore_status=False):
-        if not self.env.context.get('xunnel_operation'):
+        if not self.env.context.get("xunnel_operation"):
             return super()._fetch_odoo_fin(url, data=data, ignore_status=ignore_status)
 
         params = {
-            'id_account': data['account_id'],
-            'id_credential': self.client_id,
+            "id_account": data["account_id"],
+            "id_credential": self.client_id,
         }
 
-        res = self.env.company._xunnel('get_xunnel_transactions', params)
-        res = json.loads(res.get('response'))
-        res['transactions'] = [
+        res = self.env.company._xunnel("get_xunnel_transactions", params)
+        res = json.loads(res.get("response"))
+        res["transactions"] = [
             {
-                'online_transaction_identifier': transaction['id_transaction'],
-                'amount': transaction['amount'],
-                'date': datetime.strptime(transaction['dt_authorization'], '%Y-%m-%d'),
-                'id': transaction['id_transaction'],
-                'payment_ref': transaction['reference'],
+                "online_transaction_identifier": transaction["id_transaction"],
+                "amount": transaction["amount"],
+                "date": datetime.strptime(transaction["dt_authorization"], "%Y-%m-%d"),
+                "id": transaction["id_transaction"],
+                "payment_ref": transaction["reference"],
             }
-            for transaction in res['transactions']
+            for transaction in res["transactions"]
         ]
         return res
 
@@ -41,14 +41,15 @@ class AccountOnlineLink(models.Model):
         to create them if they're not.
         """
         for journal in self._get_journals():
-            online_account = self.env['account.online.account'].search(
-                [('account_online_link_id', '=', self.id), ('online_identifier', '=', journal.get('id_account'))])
+            online_account = self.env["account.online.account"].search(
+                [("account_online_link_id", "=", self.id), ("online_identifier", "=", journal.get("id_account"))]
+            )
             vals = {
-                'name': journal.get('name'),
-                'balance': journal.get('balance'),
-                'account_number': journal.get('number'),
-                'online_identifier': journal.get('id_account'),
-                'account_online_link_id': self.id
+                "name": journal.get("name"),
+                "balance": journal.get("balance"),
+                "account_number": journal.get("number"),
+                "online_identifier": journal.get("id_account"),
+                "account_online_link_id": self.id,
             }
             if online_account:
                 online_account.write(vals)
@@ -59,18 +60,16 @@ class AccountOnlineLink(models.Model):
         """Requests https://wwww.xunnel.com/ to retrive all journals
         related to the indicated provider.
         """
-        res = self.company_id._xunnel(
-            'get_xunnel_journals',
-            dict(account_identifier=self.client_id))
-        err = res.get('error')
+        res = self.company_id._xunnel("get_xunnel_journals", dict(account_identifier=self.client_id))
+        err = res.get("error")
         if err:
             raise UserError(err)
-        return res.get('response')
+        return res.get("response")
 
     def update_credentials(self):
-        raise UserError(_(
-            'Updating credentials is not allowed here. '
-            'Please go to https://www.xunnel.com/ to achieve that.'))
+        raise UserError(
+            _("Updating credentials is not allowed here. " "Please go to https://www.xunnel.com/ to achieve that.")
+        )
 
     def _retrieve_transactions(self, forced_params=None):
         self.ensure_one()
@@ -83,7 +82,7 @@ class AccountOnlineLink(models.Model):
         response = self._process_transactions(transactions)
         return response
 
-    def _open_iframe(self, mode='link'):
+    def _open_iframe(self, mode="link"):
         if self.is_xunnel:
             self.xunnel_exception()
         return super()._open_iframe(mode)
@@ -94,6 +93,10 @@ class AccountOnlineLink(models.Model):
         return super()._fetch_transactions(refresh, accounts)
 
     def xunnel_exception(self):
-        raise UserError(_('''Xunnel bank: Unsupported operation.
+        raise UserError(
+            _(
+                """Xunnel bank: Unsupported operation.
 
-Please check our documentation in: https://xunnel.com/en_US/user-manual'''))
+Please check our documentation in: https://xunnel.com/en_US/user-manual"""
+            )
+        )

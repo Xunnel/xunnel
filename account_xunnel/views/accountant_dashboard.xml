@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="view_account_journal_dashboard_kanban_xunnel" model="ir.ui.view">
         <field name="name">Xunnel accountant dashboard</field>
@@ -6,7 +6,11 @@
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />
         <field name="arch" type="xml">
             <xpath expr="//div[@id='dashboard_bank_cash_right']" position="inside">
-                <div attrs="{'invisible': [('online_journal_last_sync', '=', False)]}" class="row" name="last_synchronization">
+                <div
+                    attrs="{'invisible': [('online_journal_last_sync', '=', False)]}"
+                    class="row"
+                    name="last_synchronization"
+                >
                     <div class="col-xs-6">
                         <span title="Latest synchronization">Xunnel Last sync</span>
                     </div>
@@ -26,9 +30,12 @@
         <field name="arch" type="xml">
             <xpath expr="//a[@name='manual_sync']" position="before">
                 <div class="mb8">
-                    <field name="has_synchronized_xunnel"  invisible="True"/>
-                    <field name="account_online_link_id"  invisible="True"/>
-                    <small class="text-danger" attrs="{'invisible': ['|', ('has_synchronized_xunnel', '=', True), ('account_online_link_id', '=', False)]}">Online synchronization may duplicate the transactions added manually.</small>
+                    <field name="has_synchronized_xunnel" invisible="True" />
+                    <field name="account_online_link_id" invisible="True" />
+                    <small
+                        class="text-danger"
+                        attrs="{'invisible': ['|', ('has_synchronized_xunnel', '=', True), ('account_online_link_id', '=', False)]}"
+                    >Online synchronization may duplicate the transactions added manually.</small>
                 </div>
             </xpath>
         </field>
@@ -36,7 +43,7 @@
     <record id="view_bank_statement_form" model="ir.ui.view">
         <field name="name">account.bank.statement.form</field>
         <field name="model">account.bank.statement</field>
-        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="inherit_id" ref="account.view_bank_statement_form" />
         <field name="arch" type="xml">
             <xpath expr="//form/sheet/notebook/page[@name='statement_line_ids']//field[@name='ref']" position="after">
                 <field name="card_number" />

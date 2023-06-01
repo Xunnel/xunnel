@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="xunnel_server_url" model="ir.config_parameter">
         <field name="key">account_xunnel.xunnel_server_url</field>

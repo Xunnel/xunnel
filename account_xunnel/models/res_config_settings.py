@@ -9,29 +9,32 @@ def assert_xunnel_token(function):
     tries to manual update either providers or invoices
     without having any Xunnel Token registered in its company.
     """
+
     def wraper(self):
         if not self.company_id.xunnel_token and not self.env.company.xunnel_token:
-            raise exceptions.UserError(_(
-                "Your company doesn't have a Xunnel Token "
-                "established. Please add one before trying manual sync."))
+            raise exceptions.UserError(
+                _("Your company doesn't have a Xunnel Token " "established. Please add one before trying manual sync.")
+            )
         return function(self)
+
     return wraper
 
 
 class AccountConfigSettings(models.TransientModel):
-    _inherit = 'res.config.settings'
+    _inherit = "res.config.settings"
 
     xunnel_token = fields.Char(
-        related='company_id.xunnel_token',
-        help="Key-like text for authentication in controllers.",
-        readonly=False)
+        related="company_id.xunnel_token", help="Key-like text for authentication in controllers.", readonly=False
+    )
 
     @api.model
     def create(self, vals):
-        self.env.company.write({
-            'xunnel_token': vals.get('xunnel_token') or self.env.company.xunnel_token,
-        })
-        vals.pop('xunnel_token', None)
+        self.env.company.write(
+            {
+                "xunnel_token": vals.get("xunnel_token") or self.env.company.xunnel_token,
+            }
+        )
+        vals.pop("xunnel_token", None)
         return super().create(vals)
 
     @assert_xunnel_token
@@ -42,11 +45,11 @@ class AccountConfigSettings(models.TransientModel):
             error = _("An error has occurred while synchronizing your banks. %s")
             raise exceptions.UserError(error % response)
         message = _("Success! %s banks have been synchronized.") % len(response)
-        action_params = {'message': message, 'message_class': 'success'}
+        action_params = {"message": message, "message_class": "success"}
         return {
-            'type': 'ir.actions.client',
-            'tag': 'account_xunnel.synchronized_accounts',
-            'name': _('Xunnel response.'),
-            'target': 'new',
-            'params': action_params,
+            "type": "ir.actions.client",
+            "tag": "account_xunnel.synchronized_accounts",
+            "name": _("Xunnel response."),
+            "target": "new",
+            "params": action_params,
         }
