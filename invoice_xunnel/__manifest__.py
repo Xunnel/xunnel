@@ -43,4 +43,3 @@
     },
     'installable': True,
 }
-
