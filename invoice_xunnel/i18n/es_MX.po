@@ -326,6 +326,11 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__cancelled
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
 msgid "Close"
 msgstr "Cerrar"
@@ -557,6 +562,16 @@ msgid "No Attachment Action"
 msgstr ""
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__not_found
+msgid "Not Found"
+msgstr "No encontrado"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__undefined
+msgid "Not Synced Yet"
+msgstr "Aún sin sincronizar"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__omit_cfdi_related
 msgid "Omit Cfdi Related"
 msgstr ""
@@ -592,6 +607,11 @@ msgid "Reception"
 msgstr "Recepción"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_documents_document__sat_status
+msgid "Refers to the status of the invoice inside the SAT system."
+msgstr "Refiere al estado del documento dentro del systema del SAT"
+
+#. module: invoice_xunnel
 #. openerp-web
 #: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__related_cfdi
@@ -605,20 +625,30 @@ msgid "Related CFDI of the XML file"
 msgstr "CFDI Relacionado al archivo XML"
 
 #. module: invoice_xunnel
+#: model:documents.facet,name:invoice_xunnel.xunnel_xml_facet
+msgid "SAT"
+msgstr ""
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_res_company__l10n_mx_edi_fuel_code_sat_ids
 #: model:ir.model.fields,field_description:invoice_xunnel.field_res_config_settings__l10n_mx_edi_fuel_code_sat_ids
 msgid "SAT fuel codes"
 msgstr "Códigos SAT de Combustible"
 
 #. module: invoice_xunnel
-#: model:documents.facet,name:invoice_xunnel.xunnel_xml_facet
-msgid "SAT"
-msgstr ""
-
-#. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
 msgid "SAT's invoices older than this date won't be fetched."
 msgstr "Facturas del SAT anteriores a esta fecha no serán recuperadas."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__sat_status
+msgid "Sat Status"
+msgstr "Estado del SAT"
+
+#. module: invoice_xunnel
+#: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
+msgid "Sat staus: $"
+msgstr "Estado del SAT: $"
 
 #. module: invoice_xunnel
 #. openerp-web
@@ -664,6 +694,11 @@ msgstr "Especifica si este es un documento Xunnel."
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__stamp_date
 msgid "Stamp Date"
 msgstr ""
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__none
+msgid "State not defined"
+msgstr "Estado no definido"
 
 #. module: invoice_xunnel
 #. openerp-web
@@ -747,6 +782,11 @@ msgstr "Se usa para mostrar el estado de sincronización."
 #: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__no_attachment_action
 msgid "Used to toggle the redirect to the attachments."
 msgstr "Se usa para alternar la redirección a los archivos adjuntos."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__valid
+msgid "Valid"
+msgstr "Válido"
 
 #. module: invoice_xunnel
 #: model:documents.tag,name:invoice_xunnel.with_invoice
@@ -845,8 +885,11 @@ msgstr ""
 
 #. module: invoice_xunnel
 #: model:res.groups,name:invoice_xunnel.group_for_sync_invoices
-msgid "Xunnel: Allows a user to modify the last sync date for Xunnel synchronization."
-msgstr "Xunnel: Permite al usuario modificar la fecha de última sincronización."
+msgid ""
+"Xunnel: Allows a user to modify the last sync date for Xunnel "
+"synchronization."
+msgstr ""
+"Xunnel: Permite al usuario modificar la fecha de última sincronización."
 
 #. module: invoice_xunnel
 #. openerp-web
@@ -874,43 +917,3 @@ msgstr ""
 #, python-format
 msgid "or Click to upload the files"
 msgstr ""
-
-#. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__sat_status
-msgid "Sat Status"
-msgstr "Estado del SAT"
-
-#. module: invoice_xunnel
-#: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
-msgid "Sat staus: $"
-msgstr "Estado del SAT: $"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__not_found
-msgid "Not Found"
-msgstr "No encontrado"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__undefined
-msgid "Not Synced Yet"
-msgstr "Aún sin sincronizar"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__cancelled
-msgid "Cancelled"
-msgstr "Cancelado"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields,help:invoice_xunnel.field_documents_document__sat_status
-msgid "Refers to the status of the invoice inside the SAT system."
-msgstr "Refiere al estado del documento dentro del systema del SAT"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__none
-msgid "State not defined"
-msgstr "Estado no definido"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__valid
-msgid "Valid"
-msgstr "Válido"
