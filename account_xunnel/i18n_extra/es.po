@@ -17,10 +17,12 @@ msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_account_xunnel
-msgid "\n"
+msgid ""
+"\n"
 "        Use Xunnel Account to retrieve bank statements.\n"
 "    "
-msgstr "\n"
+msgstr ""
+"\n"
 "        Usa Xunnel Contabilidad para descargar estados de cuenta directamente desde bancos.\n"
 "    "
 
@@ -28,4 +30,3 @@ msgstr "\n"
 #: model:ir.module.module,shortdesc:base.module_account_xunnel
 msgid "Xunnel Account"
 msgstr "Xunnel Contabilidad"
-

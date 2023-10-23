@@ -32,7 +32,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_xunnel.view_account_journal_dashboard_kanban_xunnel
 msgid "<span title=\"Latest synchronization\">Xunnel Last sync</span>"
 msgstr ""
-"<span title=\"Última sincronización Xunnel\">Última sincronización Xunnel</span>"
+"<span title=\"Última sincronización Xunnel\">Última sincronización "
+"Xunnel</span>"
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_download_bank_accounts_form_view
@@ -296,9 +297,11 @@ msgstr "Escriba aquí el token de su compañía en"
 #: code:addons/account_xunnel/models/account_online_link.py:0
 #, python-format
 msgid ""
-"Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that."
+"Updating credentials is not allowed here. Please go to "
+"https://www.xunnel.com/ to achieve that."
 msgstr ""
-"Actualizar credenciales no esta permitido aquí. Por favor vaya a https://www.xunnel.com/ para lograrlo."
+"Actualizar credenciales no esta permitido aquí. Por favor vaya a "
+"https://www.xunnel.com/ para lograrlo."
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_res_users
@@ -339,8 +342,8 @@ msgid ""
 "Xunnel bank: Unsupported operation.                Please check our "
 "documentation in: https://xunnel.com/en_US/user-manual"
 msgstr ""
-"Banco Xunnel: operación no admitida. Consulte nuestra "
-"documentación en: https://xunnel.com/en_US/user-manual"
+"Banco Xunnel: operación no admitida. Consulte nuestra documentación en: "
+"https://xunnel.com/en_US/user-manual"
 
 #. module: account_xunnel
 #: model:ir.actions.act_window,name:account_xunnel.wizard_set_up_connection_token_action
@@ -392,8 +395,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot add new accounts if your company does not have a valid token"
-msgstr ""
-"No puede crear cuentas nuevas si su compañía no tiene un token válido"
+msgstr "No puede crear cuentas nuevas si su compañía no tiene un token válido"
 
 #. module: account_xunnel
 #. odoo-python
@@ -407,9 +409,11 @@ msgstr "Debes defininir el Token de Xunnel"
 #: code:addons/account_xunnel/models/res_config_settings.py:0
 #, python-format
 msgid ""
-"Your company doesn't have a Xunnel Token established. Please add one before trying manual sync."
+"Your company doesn't have a Xunnel Token established. Please add one before "
+"trying manual sync."
 msgstr ""
-"Su compañía no tiene un Token Xunnel configurado. Por favor agregue uno antes de intentar la sincronización manual."
+"Su compañía no tiene un Token Xunnel configurado. Por favor agregue uno "
+"antes de intentar la sincronización manual."
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_download_bank_accounts_form_view
@@ -419,8 +423,8 @@ msgid ""
 "&gt; Xunnel Account and add one in the Xunnel Token field"
 msgstr ""
 "Su empresa debe tener un token para continuar con este proceso, vaya a "
-"Configuración &gt; Ajustes &gt; Cuenta Xunnel o Ajustes &gt; Contabilidad"
-"&gt; Cuenta de Xunnel y agregue uno en el campo Token de Xunnel"
+"Configuración &gt; Ajustes &gt; Cuenta Xunnel o Ajustes &gt; "
+"Contabilidad&gt; Cuenta de Xunnel y agregue uno en el campo Token de Xunnel"
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_set_up_connection_token_form_view

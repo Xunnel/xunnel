@@ -1,25 +1,20 @@
-# SFL-OpenERP buildout
-tools/.*
-tools/bin
-tools/develop-eggs
-tools/eggs
-tools/etc
-tools/parts
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+*.DS_Store*
 
 # C extensions
 *.so
 
 # Distribution / packaging
+.Python
+env/
 bin/
 build/
 develop-eggs/
 dist/
 eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -33,11 +28,17 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
+htmlcov/
 .tox/
 .coverage
+.coveragerc
+.coverage.*
+et
 .cache
 nosetests.xml
 coverage.xml
+*,cover
+.hypothesis/
 
 # Translations
 *.mo
@@ -45,13 +46,42 @@ coverage.xml
 # Pycharm
 .idea
 
+# VS Code
+.vscode
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Sphinx documentation
+docs/_build/
+
 # Backup files
 *~
 *.swp
 
-# id_rsa file
-id_rsa
-id_rsa.pub
-deployment_files/docker_files/logs-dev/odoo
-deployment_files/docker_files/logs
-deployment_files/docker_files/data
+# docker JSON packages
+package-lock.json
+package.json
+
+# docker node_modules
+node_modules/
+
+# pre-commit-vauxoo
+.config/
+.editorconfig
+.eslintrc*
+.flake8*
+.isort.cfg
+.pre-commit*.yaml
+.prettierrc.yml
+.pylintrc*
+.bandit
+.oca_hooks-autofix.cfg
+.oca_hooks.cfg
+doc8.ini
+pyproject.toml

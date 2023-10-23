@@ -17,10 +17,12 @@ msgstr ""
 
 #. module: base
 #: model:ir.module.module,summary:base.module_invoice_xunnel
-msgid "\n"
+msgid ""
+"\n"
 "        Use Xunnel Invoice to retrieve invoices from SAT.\n"
 "    "
-msgstr "\n"
+msgstr ""
+"\n"
 "        Usa Xunnel Facturas para descargar facturas desde el SAT.\n"
 "    "
 
