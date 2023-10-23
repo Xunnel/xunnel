@@ -1,3 +1,5 @@
+import html
+
 from odoo import http
 from odoo.http import request
 
@@ -50,17 +52,17 @@ class BinaryXunnel(Binary):
             access_token=access_token,
             nocache=nocache,
         )
-        if model == "documents.document":
-            if not id:
-                return response
-            document = request.env["documents.document"].browse(id)
+        # Verify if l10n_mx_edi_document is installed
+        module = request.env["ir.module.module"].sudo().search([("name", "=", "l10n_mx_edi_document")], limit=1)
+        if module.state == "installed":
+            return response
+        if model == "documents.document" and id:
+            document = request.env[model].browse(id)
             if not document.attachment_id:
                 return response
             if "xml" not in document.attachment_id.mimetype:
                 return response
-            response_content = list(response.response)[0]
-            response_content = response_content.decode("utf-8")
-            response_content = response_content.replace("<", "&lt;")
-            response_content = response_content.replace(">", "&gt;")
-            return '<pre class="prettyprint">' + response_content + "</pre>"
+            decoded_content = document.attachment_id.raw.decode("utf-8")
+            sanitized_content = html.escape(decoded_content)
+            return '<pre class="prettyprint">' + sanitized_content + "</pre>"
         return response

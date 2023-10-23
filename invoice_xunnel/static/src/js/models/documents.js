@@ -9,6 +9,7 @@ registerPatch({
     fields: {
         isXml: attr({
             compute() {
+                if (this.isMxXml) return false;
                 return this.mimetype === "application/xml";
             },
         }),

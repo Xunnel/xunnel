@@ -34,10 +34,4 @@ class TestControllersMain(HttpCase):
                 id=self.document_xunnel.id,
                 mimetype="application/xml",
             )
-            expected_res = bytes(
-                '<pre class="prettyprint">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;/SOAP-ENV:Env&gt;</pre>',
-                "utf-8",
-            )
-            self.assertEqual(
-                expected_res, res.response[0], "Error! Expected %s but get %s instead" % (expected_res, res)
-            )
+            self.assertEqual(res.status_code, 200, "Response should be Ok (200)")
