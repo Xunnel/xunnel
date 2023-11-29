@@ -1,127 +1,82 @@
-image: vauxoo/odoo-80-image-shippable-auto
+image: quay.io/vauxoo/dockerv:latest
 stages:
+  - pre
   - test
-  - build
-  - upload_image
+  - post
 
-lint:
-  stage: test
+precommit:
+  stage: pre
   tags:
     - lint
-  variables:
-    LINT_CHECK: "1"
-    TESTS: "0"
   script:
     - source variables.sh
-    - sudo apt-get update && sudo apt-get install -y dos2unix
-    - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
-    - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
-    - pip3 install deployv-addon-gitlab-tools
-    - deployvcmd gitlab_tools check_keys
-    - travis_install_nightly
-    - travis_run_tests
+    - PRECOMMIT_HOOKS_TYPE=${PRECOMMIT_HOOKS_TYPE},-optional pre-commit-vauxoo
 
-test:
-  stage: test
+precommit_optional:
+  stage: pre
+  allow_failure: true
   tags:
-    - odoo
-    - test
-  coverage: '/^TOTAL.*\s+(\d+\%)$/'
-  variables:
-    LINT_CHECK: "0"
-    TESTS: "1"
+    - lint
+  script:
+    - pre-commit-vauxoo -t optional --fail-optional
+
+build_docker:
+  stage: pre
+  tags:
+    - build
   script:
     - source variables.sh
-    - pip3 install requests_mock
-    - apt-get update && apt-get install -y tree dos2unix
-    - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
-    - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
-    - pip3 install deployv-addon-gitlab-tools
-    - deployvcmd gitlab_tools check_keys
-    - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
-    - travis_install_nightly
-    - travis_run_tests
-    - travis_after_tests_success || true
-    - coverage html --rcfile=${TRAVIS_BUILD_DIR}/.coveragerc -d $CI_COMMIT_REF_SLUG || true
-    - coverage report -m --show-missing --rcfile=${TRAVIS_BUILD_DIR}/.coveragerc || true
+    - vxci check_keys
+    - vxci build_image --push_image
   artifacts:
     paths:
       - $CI_COMMIT_REF_SLUG
 
-nodemo:
+odoo_test:
   stage: test
   tags:
     - odoo
-    - test
-  variables:
-    LINT_CHECK: "0"
-    TESTS: "1"
-    TEST_ENABLE: "0"
-    OPTIONS: "--without-demo=all"
-    INSTALL_OPTIONS: "--without-demo=all"
+  needs: ["build_docker"]
   script:
     - source variables.sh
-    - pip3 install requests_mock
-    - apt-get update && apt-get install -y tree dos2unix
-    - git clone --dept=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
-    - source "${HOME}/maintainer-quality-tools/travis/travis_gitlab_translate_env"
-    - pip3 install deployv-addon-gitlab-tools
-    - deployvcmd gitlab_tools check_keys
-    - source ${REPO_REQUIREMENTS}/virtualenv/python${TRAVIS_PYTHON_VERSION}/bin/activate
-    - travis_install_nightly
-    - travis_run_tests
-    - travis_after_tests_success || true
-
-build:
-  stage: build
-  image: quay.io/vauxoo/dockerv:latest
-  tags:
-    - build
-  variables:
-    INSTALL: "account_xunnel"
-    CUSTOMER: "account_xunnel"
-  script:
-    - source variables.sh
-    - deployvcmd gitlab_tools check_keys
-    - deployvcmd gitlab_tools test_images --psql_image='vauxoo/docker-postgresql:9.6-ci' --push_image
-
-bump:
-  stage: upload_image
-  only:
-      - 13.0@vauxoo/xunnel-account
-  when: on_success
-  tags:
-    - odoo
-    - test
-  script:
-    - source variables.sh
-    - |
-      case "$CI_COMMIT_MESSAGE" in
-        *Bump*)
-          ;;
-        *)
-          pip3 install -U deployv-addon-gitlab-tools
-          pip install -U bumpversion
-          deployvcmd gitlab_tools check_keys
-          git config --global user.email "coward@vauxoo.com"
-          git config --global user.name "Coward - Auto release"
-          git clone -b 13.0 --single-branch git@git.vauxoo.com:vauxoo/xunnel-account.git
-          cd xunnel-account
-          bumpversion patch
-          git push origin 13.0
-          ;;
-        esac
+    - source $CI_COMMIT_REF_SLUG/image_name.env
+    - vxci check_keys
+    - vxci test_repo --allow_deprecated
+  artifacts:
+    when: always
+    paths:
+      - $CI_COMMIT_REF_SLUG
 
 publish_coverage:
-  image: quay.io/vauxoo/dockerv
-  stage: build
+  stage: post
+  tags:
+    - build
+  coverage: '/^TOTAL.*\s+(\d+(?:\.\d+)?\%)$/'
   allow_failure: true
-  dependencies:
-    - test
+  needs: ["odoo_test"]
   script:
     - source variables.sh
-    - deployvcmd gitlab_tools push_coverage
-
+    - source $CI_COMMIT_REF_SLUG/image_name.env
+    - vxci check_keys
+    - vxci push_coverage_combine
+  artifacts:
+    when: always
+    paths:
+      - $CI_COMMIT_REF_SLUG
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: $CI_COMMIT_REF_SLUG/coverage.xml
   environment:
     name: coverage
     url: https://coverage.vauxoo.com/${CI_COMMIT_REF_SLUG}-${CI_PROJECT_NAME}
+
+odoo_warnings:
+  stage: post
+  tags:
+    - build
+  allow_failure: true
+  needs: ["odoo_test"]
+  script:
+    - vxci check_log --logpath="./$CI_COMMIT_REF_SLUG"
+

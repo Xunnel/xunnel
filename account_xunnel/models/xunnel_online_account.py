@@ -50,7 +50,7 @@ class ProviderAccount(models.Model):
             date = datetime.strptime(
                 transaction['dt_authorization'], '%Y-%m-%d')
             trans = {
-                'name': transaction['description'],
+                'name': (transaction['description'] or '') + ' ' + (transaction['reference'] or ''),
                 'ref': transaction['reference'],
                 'online_identifier': transaction['id_transaction'],
                 'date': date.date(),
