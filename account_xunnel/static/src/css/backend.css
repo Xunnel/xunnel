@@ -19,20 +19,20 @@
     background: transparent url(/web/content/account_xunnel.no_content_tree_view) no-repeat center;
 }
 
-.__css_paybook_widget__ img.logo-xunnel {
+img.logo-xunnel {
     filter: drop-shadow(2px 3px 3px #AAA);
 }
 
-.__css_paybook_widget__ .pb-w-sync_widget-header {
+.pb-w-sync_widget-header {
     background-image: url('https://www.xunnel.com/web/image/theme_xunnel.modal_header');
     color: white;
 }
 
-.__css_paybook_widget__ .pb-w-sync_widget-header h1 {
+.pb-w-sync_widget-header h1 {
     color: white;
 }
 
-.__css_paybook_widget__ .pb-w-sync_widget-header button svg,
-.__css_paybook_widget__ .pb-w-sync_widget-header .el-icon-close.pb-w-sync_icon-close {
+.pb-w-sync_widget-header button svg,
+.pb-w-sync_widget-header .el-icon-close.pb-w-sync_icon-close {
     filter: invert();
 }

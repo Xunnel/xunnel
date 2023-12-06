@@ -34,8 +34,8 @@ class AccountConfigSettings(models.TransientModel):
         action_params = {"message": message, "message_class": "success"}
         return {
             "type": "ir.actions.client",
-            "tag": "account_xunnel.synchronized_accounts",
-            "name": _("Xunnel response."),
+            "tag": "account_xunnel.SyncrhonizedAccounts",
+            "name": _("Xunnel response"),
             "target": "new",
             "params": action_params,
         }

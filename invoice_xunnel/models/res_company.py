@@ -102,7 +102,7 @@ class ResCompany(models.Model):
         action_params = {"message": message, "message_class": message_class}
         return {
             "type": "ir.actions.client",
-            "tag": "account_xunnel.synchronized_accounts",
+            "tag": "account_xunnel.SyncrhonizedAccounts",
             "name": _("Xunnel invoice response."),
             "target": "new",
             "params": action_params,

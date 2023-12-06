@@ -3,7 +3,6 @@ from odoo.exceptions import UserError
 
 
 class ResUsers(models.Model):
-
     _inherit = "res.users"
 
     @api.model

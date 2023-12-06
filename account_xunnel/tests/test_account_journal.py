@@ -3,61 +3,66 @@ from json import dumps
 from requests_mock import mock
 
 from odoo import Command
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests.common import SingleTransactionCase, TransactionCase, tagged
 
 from . import response
+
+
+def test_setup(self):
+    """Shared method to setup a transaction case and a single transaction case"""
+    self.url = "https://xunnel.com/"
+    self.company = self.env.user.company_id
+    suspense_account = self.env["account.account"].create(
+        {
+            "account_type": "expense",
+            "name": "account xunnel",
+            "code": "121050",
+            "create_asset": "no",
+            "company_id": self.company.id,
+        }
+    )
+    self.company.account_journal_suspense_account_id = suspense_account.id
+    self.company.xunnel_token = "test token"
+    self.link = self.env["account.online.link"].create(
+        {
+            "name": "Acme Bank - Normal with Attachments",
+            "is_xunnel": True,
+            "client_id": "5ad5ad730c212a6a268b45e4",
+            "company_id": self.env.user.company_id.id,
+        }
+    )
+
+    self.account = self.env["account.online.account"].create(
+        {
+            "name": "ACME Checking",
+            "account_online_link_id": self.link.id,
+            "account_number": "00000001",
+            "last_sync": "1970-01-01",
+            "online_identifier": "5a9dcb3d244283f35a8c6e22",
+            "balance": 1099,
+        }
+    )
+
+    self.journal = self.env["account.journal"].create(
+        {
+            "name": "Demo bank attachments",
+            "code": "TESTB",
+            "type": "bank",
+            "company_id": self.env.user.company_id.id,
+            "account_online_account_id": self.account.id,
+            "account_online_link_id": self.link.id,
+            "bank_statements_source": "online_sync",
+        }
+    )
 
 
 @tagged("account_journal")
 class TestAccountJournal(TransactionCase):
     def setUp(self):
         super().setUp()
-        self.url = "https://xunnel.com/"
-        self.company = self.env.user.company_id
-        suspense_account = self.env["account.account"].create(
-            {
-                "account_type": "expense",
-                "name": "account xunnel",
-                "code": "121050",
-                "create_asset": "no",
-                "company_id": self.company.id,
-            }
-        )
-        self.company.account_journal_suspense_account_id = suspense_account.id
-        self.company.xunnel_token = "test token"
-        self.link = self.env["account.online.link"].create(
-            {
-                "name": "Acme Bank - Normal with Attachments",
-                "is_xunnel": True,
-                "client_id": "5ad5ad730c212a6a268b45e4",
-                "company_id": self.env.user.company_id.id,
-            }
-        )
+        test_setup(self)
 
-        self.account = self.env["account.online.account"].create(
-            {
-                "name": "ACME Checking",
-                "account_online_link_id": self.link.id,
-                "account_number": "00000001",
-                "last_sync": "1970-01-01",
-                "online_identifier": "5a9dcb3d244283f35a8c6e22",
-                "balance": 1099,
-            }
-        )
-
-        self.journal = self.env["account.journal"].create(
-            {
-                "name": "Demo bank attachments",
-                "code": "TESTB",
-                "type": "bank",
-                "company_id": self.env.user.company_id.id,
-                "account_online_account_id": self.account.id,
-                "account_online_link_id": self.link.id,
-                "bank_statements_source": "online_sync",
-            }
-        )
-
-    def test_01_has_synchronized_xunnel(self):
+    def test_1_has_synchronized_xunnel(self):
         partner = self.env["res.partner"].search([], limit=1)
         self.statement = self.env["account.bank.statement"].create(
             {
@@ -103,7 +108,7 @@ class TestAccountJournal(TransactionCase):
         self.assertTrue(self.journal.has_synchronized_xunnel)
 
     @mock()
-    def test_02_retrieve_transactions_last_sync(self, request):
+    def test_2_retrieve_transactions_last_sync(self, request):
         """Test requesting all transactions from an account and
         how many bank statement were created. Also checks last_sync's refreshed
         """
@@ -114,12 +119,12 @@ class TestAccountJournal(TransactionCase):
         )
         online_journal = self.journal.account_online_link_id
         self.env.user.company_id.xunnel_token = "test token"
-        transactions = self.journal.manual_sync()
+        transactions = self.journal.account_online_account_id._retrieve_transactions()
         self.assertNotEqual(online_journal.last_refresh, False)
-        self.assertEqual(transactions, 7)
+        self.assertEqual(len(transactions.get("transactions")), 7)
 
     @mock()
-    def test_03_bad_retrieve_transactions_last_sync(self, request):
+    def test_3_bad_retrieve_transactions_last_sync(self, request):
         """Test making a bank statement form online journal without
         having assigned an account journal. Also checks last_sync's refreshed
         """
@@ -131,12 +136,12 @@ class TestAccountJournal(TransactionCase):
         # To test if manual_sync its executed before is assigned to a journal
         online_journal.last_sync = False
         online_journal.journal_ids = False
-        statements = online_journal._retrieve_transactions()
+        transactions = online_journal._retrieve_transactions()
         self.assertFalse(online_journal.last_sync)
-        self.assertEqual(statements, 0)
+        self.assertEqual(len(transactions.get("transactions")), 0)
 
     @mock()
-    def test_04_link_manual_transactions(self, request):
+    def test_4_link_manual_transactions(self, request):
         """Test to validate if you create statement lines manually, it should
         update that entries to link it with the one updated from xunnel.
         """
@@ -164,8 +169,15 @@ class TestAccountJournal(TransactionCase):
         line = statement.line_ids
         self.assertFalse(line.online_transaction_identifier)
 
+
+@tagged("account_journal")
+class TestIrSequenceDateRangeStandard(SingleTransactionCase):
+    def setUp(self):
+        super().setUp()
+        test_setup(self)
+
     @mock()
-    def test_05_duplicate_manual_transactions(self, request):
+    def test_5_duplicate_manual_transactions(self, request):
         """Test to validate if you create more than one equal statement line
         manually, it should let that records and create new transactions.
         """

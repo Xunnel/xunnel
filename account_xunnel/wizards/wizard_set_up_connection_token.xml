@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form create="0">
                 <sheet>
-                    <div class="d-flex">
+                    <div class="row py-3">
                         <div class="col-5">
                             <h4>Super secret token</h4>
                             <small class="text-muted">
@@ -17,7 +17,7 @@
                                 >https://www.xunnel.com/</a>.
                             </small>
                         </div>
-                        <div class="col-7 mx-4">
+                        <div class="col-7">
                             <field
                                 password="True"
                                 class="mt-4"

@@ -6,7 +6,7 @@
     "summary": """
         Use Xunnel Account to retrieve bank statements.
     """,
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "author": "Jarsa Sistemas,Vauxoo",
     "category": "Accounting",
     "website": "http://www.xunnel.com",
@@ -35,10 +35,11 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "/account_xunnel/static/src/js/add_account_manager.js",
-            "/account_xunnel/static/src/scss/main.scss",
-            "/account_xunnel/static/src/js/synchronized_account.js",
-            "/account_xunnel/static/src/xml/add_account_manager.xml",
+            "account_xunnel/static/src/js/add_account_manager.js",
+            "account_xunnel/static/src/scss/main.scss",
+            "account_xunnel/static/src/css/backend.css",
+            "account_xunnel/static/src/js/synchronized_account.js",
+            "account_xunnel/static/src/xml/add_account_manager.xml",
         ],
     },
     "installable": True,

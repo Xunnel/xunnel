@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
 
-    <t
-        t-name="xunnel.DocumentsInspector.documentsInfo"
-        t-inherit="documents.DocumentsInspector.documentsInfo"
-        t-inherit-mode="extension"
-    >
+    <t t-inherit="documents.DocumentsInspector.documentsInfo" t-inherit-mode="extension">
         <xpath expr="//table[hasclass('o_inspector_table')]/tbody" position="inside">
+
             <t t-if="records[0].data['xunnel_document']">
                 <t t-call="documents.DocumentsInspector.field">
-                    <t t-set="icon">fa-user-circle o_documents_folder_color mx-1</t>
-                    <t t-set="field">emitter_partner_id</t>
+                    <t t-set="icon" t-translation="off">fa-user-circle o_documents_folder_color mx-1</t>
+                    <t t-set="fieldName" t-translation="off">emitter_partner_id</t>
+                    <t
+                        t-set="additionalProps"
+                        t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"
+                    />
                 </t>
                 <t t-call="documents.DocumentsInspector.field">
-                    <t t-set="icon">fa-bullseye mx-1 sat-status</t>
-                    <t t-set="field">sat_status</t>
+                    <t t-set="icon" t-translation="off">fa-bullseye mx-1 sat-status</t>
+                    <t t-set="fieldName" t-translation="off">sat_status</t>
                 </t>
                 <t t-call="documents.DocumentsInspector.field">
-                    <t t-set="icon">fa-usd o_documents_tag_color mx-1 invoice_total_amount</t>
-                    <t t-set="field">invoice_total_amount</t>
+                    <t t-set="icon" t-translation="off">fa-usd o_documents_tag_color mx-1 invoice_total_amount</t>
+                    <t t-set="fieldName" t-translation="off">invoice_total_amount</t>
                 </t>
                 <t t-call="documents.DocumentsInspector.field">
-                    <t t-set="icon">fa-reorder mx-1</t>
-                    <t t-set="field">product_list</t>
+                    <t t-set="icon" t-translation="off">fa-reorder mx-1</t>
+                    <t t-set="fieldName" t-translation="off">product_list</t>
                 </t>
                 <t t-call="documents.DocumentsInspector.field">
-                    <t t-set="field">related_cfdi</t>
+                    <t t-set="fieldName" t-translation="off">related_cfdi</t>
                 </t>
             </t>
         </xpath>

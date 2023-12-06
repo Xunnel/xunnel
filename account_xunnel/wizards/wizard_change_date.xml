@@ -28,10 +28,7 @@
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />
         <field name="arch" type="xml">
-            <xpath
-                expr="//div[hasclass('o_kanban_manage_new')]/div[hasclass('o_kanban_card_manage_title')]"
-                position="after"
-            >
+            <xpath expr="//h5[@id='card_action_view_menus']" position="after">
                 <div t-if="journal_type == 'bank'" name="xunnel_sync_date">
                     <a
                         type="action"

@@ -46,14 +46,11 @@
                 </p>
             </xpath>
             <xpath
-                expr="//kanban//div[hasclass('o_kanban_details')]//time[hasclass('oe_kanban_bottom_left')]/field"
-                position="replace"
+                expr="//kanban//div[hasclass('o_kanban_details')]//div[hasclass('oe_kanban_bottom_right')]/field"
+                position="after"
             >
                 <t t-if="record.stamp_date.raw_value">
                     <field name="stamp_date" widget="date" />
-                </t>
-                <t t-else="">
-                    <field name="create_date" widget="date" />
                 </t>
             </xpath>
         </field>

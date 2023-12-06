@@ -197,9 +197,9 @@ msgstr ""
 #: code:addons/account_xunnel/models/account_journal.py:0
 #, python-format
 msgid ""
-"No item was found in the period of time that you choose, please change the\n"
-"                Xunnel Synchronization Date of the journal or check if its associated  account\n"
-"                has transactions at www.xunnel.com"
+"No item was found in the period of time that you choose, please change the "
+"Xunnel Synchronization Date of the journal or check if its associated "
+"account has transactions at www.xunnel.com"
 msgstr ""
 
 #. module: account_xunnel
@@ -318,11 +318,6 @@ msgstr ""
 " crea una empresa en https://www.xunnel.com/"
 
 #. module: account_xunnel
-#: model:ir.actions.act_window,name:account_xunnel.wizard_download_bank_accounts_action
-msgid "Xunnal assistant"
-msgstr "Asistente Xunnel"
-
-#. module: account_xunnel
 #: model:ir.ui.menu,name:account_xunnel.menu_xunnel_configuration
 msgid "Xunnel"
 msgstr ""
@@ -333,6 +328,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_xunnel.field_wizard_set_up_connection_token__xunnel_token
 msgid "Xunnel Token"
 msgstr "Token Xunnel"
+
+#. module: account_xunnel
+#: model:ir.actions.act_window,name:account_xunnel.wizard_download_bank_accounts_action
+msgid "Xunnel assistant"
+msgstr "Asistente Xunnel"
 
 #. module: account_xunnel
 #. odoo-python
@@ -359,8 +359,8 @@ msgstr "Última fecha de sincronización Xunnel"
 #. odoo-python
 #: code:addons/account_xunnel/models/res_config_settings.py:0
 #, python-format
-msgid "Xunnel response."
-msgstr "Respuesta Xunnel."
+msgid "Xunnel response"
+msgstr "Respuesta Xunnel"
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.journal_dashboard_view_inherit_inherit

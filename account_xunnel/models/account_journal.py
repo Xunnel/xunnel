@@ -1,8 +1,7 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import _, fields, models
-from odoo.exceptions import ValidationError
+from odoo import fields, models
 
 
 class AccountJournal(models.Model):
@@ -25,18 +24,3 @@ class AccountJournal(models.Model):
     online_journal_last_sync = fields.Date(
         "Online account last synchronization", related="account_online_account_id.last_sync", tracking=True
     )
-
-    def manual_sync(self):
-        online_account = self.env["account.online.account"].search([("journal_ids", "in", self.ids)], limit=1)
-        if not self.account_online_link_id.is_xunnel:
-            return super().manual_sync()
-        res = online_account.with_context(xunnel_operation=True)._retrieve_transactions()
-        if res == 0:
-            raise ValidationError(
-                _(
-                    """No item was found in the period of time that you choose, please change the
-                Xunnel Synchronization Date of the journal or check if its associated  account
-                has transactions at www.xunnel.com"""
-                )
-            )
-        return res

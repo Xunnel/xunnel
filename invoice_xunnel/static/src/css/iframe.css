@@ -1,0 +1,12 @@
+pre {
+    border: 0;
+}
+pre .atn:hover,
+pre .atv:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+pre span.tag {
+    font-style: italic;
+}

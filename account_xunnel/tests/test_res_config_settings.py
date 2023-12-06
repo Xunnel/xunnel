@@ -41,8 +41,8 @@ class TestResConfigSettings(TransactionCase):
 
         expected_res = {
             "type": "ir.actions.client",
-            "tag": "account_xunnel.synchronized_accounts",
-            "name": "Xunnel response.",
+            "tag": "account_xunnel.SyncrhonizedAccounts",
+            "name": "Xunnel response",
             "target": "new",
             "params": {"message": "Success! 2 banks have been synchronized.", "message_class": "success"},
         }

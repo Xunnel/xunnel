@@ -22,10 +22,12 @@ class TestResCompany(TransactionCase):
         self.url = "https://xunnel.com/"
         self.company = self.env.user.company_id
 
-    def test_01_get_xunnel_response(self):
+    @mock()
+    def test_01_get_xunnel_response(self, request=None):
         """Test the _xunnel() method, cases:
         Case 1: The _xunnel() method is called from a company without xunnel_token, this should rause an UserError
         Case 2: The _xunnel() method is called from a company with wrong xunnel_token and the response is an error"""
+        request.post("%sget_xunnel_providers" % self.url, text=dumps({"error": True}))
         company = self.env.user.company_id
         company.xunnel_token = False
         with self.assertRaises(UserError):
@@ -51,8 +53,8 @@ class TestResCompany(TransactionCase):
         request.post("%sget_xunnel_journals" % self.url, text=_response)
         old_links = len(self.env["account.online.link"].search([]))
         old_journals = len(self.env["account.online.account"].search([]))
-        self.assertEqual(old_links, 0)
-        self.assertEqual(old_journals, 0)
+        self.assertEqual(old_links, 1)
+        self.assertEqual(old_journals, 1)
         self.company.xunnel_token = "test token"
         self.company._sync_xunnel_providers()
         new_links = len(self.env["account.online.link"].search([]))

@@ -1,18 +1,19 @@
 /** @odoo-module **/
 
 import {patch} from "@web/core/utils/patch";
-import {DocumentsAttachmentViewer} from "@documents/views/helper/documents_attachment_viewer";
+// import { FileViewer } from "@documents/attachments/document_file_viewer";
+import {DocumentsFileViewer} from "@documents/views/helper/documents_file_viewer";
 
 const {useEffect} = owl;
 
-patch(DocumentsAttachmentViewer.prototype, "documents_xunnel_attachment_viewer", {
+patch(DocumentsFileViewer.prototype, {
     /**
      * @override
      * allow to prettify the text within a XML shown with
      * the iframe and add events to allow copy text to clipboard
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         useEffect(
             (iframe) => {
                 if (!iframe) {
@@ -37,7 +38,7 @@ patch(DocumentsAttachmentViewer.prototype, "documents_xunnel_attachment_viewer",
                         prettyprint_css.type = "text/css";
                         iframe.contentDocument.head.append(prettyprint_css);
                         let main_css = document.createElement("link");
-                        main_css.href = "/invoice_xunnel/static/src/scss/main.scss";
+                        main_css.href = "/invoice_xunnel/static/src/css/iframe.css";
                         main_css.rel = "stylesheet";
                         main_css.type = "text/css";
                         iframe.contentDocument.head.append(main_css);

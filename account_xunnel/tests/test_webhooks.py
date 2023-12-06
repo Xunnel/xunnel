@@ -29,10 +29,10 @@ class TestWebhooks(TransactionCase):
         account_id = "5b2d85a00b212a1f1c8b456d"
         link_obj = self.env["account.online.link"]
         providers_old_count = link_obj.search_count([("company_id", "=", self.company.id)])
-        self.assertEqual(providers_old_count, 0)
+        self.assertEqual(providers_old_count, 1)
         self.company._sync_xunnel_providers(account_id)
         providers_new_count = link_obj.search_count([("company_id", "=", self.company.id)])
-        self.assertEqual(providers_new_count, 2)
+        self.assertEqual(providers_new_count, 3)
         provider = link_obj.search([("client_id", "=", account_id), ("company_id", "=", self.company.id)])
         journals = len(provider.account_online_account_ids)
         self.assertEqual(journals, 6)

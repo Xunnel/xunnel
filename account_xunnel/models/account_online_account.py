@@ -5,29 +5,31 @@ import json
 from datetime import datetime
 from time import mktime
 
-from odoo import _, models
+from odoo import models
 from odoo.exceptions import UserError
 
 
 class AccountOnlineAccount(models.Model):
     _inherit = "account.online.account"
 
-    def _retrieve_transactions(self, forced_params=None):
+    def _refresh(self):
+        """xunnel does not need to pre download transactions"""
+        return True
+
+    def _retrieve_transactions(self, date=None, include_pendings=False):
         self.ensure_one()
         if not self.account_online_link_id.is_xunnel:
-            return super()._retrieve_transactions()
-        resp_json = self._get_transactions(forced_params)
-        transactions = self._prepare_transactions(resp_json)
-        if not transactions:
-            return 0
-        response = self._process_transactions(transactions)
-        return response
+            return super()._retrieve_transactions(date, include_pendings)
+        resp_json = self._get_transactions()
+        transactions = self._prepare_transactions(resp_json).get("transactions", [])
+        return {
+            "transactions": self._format_transactions(transactions),
+            "pendings": [],
+        }
 
-    def _get_transactions(self, forced_params):
+    def _get_transactions(self):
         params = {"id_account": self.online_identifier, "id_credential": self.account_online_link_id.client_id}
-        if forced_params is not None:
-            params.update(forced_params)
-        elif self.last_sync:
+        if self.last_sync:
             params.update(dt_transaction_from=mktime(self.last_sync.timetuple()))
         resp = self.env.company._xunnel("get_xunnel_transactions", params)
         err = resp.get("error")
@@ -38,8 +40,8 @@ class AccountOnlineAccount(models.Model):
     def _prepare_transactions(self, resp_json):
         json_transactions = resp_json["transactions"]
         if not self.journal_ids or not json_transactions:
-            return False
-        journal = self.journal_ids[0]
+            return {}
+        journal_id = self.journal_ids[0]
         transactions = {}
         for transaction in json_transactions:
             date = datetime.strptime(transaction["dt_authorization"], "%Y-%m-%d")
@@ -50,10 +52,11 @@ class AccountOnlineAccount(models.Model):
                 "date": date.date(),
                 "amount": transaction["amount"],
                 "card_number": transaction["card_number"],
+                "journal_id": journal_id.id,
             }
             manual_lines = self.env["account.bank.statement.line"].search(
                 [
-                    ("journal_id", "=", journal.id),
+                    ("journal_id", "=", journal_id.id),
                     ("date", "=", trans["date"]),
                     ("amount", "=", trans["amount"]),
                     ("online_transaction_identifier", "=", False),
@@ -69,35 +72,3 @@ class AccountOnlineAccount(models.Model):
                 trans["location"] = transaction["meta"]["location"]
             transactions.setdefault("transactions", []).append(trans)
         return transactions
-
-    def _process_transactions(self, transactions):
-        journal = self.journal_ids[0]
-        statement_obj = self.env["account.bank.statement"]
-        line_statement_obj = self.env["account.bank.statement.line"]
-        response = 0
-        last_date = None
-        for __, trans in sorted(transactions.items()):
-            response += len(line_statement_obj._online_sync_bank_statement(trans, self))
-            statement = statement_obj.search([("journal_id", "=", journal.id)], order="id desc", limit=1)
-            starting_balance = line_statement_obj.search(
-                [
-                    ("statement_id", "=", statement.id),
-                    ("online_transaction_identifier", "=", False),
-                    ("payment_ref", "=", _("Opening statement: first synchronization")),
-                ],
-                limit=1,
-            )
-            if starting_balance:
-                statement.write({"balance_start": starting_balance.amount})
-                starting_balance.unlink()
-                response -= 1
-            last_date = line_statement_obj.search(
-                [("statement_id", "=", statement.id)], limit=1, order="date desc"
-            ).date
-            statement.date = last_date
-            statement.line_ids.filtered("online_transaction_identifier").write(
-                {"narration": _("Transaction synchronized from Xunnel")}
-            )
-        if last_date:
-            self.last_sync = last_date
-        return response
