@@ -115,7 +115,7 @@ class TestAccountJournal(TransactionCase):
         self.env["account.bank.statement"].search([("journal_id", "=", self.journal.id)]).unlink()
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps(dict(response=dumps({"balance": 0, "transactions": response.TRANSACTIONS}))),
+            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         online_journal = self.journal.account_online_link_id
         self.env.user.company_id.xunnel_token = "test token"
@@ -130,7 +130,7 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps(dict(response=dumps({"balance": 0, "transactions": response.TRANSACTIONS}))),
+            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         online_journal = self.journal.account_online_account_id
         # To test if manual_sync its executed before is assigned to a journal
@@ -147,7 +147,7 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps(dict(response=dumps({"balance": 0, "transactions": response.TRANSACTIONS}))),
+            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         statement = self.env["account.bank.statement"].create(
             {
@@ -183,7 +183,7 @@ class TestIrSequenceDateRangeStandard(SingleTransactionCase):
         """
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps(dict(response=dumps({"balance": 0, "transactions": response.TRANSACTIONS}))),
+            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         statement = self.env["account.bank.statement"].create(
             {
@@ -217,5 +217,5 @@ class TestIrSequenceDateRangeStandard(SingleTransactionCase):
             }
         )
         self.journal.manual_sync()
-        lines = statement.line_ids.filtered(lambda l: not l.online_transaction_identifier)
+        lines = statement.line_ids.filtered(lambda line: not line.online_transaction_identifier)
         self.assertEqual(len(lines), 2)

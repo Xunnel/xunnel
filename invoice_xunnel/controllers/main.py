@@ -116,8 +116,8 @@ class BinaryXunnel(Binary):
         """Create the XML header with the version and encoding provided."""
         version_str = ""
         encoding_str = ""
-        if version != "":
+        if version:
             version_str = 'version="%s"' % version
-        if encoding != "":
+        if encoding:
             encoding_str = 'encoding="%s"' % encoding
         return b"<?xml %s %s?>\n" % (version_str.encode(encoding.lower()), encoding_str.encode(encoding.lower()))

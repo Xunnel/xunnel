@@ -41,7 +41,7 @@ class ResCompany(models.Model):
         self.ensure_one()
         if not self.vat and self.xunnel_token:
             raise UserError(_("You need to define the VAT of your company."))
-        values = dict(last_sync=False, xunnel_testing=False, vat=self.vat)
+        values = {"last_sync": False, "xunnel_testing": False, "vat": self.vat}
         if self.xunnel_last_sync:
             values.update(last_sync=mktime(self.xunnel_last_sync.timetuple()))
         response = self._xunnel("get_invoices_sat", values)
@@ -88,17 +88,14 @@ class ResCompany(models.Model):
     def get_xml_sync_action(self):
         result = self._sync_xunnel_documents()
         message_class = "success"
-        message = _("%s xml have been downloaded.") % result.get("created")
+        message = _("{} xml have been downloaded.").format(result.get("created"))
         failed = result.get("failed")
         if failed:
             message_class = "warning"
-            message += (
-                _(
-                    "\nAlso %s files have failed at the conversion."
-                    "\nWe sent you an email with the details of the failed invoices."
-                )
-                % failed
-            )
+            message += _(
+                "\nAlso {} files have failed at the conversion."
+                "\nWe sent you an email with the details of the failed invoices."
+            ).format(failed)
         action_params = {"message": message, "message_class": message_class}
         return {
             "type": "ir.actions.client",

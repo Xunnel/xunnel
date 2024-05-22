@@ -46,9 +46,9 @@ class TestXunnelAccount(TransactionCase):
         inital_documents = documents.search_count([])
         old_sync = "1970-01-01"
         self.company.xunnel_last_sync = old_sync
+        self.company.vat = "MXGODE561231GR8"
         with self.assertRaisesRegex(UserError, "Expected error for testing"):
-            self.company.vat = "MXGODE561231GR8"
             self.company._sync_xunnel_documents()
-            final_documents = documents.search_count([])
-            self.assertEqual(final_documents - inital_documents, 3)
+        final_documents = documents.search_count([])
+        self.assertEqual(final_documents - inital_documents, 0)
         self.assertEqual(old_sync, fields.Date.to_string(self.company.xunnel_last_sync))

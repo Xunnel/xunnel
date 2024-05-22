@@ -35,7 +35,7 @@ class AccountOnlineLink(models.Model):
         """Requests https://wwww.xunnel.com/ to retrive all journals
         related to the indicated provider.
         """
-        res = self.company_id._xunnel("get_xunnel_journals", dict(account_identifier=self.client_id))
+        res = self.company_id._xunnel("get_xunnel_journals", {"account_identifier": self.client_id})
         err = res.get("error")
         if err:
             raise UserError(err)

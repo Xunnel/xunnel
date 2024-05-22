@@ -49,7 +49,7 @@ class TestResCompany(TransactionCase):
                 return misc.file_open(os.path.join("account_xunnel", "tests", path % "2")).read()
             return misc.file_open(os.path.join("account_xunnel", "tests", path % "1")).read()
 
-        request.post("%sget_xunnel_providers" % self.url, text=dumps(dict(response=response.PROVIDERS)))
+        request.post("%sget_xunnel_providers" % self.url, text=dumps({"response": response.PROVIDERS}))
         request.post("%sget_xunnel_journals" % self.url, text=_response)
         old_links = len(self.env["account.online.link"].search([]))
         old_journals = len(self.env["account.online.account"].search([]))

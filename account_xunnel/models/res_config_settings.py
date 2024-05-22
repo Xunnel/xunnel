@@ -30,7 +30,7 @@ class AccountConfigSettings(models.TransientModel):
         if not status:
             error = _("An error has occurred while synchronizing your banks. %s")
             raise exceptions.UserError(error % response)
-        message = _("Success! %s banks have been synchronized.") % len(response)
+        message = _("Success! {} banks have been synchronized.").format(len(response))
         action_params = {"message": message, "message_class": "success"}
         return {
             "type": "ir.actions.client",
