@@ -76,6 +76,7 @@ class AccountOnlineAccount(models.Model):
         line_statement_obj = self.env["account.bank.statement.line"]
         response = 0
         last_date = None
+        sorted_transactions = sorted(transactions.get("transactions", {}), key=lambda l: l.get("date", {}))
         for __, trans in sorted(transactions.items()):
             response += len(line_statement_obj._online_sync_bank_statement(trans, self))
             statement = statement_obj.search([("journal_id", "=", journal.id)], order="id desc", limit=1)
@@ -91,9 +92,7 @@ class AccountOnlineAccount(models.Model):
                 statement.write({"balance_start": starting_balance.amount})
                 starting_balance.unlink()
                 response -= 1
-            last_date = line_statement_obj.search(
-                [("statement_id", "=", statement.id)], limit=1, order="date desc"
-            ).date
+            last_date = sorted_transactions[-1]["date"]
             statement.date = last_date
             statement.line_ids.filtered("online_transaction_identifier").write(
                 {"narration": _("Transaction synchronized from Xunnel")}
