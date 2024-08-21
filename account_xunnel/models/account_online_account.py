@@ -14,7 +14,7 @@ class AccountOnlineAccount(models.Model):
 
     def _refresh(self):
         """xunnel does not need to pre download transactions"""
-        return True
+        return {"success": True, "data": {}}
 
     def _retrieve_transactions(self, date=None, include_pendings=False):
         self.ensure_one()
