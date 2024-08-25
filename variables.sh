@@ -1,6 +1,6 @@
 export BASE_IMAGE="vauxoo/odoo-170-image"
 export DOCKER_IMAGE_REPO="quay.io/vauxoo/vauxoo"
-export PSQL_VERSION="14"
+export PSQL_VERSION="15"
 export VERSION="17.0"
 export ODOO_REPO="vauxoo/odoo"
 export ODOO_BRANCH="17.0"
