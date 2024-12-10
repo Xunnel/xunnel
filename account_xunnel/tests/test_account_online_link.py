@@ -1,10 +1,10 @@
-from json import dumps
+import json
 from unittest.mock import Mock, patch
 
 from requests_mock import mock
 
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests import TransactionCase, tagged
 
 from . import response
 
@@ -13,17 +13,18 @@ requests = Mock()
 
 @tagged("account_online_link")
 class TestAccountOnlineLink(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.url = "https://xunnel.com/"
-        self.company = self.env.user.company_id
-        self.company.xunnel_token = "test token"
-        self.link = self.env["account.online.link"].create(
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.url = "https://xunnel.com/"
+        cls.company = cls.env.user.company_id
+        cls.company.xunnel_token = "test token"
+        cls.link = cls.env["account.online.link"].create(
             {
                 "name": "Acme Bank - Normal with Attachments",
                 "is_xunnel": True,
                 "client_id": "5ad5ad730c212a6a268b45e4",
-                "company_id": self.env.user.company_id.id,
+                "company_id": cls.env.user.company_id.id,
             }
         )
 
@@ -38,6 +39,6 @@ class TestAccountOnlineLink(TransactionCase):
 
     @mock()
     def test_03_get_journals(self, request=None):
-        request.post("%sget_xunnel_journals" % self.url, text=dumps(dict(response.ERROR)))
+        request.post("%sget_xunnel_journals" % self.url, text=json.dumps(dict(response.ERROR)))
         with self.assertRaises(UserError):
             self.link._get_journals()

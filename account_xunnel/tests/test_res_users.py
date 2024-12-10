@@ -1,15 +1,17 @@
 from unittest.mock import patch
 
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests import TransactionCase, tagged
 
 
+@tagged("res_users")
 class TestResUsers(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.url = "https://xunnel.com/"
-        self.company = self.env.user.company_id
-        self.config_settings = self.env["res.config.settings"].create({})
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.url = "https://xunnel.com/"
+        cls.company = cls.env.user.company_id
+        cls.config_settings = cls.env["res.config.settings"].create({})
 
     def test_01_get_xunnel_token_with_no_company_token(self):
         self.env.company.xunnel_token = ""

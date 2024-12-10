@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from odoo.tests.common import TransactionCase
+from odoo.tests import TransactionCase
 
 
 class TestWizardChangeDate(TransactionCase):

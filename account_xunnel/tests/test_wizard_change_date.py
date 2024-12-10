@@ -1,14 +1,16 @@
+from odoo import Command
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests import TransactionCase, tagged
 
 
 @tagged("wizard_change_date")
 class TestWizardChangeDate(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.company = self.env.user.company_id
-        self.env.user.company_id.xunnel_token = "test token"
-        self.url = "https://xunnel.com/"
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.company = cls.env.user.company_id
+        cls.env.user.company_id.xunnel_token = "test token"
+        cls.url = "https://xunnel.com/"
 
     def test_01_change_sync_date(self):
         """This tests has 4 cases.
@@ -38,7 +40,7 @@ class TestWizardChangeDate(TransactionCase):
         with self.assertRaises(ValidationError):
             wizard.with_context(active_id=journal.id).change_sync_date()
 
-        online_journal.update({"journal_ids": [(6, 0, [journal.id])]})
+        online_journal.update({"journal_ids": [Command.set(journal.id)]})
         journal.account_online_account_id = online_journal.id
         journal.bank_statements_source = False
         with self.assertRaises(ValidationError):

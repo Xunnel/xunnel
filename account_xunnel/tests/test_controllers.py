@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from odoo.tests.common import HttpCase, tagged
+from odoo.tests import HttpCase, tagged
 from odoo.tools import config
 
 HOST = "127.0.0.1"
@@ -9,11 +9,12 @@ PORT = config["http_port"]
 
 @tagged("controllers")
 class TestController(HttpCase):
-    def setUp(self):
-        super().setUp()
-        self.url_webhook_handler = "/account_xunnel/xunnel_webhook_connection"
-        self.company = self.env.user.company_id
-        self.company.xunnel_token = "test token"
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.url_webhook_handler = "/account_xunnel/xunnel_webhook_connection"
+        cls.company = cls.env.user.company_id
+        cls.company.xunnel_token = "test token"
 
     def url_open(self, url, data=None, timeout=10, json=None):
         """Makes possible to test JSON-based controllers"""

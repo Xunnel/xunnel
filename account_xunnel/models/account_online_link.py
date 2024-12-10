@@ -46,10 +46,10 @@ class AccountOnlineLink(models.Model):
             _("Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that.")
         )
 
-    def _open_iframe(self, mode="link"):
+    def _open_iframe(self, mode="link", include_param=None, preferred_institution=False, journal_id=False):
         if self.is_xunnel:
             self.xunnel_exception()
-        return super()._open_iframe(mode)
+        return super()._open_iframe(mode, include_param, preferred_institution, journal_id)
 
     def xunnel_exception(self):
         raise UserError(

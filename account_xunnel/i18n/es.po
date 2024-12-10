@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-04 22:19+0000\n"
-"PO-Revision-Date: 2023-05-04 22:19+0000\n"
+"POT-Creation-Date: 2024-12-10 01:02+0000\n"
+"PO-Revision-Date: 2024-12-10 01:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,15 +18,13 @@ msgstr ""
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.account_journal_dashboard_inherit_online_sync_id
 msgid ""
-"<small class=\"text-danger\" attrs=\"{'invisible': ['|', "
-"('has_synchronized_xunnel', '=', True), ('account_online_link_id', '=', "
-"False)]}\">Online synchronization may duplicate the transactions added "
-"manually.</small>"
+"<small class=\"text-danger\" invisible=\"has_synchronized_xunnel == True or "
+"account_online_link_id == False\">Online synchronization may duplicate the "
+"transactions added manually.</small>"
 msgstr ""
-"<small class=\"text-danger\" attrs=\"{'invisible': ['|', "
-"('has_synchronized_xunnel', '=', True), ('account_online_link_id', '=', "
-"False)]}\">La sincronización en línea puede duplicar transacciones agregadas"
-" manualmente.</small>"
+"<small class=\"text-danger\" invisible=\"has_synchronized_xunnel == True or "
+"account_online_link_id == False\">La sincronización en línea puede duplicar "
+"las transacciones añadidas manualmente.</small>"
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.view_account_journal_dashboard_kanban_xunnel
@@ -43,9 +41,8 @@ msgstr "Aceptar y descargar"
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_config_settings.py:0
-#, python-format
 msgid "An error has occurred while synchronizing your banks. %s"
-msgstr "Ha sucedido un error mientras se sincronizaban los bancos. %s   "
+msgstr "Ha ocurrido un error al sincronizar tus bancos. %s"
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_account_online_link
@@ -81,9 +78,8 @@ msgstr "Cambie la fecha de sincronización de una cuenta en línea"
 #. module: account_xunnel
 #. odoo-javascript
 #: code:addons/account_xunnel/static/src/xml/add_account_manager.xml:0
-#, python-format
 msgid "Click to start"
-msgstr "Clic para iniciar"
+msgstr "Click para comenzar"
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_res_company
@@ -160,18 +156,6 @@ msgid "Journal"
 msgstr "Diario"
 
 #. module: account_xunnel
-#: model:ir.model.fields,help:account_xunnel.field_res_config_settings__xunnel_token
-msgid "Key-like text for authentication in controllers."
-msgstr "Llave de autenticación para los controllers."
-
-#. module: account_xunnel
-#: model:ir.model.fields,field_description:account_xunnel.field_wizard_change_date____last_update
-#: model:ir.model.fields,field_description:account_xunnel.field_wizard_download_bank_accounts____last_update
-#: model:ir.model.fields,field_description:account_xunnel.field_wizard_set_up_connection_token____last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
-
-#. module: account_xunnel
 #: model:ir.model.fields,field_description:account_xunnel.field_wizard_change_date__write_uid
 #: model:ir.model.fields,field_description:account_xunnel.field_wizard_download_bank_accounts__write_uid
 #: model:ir.model.fields,field_description:account_xunnel.field_wizard_set_up_connection_token__write_uid
@@ -188,24 +172,12 @@ msgstr "Ultima actualización en"
 #. module: account_xunnel
 #. odoo-javascript
 #: code:addons/account_xunnel/static/src/xml/add_account_manager.xml:0
-#, python-format
 msgid "Logo"
-msgstr ""
-
-#. module: account_xunnel
-#. odoo-python
-#: code:addons/account_xunnel/models/account_journal.py:0
-#, python-format
-msgid ""
-"No item was found in the period of time that you choose, please change the "
-"Xunnel Synchronization Date of the journal or check if its associated "
-"account has transactions at www.xunnel.com"
 msgstr ""
 
 #. module: account_xunnel
 #. odoo-javascript
 #: code:addons/account_xunnel/static/src/xml/add_account_manager.xml:0
-#, python-format
 msgid "Ok"
 msgstr ""
 
@@ -224,17 +196,8 @@ msgstr ""
 "durante la sincronización"
 
 #. module: account_xunnel
-#. odoo-python
-#: code:addons/account_xunnel/models/account_online_account.py:0
-#, python-format
-msgid "Opening statement: first synchronization"
-msgstr "Movimiento de Apertura: Primer sincronización"
-
-#. module: account_xunnel
 #. odoo-javascript
 #: code:addons/account_xunnel/static/src/xml/add_account_manager.xml:0
-#: code:addons/account_xunnel/static/src/xml/add_account_manager.xml:0
-#, python-format
 msgid "Press (esc) to close"
 msgstr "Presione (esc) para cerrar"
 
@@ -266,9 +229,8 @@ msgstr "Algunos datos no proporcionan esta información."
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_config_settings.py:0
-#, python-format
-msgid "Success! %s banks have been synchronized."
-msgstr "Éxito! %s bancos han sido sincronizados."
+msgid "Success! {} banks have been synchronized."
+msgstr "¡Éxito! {} bancos han sido sincronizados."
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_set_up_connection_token_form_view
@@ -282,10 +244,15 @@ msgstr "Fecha de Sincronización"
 
 #. module: account_xunnel
 #. odoo-python
-#: code:addons/account_xunnel/models/account_online_account.py:0
-#, python-format
-msgid "Transaction synchronized from Xunnel"
-msgstr "Transacción sincronizada desde Xunnel"
+#: code:addons/account_xunnel/wizards/wizard_change_date.py:0
+msgid ""
+"The journal is not correctly configurated. Please check that the bank feed "
+"is set to 'Automated Bank Synchronization' and an online acount is  "
+"configurated for this journal."
+msgstr ""
+"El diario no está configurado correctamente. Por favor, verifica que la "
+"alimentación bancaria esté configurada como 'Sincronización Bancaria "
+"Automatizada' y que exista una cuenta en línea configurada para este diario."
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_set_up_connection_token_form_view
@@ -295,13 +262,12 @@ msgstr "Escriba aquí el token de su compañía en"
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/account_online_link.py:0
-#, python-format
 msgid ""
 "Updating credentials is not allowed here. Please go to "
 "https://www.xunnel.com/ to achieve that."
 msgstr ""
-"Actualizar credenciales no esta permitido aquí. Por favor vaya a "
-"https://www.xunnel.com/ para lograrlo."
+"No se permite actualizar las credenciales aquí. Por favor, ve a "
+"https://www.xunnel.com/ para hacerlo."
 
 #. module: account_xunnel
 #: model:ir.model,name:account_xunnel.model_res_users
@@ -323,21 +289,19 @@ msgid "Xunnel"
 msgstr ""
 
 #. module: account_xunnel
+#: model:ir.actions.act_window,name:account_xunnel.wizard_download_bank_accounts_action
+msgid "Xunnel Assistant"
+msgstr "Asistente Xunnel"
+
+#. module: account_xunnel
 #: model:ir.model.fields,field_description:account_xunnel.field_res_company__xunnel_token
-#: model:ir.model.fields,field_description:account_xunnel.field_res_config_settings__xunnel_token
 #: model:ir.model.fields,field_description:account_xunnel.field_wizard_set_up_connection_token__xunnel_token
 msgid "Xunnel Token"
 msgstr "Token Xunnel"
 
 #. module: account_xunnel
-#: model:ir.actions.act_window,name:account_xunnel.wizard_download_bank_accounts_action
-msgid "Xunnel assistant"
-msgstr "Asistente Xunnel"
-
-#. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/account_online_link.py:0
-#, python-format
 msgid ""
 "Xunnel bank: Unsupported operation.                Please check our "
 "documentation in: https://xunnel.com/en_US/user-manual"
@@ -358,7 +322,6 @@ msgstr "Última fecha de sincronización Xunnel"
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_config_settings.py:0
-#, python-format
 msgid "Xunnel response"
 msgstr "Respuesta Xunnel"
 
@@ -392,7 +355,6 @@ msgstr ""
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_users.py:0
-#, python-format
 msgid ""
 "You cannot add new accounts if your company does not have a valid token"
 msgstr "No puede crear cuentas nuevas si su compañía no tiene un token válido"
@@ -400,14 +362,12 @@ msgstr "No puede crear cuentas nuevas si su compañía no tiene un token válido
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_company.py:0
-#, python-format
 msgid "You need to define Xunnel Token"
 msgstr "Debes defininir el Token de Xunnel"
 
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_config_settings.py:0
-#, python-format
 msgid ""
 "Your company doesn't have a Xunnel Token established. Please add one before "
 "trying manual sync."
@@ -434,7 +394,6 @@ msgstr ""
 #. module: account_xunnel
 #. odoo-javascript
 #: code:addons/account_xunnel/static/src/xml/add_account_manager.xml:0
-#, python-format
 msgid "loading..."
 msgstr "cargando..."
 

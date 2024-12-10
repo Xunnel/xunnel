@@ -1,41 +1,41 @@
-from json import dumps
+import json
 
 from requests_mock import mock
 
 from odoo import Command
-from odoo.tests.common import SingleTransactionCase, TransactionCase, tagged
+from odoo.tests import SingleTransactionCase, TransactionCase, tagged
 
 from . import response
 
 
-def test_setup(self):
+def shared_setup(cls):
     """Shared method to setup a transaction case and a single transaction case"""
-    self.url = "https://xunnel.com/"
-    self.company = self.env.user.company_id
-    suspense_account = self.env["account.account"].create(
+    cls.url = "https://xunnel.com/"
+    cls.company = cls.env.user.company_id
+    suspense_account = cls.env["account.account"].create(
         {
             "account_type": "expense",
             "name": "account xunnel",
             "code": "121050",
             "create_asset": "no",
-            "company_id": self.company.id,
+            "company_ids": [Command.set([cls.company.id])],
         }
     )
-    self.company.account_journal_suspense_account_id = suspense_account.id
-    self.company.xunnel_token = "test token"
-    self.link = self.env["account.online.link"].create(
+    cls.company.account_journal_suspense_account_id = suspense_account.id
+    cls.company.xunnel_token = "test token"
+    cls.link = cls.env["account.online.link"].create(
         {
             "name": "Acme Bank - Normal with Attachments",
             "is_xunnel": True,
             "client_id": "5ad5ad730c212a6a268b45e4",
-            "company_id": self.env.user.company_id.id,
+            "company_id": cls.env.user.company_id.id,
         }
     )
 
-    self.account = self.env["account.online.account"].create(
+    cls.account = cls.env["account.online.account"].create(
         {
             "name": "ACME Checking",
-            "account_online_link_id": self.link.id,
+            "account_online_link_id": cls.link.id,
             "account_number": "00000001",
             "last_sync": "1970-01-01",
             "online_identifier": "5a9dcb3d244283f35a8c6e22",
@@ -43,14 +43,14 @@ def test_setup(self):
         }
     )
 
-    self.journal = self.env["account.journal"].create(
+    cls.journal = cls.env["account.journal"].create(
         {
             "name": "Demo bank attachments",
             "code": "TESTB",
             "type": "bank",
-            "company_id": self.env.user.company_id.id,
-            "account_online_account_id": self.account.id,
-            "account_online_link_id": self.link.id,
+            "company_id": cls.env.user.company_id.id,
+            "account_online_account_id": cls.account.id,
+            "account_online_link_id": cls.link.id,
             "bank_statements_source": "online_sync",
         }
     )
@@ -58,9 +58,10 @@ def test_setup(self):
 
 @tagged("account_journal")
 class TestAccountJournal(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        test_setup(self)
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        shared_setup(cls)
 
     def test_1_has_synchronized_xunnel(self):
         partner = self.env["res.partner"].search([], limit=1)
@@ -115,7 +116,7 @@ class TestAccountJournal(TransactionCase):
         self.env["account.bank.statement"].search([("journal_id", "=", self.journal.id)]).unlink()
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
+            text=json.dumps({"response": json.dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         online_journal = self.journal.account_online_link_id
         self.env.user.company_id.xunnel_token = "test token"
@@ -130,7 +131,7 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
+            text=json.dumps({"response": json.dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         online_journal = self.journal.account_online_account_id
         # To test if manual_sync its executed before is assigned to a journal
@@ -147,7 +148,7 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
+            text=json.dumps({"response": json.dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         statement = self.env["account.bank.statement"].create(
             {
@@ -172,9 +173,10 @@ class TestAccountJournal(TransactionCase):
 
 @tagged("account_journal")
 class TestIrSequenceDateRangeStandard(SingleTransactionCase):
-    def setUp(self):
-        super().setUp()
-        test_setup(self)
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        shared_setup(cls)
 
     @mock()
     def test_5_duplicate_manual_transactions(self, request):
@@ -183,15 +185,13 @@ class TestIrSequenceDateRangeStandard(SingleTransactionCase):
         """
         request.post(
             "%sget_xunnel_transactions" % self.url,
-            text=dumps({"response": dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
+            text=json.dumps({"response": json.dumps({"balance": 0, "transactions": response.TRANSACTIONS})}),
         )
         statement = self.env["account.bank.statement"].create(
             {
                 "name": "online sync",
                 "line_ids": [
-                    (
-                        0,
-                        0,
+                    Command.create(
                         {
                             "name": "Transaction 1",
                             "date": "2014-10-05",
@@ -200,9 +200,7 @@ class TestIrSequenceDateRangeStandard(SingleTransactionCase):
                             "journal_id": self.journal.id,
                         },
                     ),
-                    (
-                        0,
-                        0,
+                    Command.create(
                         {
                             "name": "Transaction 2",
                             "date": "2014-10-05",
