@@ -1,14 +1,14 @@
 # Copyright 2017, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import json
 import os
-from json import dumps
 
 from requests_mock import mock
 
 from odoo import fields
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests import TransactionCase
 from odoo.tools import misc
 
 
@@ -40,7 +40,7 @@ class TestXunnelAccount(TransactionCase):
         last_sync is not refreshed. Six documents are returned
         but 3 of those are already in the database and must not be overwritten.
         """
-        request.post("%sget_invoices_sat" % self.url, text=dumps({"error": "Expected error for testing"}))
+        request.post("%sget_invoices_sat" % self.url, text=json.dumps({"error": "Expected error for testing"}))
 
         documents = self.env["documents.document"]
         inital_documents = documents.search_count([])

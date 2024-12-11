@@ -6,7 +6,7 @@
     "summary": """
         Use Xunnel Invoice to retrieve invoices from SAT.
     """,
-    "version": "17.0.1.0.0",
+    "version": "18.0.1.0.0",
     "author": "Jarsa Sistemas, Vauxoo",
     "category": "Accounting",
     "website": "http://www.xunnel.com",
@@ -20,18 +20,17 @@
         "views/documents_views.xml",
         "wizards/documents.xml",
         "views/xunnel_menuitems.xml",
+        "data/ir_actions_server_data.xml",
     ],
     "assets": {
         "web.assets_backend": [
+            "/web/static/lib/jquery/jquery.js",
             "/invoice_xunnel/static/src/lib/google_pretty_print.js",
-            "/invoice_xunnel/static/src/lib/notify.min.js",
             "/invoice_xunnel/static/src/scss/main.scss",
             "/invoice_xunnel/static/src/js/documents.js",
             "/invoice_xunnel/static/src/js/attachment_viewer_viewable.js",
             "/invoice_xunnel/static/src/js/documents_attachment_viewer.js",
-            "/invoice_xunnel/static/src/js/documents_inspector.js",
             "/invoice_xunnel/static/src/xml/attachment_viewer.xml",
-            "/invoice_xunnel/static/src/xml/templates.xml",
         ],
     },
     "installable": True,

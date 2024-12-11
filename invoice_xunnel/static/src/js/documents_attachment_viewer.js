@@ -3,6 +3,8 @@
 import {patch} from "@web/core/utils/patch";
 // import { FileViewer } from "@documents/attachments/document_file_viewer";
 import {DocumentsFileViewer} from "@documents/views/helper/documents_file_viewer";
+import {useService} from "@web/core/utils/hooks";
+import {_t} from "@web/core/l10n/translation";
 
 const {useEffect} = owl;
 
@@ -14,6 +16,7 @@ patch(DocumentsFileViewer.prototype, {
      */
     setup() {
         super.setup(...arguments);
+        this.notification = useService("notification");
         useEffect(
             (iframe) => {
                 if (!iframe) {
@@ -70,8 +73,8 @@ patch(DocumentsFileViewer.prototype, {
         const input = $();
         input.val(textContent);
         navigator.clipboard.writeText(textContent);
-        $.notify("Data copied.", {
-            className: "alert alert-warning",
+        this.notification.add(_t("Link copied to clipboard!"), {
+            type: "success",
         });
     },
 });

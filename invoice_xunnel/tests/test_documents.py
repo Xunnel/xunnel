@@ -3,7 +3,7 @@ import os
 
 from requests_mock import mock
 
-from odoo.tests.common import TransactionCase
+from odoo.tests import TransactionCase
 from odoo.tools import misc
 
 TEXT_xunnel_datas = base64.b64encode(
@@ -95,9 +95,13 @@ class TestCaseDocuments(TransactionCase):
         self.company.xunnel_token = "test"
         self.company_id = self.company.id
         self.company.vat = "MXGODE561231GR8"
-        self.folder_a = self.env["documents.folder"].create(
+        self.folder_a = self.env["documents.document"].create(
             {
+                "type": "folder",
                 "name": "folder A",
+                "owner_id": self.env.user.id,
+                "access_internal": "edit",
+                "access_via_link": "none",
             }
         )
         self.document = self.env["documents.document"].create(
@@ -138,7 +142,7 @@ class TestCaseDocuments(TransactionCase):
 
     def test_03_open_documents(self):
         res = self.env["xunnel.documents.wizard"].open_documents()
-        folder_id = self.env.ref("documents.documents_finance_folder")
+        folder_id = self.env.ref("documents.document_finance_folder")
         action = {
             "context": {
                 "search_default_filter_downloaded_xml": True,

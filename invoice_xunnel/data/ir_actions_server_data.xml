@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+<!-- Server action -->
+     <record id="ir_actions_server_execute_cron_action" model="ir.actions.server" forcecreate="0">
+            <field name="name">Xunnel Invoice</field>
+            <field name="model_id" ref="documents.model_documents_document" />
+            <field name="groups_id" eval="[Command.link(ref('base.group_user'))]" />
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    action = records._server_action_create_record()
+            </field>
+    </record>
+
+</odoo>

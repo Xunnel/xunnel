@@ -20,39 +20,37 @@
         <field name="inherit_id" ref="documents.document_view_kanban" />
         <field name="priority">99</field>
         <field name="arch" type="xml">
+
             <xpath
-                expr="//kanban//div[hasclass('o_kanban_details')]//div[hasclass('o_kanban_record_title')]/field"
+                expr="//kanban//div[hasclass('fw-bolder','w-100','d-flex')]//field[@name='name']"
                 position="replace"
             >
                 <t t-if="record.emitter_partner_id.raw_value">
-                    <field name="emitter_partner_id" class="o_text_overflow " />
+                    <field name="emitter_partner_id" class="o_text_overflow" />
                 </t>
                 <t t-else="">
                     <field name="name" class="o_text_overflow" />
                 </t>
             </xpath>
-            <xpath
-                expr="//kanban//div[hasclass('o_kanban_details')]//div[hasclass('o_kanban_record_body')]"
-                position="inside"
-            >
+
+            <xpath expr="//kanban//div[hasclass('o_kanban_record_body','text-truncate')]" position="before">
                 <p t-if="record.emitter_partner_id.raw_value" class="mb-0">
                     <field name="name" class="o_text_overflow" />
                 </p>
+            </xpath>
+
+            <xpath expr="//kanban//div[hasclass('o_kanban_record_body','text-truncate')]" position="before">
                 <p t-if="record.sat_status.raw_value" class="mb-0">
-                    Sat status:  <field name="sat_status" />
+                    Sat status:  <field name="sat_status" /> <br />
                 </p>
                 <p t-if="record.invoice_total_amount.raw_value" class="mb-0">
                     Total amount: $ <field name="invoice_total_amount" />
                 </p>
-            </xpath>
-            <xpath
-                expr="//kanban//div[hasclass('o_kanban_details')]//div[hasclass('oe_kanban_bottom_right')]/field"
-                position="after"
-            >
-                <t t-if="record.stamp_date.raw_value">
+                <p t-if="record.stamp_date.raw_value" class="mb-0">
                     <field name="stamp_date" widget="date" />
-                </t>
+                </p>
             </xpath>
+
         </field>
     </record>
 </odoo>

@@ -1,6 +1,6 @@
 import base64
 
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests import TransactionCase, tagged
 
 EMPTY_INVOICE = base64.b64encode(
     bytes(
@@ -107,29 +107,30 @@ INVOICE = base64.b64encode(
 
 @tagged("ir_attachment")
 class TestIrAttachment(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.attachment_obj = self.env["ir.attachment"]
-        self.attachment_1 = self.attachment_obj.create(
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.attachment_obj = cls.env["ir.attachment"]
+        cls.attachment_1 = cls.attachment_obj.create(
             {
                 "name": "an attachment",
                 "datas": base64.b64encode(b"Invoice"),
             }
         )
-        self.attachment_2 = self.attachment_obj.create(
+        cls.attachment_2 = cls.attachment_obj.create(
             {
                 "name": "an attachment",
                 "datas": base64.b64encode(b"T"),
             }
         )
-        self.attachment_3 = self.attachment_obj.create(
+        cls.attachment_3 = cls.attachment_obj.create(
             {
                 "name": "an empty invoice",
                 "datas": EMPTY_INVOICE,
                 "mimetype": "application/xml",
             }
         )
-        self.attachment_4 = self.attachment_obj.create(
+        cls.attachment_4 = cls.attachment_obj.create(
             {
                 "name": "an attachment",
                 "datas": INVOICE,

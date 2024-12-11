@@ -38,8 +38,8 @@ class DocumentsWizard(models.TransientModel):
         attachments `ir.filter` active. Also the "Finance" folder is opened
         by default.
         """
-        folder_id = self.env.ref("documents.documents_finance_folder")
-        action = self.env.ref("documents.document_action").sudo().read()[0]
+        folder_id = self.env.ref("documents.document_finance_folder")
+        action = self.env["ir.actions.act_window"]._for_xml_id("documents.document_action")
         action["context"] = {
             "search_default_filter_downloaded_xml": True,
             "searchpanel_default_folder_id": folder_id.id,

@@ -53,7 +53,7 @@ class ResCompany(models.Model):
         dates = []
         failed = 0
         created = []
-        folder_id = self.env.ref("documents.documents_finance_folder")
+        folder_id = self.env.ref("documents.document_finance_folder")
         for item in response.get("response"):
             xml = item.lstrip(BOM_UTF8U).encode("UTF-8")
             try:

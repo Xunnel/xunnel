@@ -185,3 +185,27 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
         help="Related CFDI of the XML file",
         store=True,
     )
+
+    def _server_action_create_record(self):
+        if not self.ids:
+            return
+        self.create_record(self)
+
+    def create_record(self, documents=None):
+        if not documents:
+            return
+        files = []
+        for xml in documents:
+            content = xml.datas.decode() if xml.datas else ""
+            files.append({"name": xml.name, "text": content})
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "attach.xmls.wizard",
+            "target": "new",
+            "views": [[False, "form"]],
+            "context": {
+                "file_names": json.dumps(files),
+                "autofill_enable": True,
+                "l10n_mx_edi_invoice_type": "in",
+            },
+        }

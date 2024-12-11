@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-04 22:13+0000\n"
-"PO-Revision-Date: 2023-05-04 22:13+0000\n"
+"POT-Creation-Date: 2024-12-10 14:54+0000\n"
+"PO-Revision-Date: 2024-12-10 14:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,44 +18,20 @@ msgstr ""
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/models/res_company.py:0
-#, python-format
 msgid ""
 "\n"
-"Also %s files have failed at the conversion.\n"
+"Also {} files have failed at the conversion.\n"
 "We sent you an email with the details of the failed invoices."
 msgstr ""
 "\n"
-"Además %s archivos han fallado al convertirse.\n"
+"Además {} archivos han fallado al convertirse.\n"
 "Te enviamos un correo con los detalles de las facturas que fallaron."
 
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/wizards/documents.py:0
-#, python-format
-msgid " Also %s files have failed at the conversion."
-msgstr " Además %s archivos han fallado al convertirse."
-
-#. module: invoice_xunnel
-#. odoo-python
-#: code:addons/invoice_xunnel/models/res_company.py:0
-#: code:addons/invoice_xunnel/wizards/documents.py:0
-#, python-format
-msgid "%s xml have been downloaded."
-msgstr "%s xml han sido descargados."
-
-#. module: invoice_xunnel
-#: model:ir.model,name:invoice_xunnel.model_documents_workflow_rule
-msgid ""
-"A set of condition and actions which will be available to all attachments "
-"matching the conditions"
-msgstr ""
-"Un conjunto de condiciones y acciones estarán disponibles para todos los "
-"archivos adjuntos que coincidan con las condiciones"
-
-#. module: invoice_xunnel
-#: model:ir.model,name:invoice_xunnel.model_attach_xmls_wizard
-msgid "Attach xmls"
-msgstr "Agrega xmls"
+msgid " Also {} files have failed at the conversion."
+msgstr "Además {} archivos han fallado al convertirse."
 
 #. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_ir_attachment
@@ -65,7 +41,6 @@ msgstr "Adjunto"
 #. module: invoice_xunnel
 #. odoo-javascript
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
-#, python-format
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -90,18 +65,11 @@ msgid "Confirm"
 msgstr "Confirmar"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_workflow_rule__create_model
-msgid "Create"
-msgstr "Crear"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__create_uid
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__create_date
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__create_date
 msgid "Created on"
 msgstr "Creado el"
@@ -112,7 +80,6 @@ msgid "Date From"
 msgstr "Última sincronización con Xunnel"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__display_name
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__display_name
 msgid "Display Name"
 msgstr "Nombre para mostrar"
@@ -130,7 +97,6 @@ msgstr "Descargar SAT XMLs"
 #. module: invoice_xunnel
 #. odoo-javascript
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
-#, python-format
 msgid "Drag and Drop your files here"
 msgstr "Arrastre y suelte sus archivos aquí"
 
@@ -141,7 +107,6 @@ msgid "Emitter"
 msgstr "Emisor"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__id
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__id
 msgid "ID"
 msgstr ""
@@ -176,15 +141,8 @@ msgstr ""
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/wizards/attach_xmls_wizard.py:0
-#, python-format
 msgid "Info"
-msgstr "Información"
-
-#. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard____last_update
-#: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard____last_update
-msgid "Last Modified on"
-msgstr "Última modificación en"
+msgstr ""
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_res_company__xunnel_last_sync
@@ -192,16 +150,20 @@ msgid "Last Sync with Xunnel"
 msgstr "Última sincronización con Xunnel"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__write_uid
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Ultima actualización por"
+msgstr "Última actualización por"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__write_date
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__write_date
 msgid "Last Updated on"
-msgstr "Ultima actualización el"
+msgstr "Última actualización el"
+
+#. module: invoice_xunnel
+#. odoo-javascript
+#: code:addons/invoice_xunnel/static/src/js/documents_attachment_viewer.js:0
+msgid "Link copied to clipboard!"
+msgstr "¡Enlace copiado al portapapeles!"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__message
@@ -255,13 +217,12 @@ msgstr "Estado del SAT"
 
 #. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
-msgid "Sat staus: $"
-msgstr "Estado del SAT: $"
+msgid "Sat status:"
+msgstr "Estado del SAT:"
 
 #. module: invoice_xunnel
 #. odoo-javascript
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
-#, python-format
 msgid "Save"
 msgstr "Guardar"
 
@@ -273,7 +234,6 @@ msgstr "Ver XMLs"
 #. module: invoice_xunnel
 #. odoo-javascript
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
-#, python-format
 msgid "Show invoices"
 msgstr "Mostrar facturas"
 
@@ -295,13 +255,10 @@ msgstr "Estado no definido"
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/wizards/attach_xmls_wizard.py:0
-#, python-format
 msgid ""
 "This partner was created when invoice %s%s was added from a XML file. Please"
 " verify that the datas of partner are correct."
 msgstr ""
-"Este socio fue creado cuando la factura %s%s fue agregada desde un archivo "
-"XML. Por favor verifique que la información del socio es correcta."
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__invoice_total_amount
@@ -335,11 +292,6 @@ msgid "Xunnel Document"
 msgstr "Documento Xunnel"
 
 #. module: invoice_xunnel
-#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_workflow_rule__create_model__xunnel_invoice
-msgid "Xunnel Invoice"
-msgstr "Facturas Xunnel"
-
-#. module: invoice_xunnel
 #: model:ir.actions.act_window,name:invoice_xunnel.action_product_confirm_wizard
 msgid "Xunnel XML synchronization"
 msgstr "Xunnel sincronización de XML"
@@ -352,83 +304,24 @@ msgstr "Sincronización de documentos Xunnel"
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/models/res_company.py:0
-#, python-format
 msgid "Xunnel invoice response."
 msgstr "Respuesta de factura Xunnel."
 
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/models/res_company.py:0
-#, python-format
 msgid "You need to define the VAT of your company."
-msgstr "Necesitas definir un RFC a tu compañía."
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "emitter_partner_id"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "fa-bullseye mx-1 sat-status"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "fa-reorder mx-1"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "fa-usd o_documents_tag_color mx-1 invoice_total_amount"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "fa-user-circle o_documents_folder_color mx-1"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "invoice_total_amount"
-msgstr ""
+msgstr "Necesitas definir un RFC a tu compañia."
 
 #. module: invoice_xunnel
 #. odoo-javascript
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
-#, python-format
 msgid "or Click to upload the files"
-msgstr "o Click para subir archivos"
+msgstr "o click para subir tus archivos"
 
 #. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "product_list"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "related_cfdi"
-msgstr ""
-
-#. module: invoice_xunnel
-#. odoo-javascript
-#: code:addons/invoice_xunnel/static/src/xml/templates.xml:0
-#, python-format
-msgid "sat_status"
-msgstr ""
+#. odoo-python
+#: code:addons/invoice_xunnel/models/res_company.py:0
+#: code:addons/invoice_xunnel/wizards/documents.py:0
+msgid "{} xml have been downloaded."
+msgstr "{} xml han sido descargados."
