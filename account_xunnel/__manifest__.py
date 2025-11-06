@@ -6,7 +6,7 @@
     "summary": """
         Use Xunnel Account to retrieve bank statements.
     """,
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "author": "Jarsa Sistemas,Vauxoo",
     "category": "Accounting",
     "website": "http://www.xunnel.com",

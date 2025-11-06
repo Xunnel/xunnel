@@ -9,7 +9,7 @@ class WizardChageDate(models.TransientModel):
     sync_date = fields.Date()
 
     def change_sync_date(self):
-        active_id = self._context.get("active_id")
+        active_id = self.env.context.get("active_id")
         journal = self.env["account.journal"].browse(active_id)
         online = journal.bank_statements_source == "online_sync"
         online_account = journal.account_online_account_id

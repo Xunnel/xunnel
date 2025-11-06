@@ -6,7 +6,7 @@ from odoo.http import Controller, request
 
 
 class MainController(Controller):
-    @http.route("/account_xunnel/xunnel_webhook_connection/", type="json", auth="public", csrf=False)
+    @http.route("/account_xunnel/xunnel_webhook_connection/", type="jsonrpc", auth="public", csrf=False)
     def webhook_handler(self, **kw):
         """Recives a request from https://xunnel.com with new data for
         auto-synchronize. It can either synchronize new transactions from

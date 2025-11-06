@@ -73,7 +73,6 @@ class ResCompany(models.Model):
                 "is_xunnel": True,
                 "state": "connected",
                 "name": link.get("name"),
-                "provider_data": "xunnel",
             }
             if online_link:
                 online_link.write(new_info)

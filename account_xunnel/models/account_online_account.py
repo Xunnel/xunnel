@@ -22,10 +22,7 @@ class AccountOnlineAccount(models.Model):
             return super()._retrieve_transactions(date, include_pendings)
         resp_json = self._get_transactions()
         transactions = self._prepare_transactions(resp_json).get("transactions", [])
-        return {
-            "transactions": self._format_transactions(transactions),
-            "pendings": [],
-        }
+        return self._format_transactions(transactions)
 
     def _get_transactions(self):
         params = {"id_account": self.online_identifier, "id_credential": self.account_online_link_id.client_id}

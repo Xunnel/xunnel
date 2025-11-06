@@ -122,7 +122,7 @@ class TestAccountJournal(TransactionCase):
         self.env.user.company_id.xunnel_token = "test token"
         transactions = self.journal.account_online_account_id._retrieve_transactions()
         self.assertNotEqual(online_journal.last_refresh, False)
-        self.assertEqual(len(transactions.get("transactions")), 7)
+        self.assertEqual(len(transactions), 7)
 
     @mock()
     def test_3_bad_retrieve_transactions_last_sync(self, request):
@@ -139,7 +139,7 @@ class TestAccountJournal(TransactionCase):
         online_journal.journal_ids = False
         transactions = online_journal._retrieve_transactions()
         self.assertFalse(online_journal.last_sync)
-        self.assertEqual(len(transactions.get("transactions")), 0)
+        self.assertEqual(len(transactions), 0)
 
     @mock()
     def test_4_link_manual_transactions(self, request):
