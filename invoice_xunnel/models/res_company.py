@@ -17,7 +17,13 @@ BOM_UTF8U = BOM_UTF8.decode("UTF-8")
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    xunnel_last_sync = fields.Date(string="Last Sync with Xunnel", default=lambda _: date.today())
+    xunnel_last_sync = fields.Date(string="Last Sync with Xunnel")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals.setdefault("xunnel_last_sync", date.today())
+        return super().create(vals_list)
 
     @api.model
     def l10n_mx_edi_get_tfd_etree(self, cfdi):
@@ -76,8 +82,10 @@ class ResCompany(models.Model):
                         "index_content": xml,
                         "mimetype": "application/xml",
                         "folder_id": folder_id.id,
+                        "company_id": self.id,
                     }
                 )
+                document.attachment_id.validate_and_update_description()
                 created.append(document.id)
         self.xunnel_last_sync = max(dates) if dates else self.xunnel_last_sync
         return {

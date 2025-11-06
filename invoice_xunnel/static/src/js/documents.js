@@ -7,4 +7,7 @@ patch(Attachment.prototype, {
     get isMxXml() {
         return ["application/xml", "text/xml"].includes(this.mimetype);
     },
+    get isMimetypeTextual() {
+        return this.isMxXml ? false : super.isMimetypeTextual;
+    },
 });

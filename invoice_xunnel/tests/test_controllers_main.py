@@ -2,8 +2,8 @@ import base64
 
 from odoo.tests import HttpCase, tagged
 
+from odoo.addons.http_routing.tests.common import MockRequest
 from odoo.addons.invoice_xunnel.controllers.main import BinaryXunnel
-from odoo.addons.website.tools import MockRequest
 
 
 @tagged("controllers_main")

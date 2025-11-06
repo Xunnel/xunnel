@@ -24,10 +24,14 @@ class IrAttachment(models.Model):
                 and self.env[record.res_model].browse(record.res_id).xunnel_document
             )
             if is_xunnel_record:
-                if record.datas and self._validate_xml(record.datas):
-                    description = self._create_description(record.datas)
-                    record.update(description)
+                self.validate_and_update_description()
         return records
+
+    def validate_and_update_description(self):
+        if not self._validate_xml(self.datas):
+            return
+        description = self._create_description(self.datas)
+        self.update(description)
 
     def write(self, values):
         no_mx_rec = self
@@ -71,7 +75,7 @@ class IrAttachment(models.Model):
         except (SyntaxError, ValueError) as err:
             _logger.error(str(err))
             return {}
-        if xml_obj.get("Version") != "3.3" or xml_obj.get("TipoDeComprobante") != "I":
+        if xml_obj.get("Version") not in ["3.3", "4.0"] or xml_obj.get("TipoDeComprobante") != "I":
             return {}
         partner = self.env["res.partner"].search([("vat", "=ilike", xml_obj.Emisor.get("Rfc"))], limit=1)
         if not partner:

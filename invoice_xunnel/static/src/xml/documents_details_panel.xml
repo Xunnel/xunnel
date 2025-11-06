@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t
+        t-inherit="documents.DocumentsDetailsPanel"
+        t-name="documents.DocumentsDetailsPanel"
+        owl="1"
+        t-inherit-mode="extension"
+    >
+        <xpath expr="//div[hasclass('o_documents_details_panel_fields')]" position="inside">
+            <section t-if="record?.data" class="border d-flex flex-column mt-3 p-2 rounded-3 text-start w-100">
+                <h3 class="">Xunnel</h3>
+                <div class="">
+                    <i class="fa fa-user-circle mx-1 my-2" />
+                    <DocumentsDetailsMany2OneField
+                        name="'emitter_partner_id'"
+                        record="record"
+                        readonly="true"
+                        placeholder.translate="Emitter"
+                    />
+                </div>
+                <div class="d-flex flex-row align-items-center mb-1">
+                    <i class="fa fa-signal mx-1 my-2" />
+                    <span class="mr8">Sat status:</span>
+                    <SelectionField
+                        t-if="record.data.sat_status"
+                        name="'sat_status'"
+                        record="record"
+                        readonly="true"
+                    />
+                </div>
+                <div class="o_field_widget">
+                    <span class="mr8">Total Amount:</span>
+                    $<MonetaryField name="'invoice_total_amount'" record="record" readonly="true" />
+                </div>
+            </section>
+        </xpath>
+    </t>
+</templates>

@@ -53,4 +53,17 @@
 
         </field>
     </record>
+
+    <record id="documents_view_list" model="ir.ui.view">
+        <field name="name">documents list</field>
+        <field name="model">documents.document</field>
+        <field name="inherit_id" ref="documents.documents_view_list" />
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="sat_status" optional="show" />
+                <field name="emitter_partner_id" optional="show" />
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

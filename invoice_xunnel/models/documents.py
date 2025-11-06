@@ -30,13 +30,10 @@ class Document(models.Model):
             if xml is None:
                 return
             rfc = xml.Emisor.get("Rfc", "").upper()
-            partner = self.env["res.partner"].search(
-                [("vat", "=", rfc), "|", ("supplier_rank", ">", 0), ("customer_rank", ">", 0)], limit=1
-            )
+            partner = self.env["res.partner"].search([("vat", "=", rfc)], limit=1)
             stamp_date = xml.Complemento.xpath(
                 "tfd:TimbreFiscalDigital[1]", namespaces={"tfd": "http://www.sat.gob.mx/TimbreFiscalDigital"}
             )[0].get("FechaTimbrado")
-
             rec.emitter_partner_id = partner.id
             rec.invoice_total_amount = xml.get("Total")
             rec.stamp_date = datetime.strptime(stamp_date, "%Y-%m-%dT%H:%M:%S")

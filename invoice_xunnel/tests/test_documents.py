@@ -159,7 +159,13 @@ class TestCaseDocuments(TransactionCase):
         request.post("%sget_invoices_sat" % self.url, text=documents_response)
         doc = self.env["xunnel.documents.wizard"].create({})
         res = doc.synchronize_documents()
-        created_document = self.env["documents.document"].search([], limit=1)
+        folder_id = self.env.ref("documents.document_finance_folder")
+        created_document = self.env["documents.document"].search(
+            [
+                ("folder_id", "=", folder_id.id),
+            ],
+            limit=1,
+        )
         action = {
             "context": {
                 "default_message": "1 xml have been downloaded.",

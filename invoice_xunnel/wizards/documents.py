@@ -43,6 +43,6 @@ class DocumentsWizard(models.TransientModel):
         action["context"] = {
             "search_default_filter_downloaded_xml": True,
             "searchpanel_default_folder_id": folder_id.id,
-            "downloaded_invoice": self._context.get("downloaded_invoice"),
+            "downloaded_invoice": self.env.context.get("downloaded_invoice"),
         }
         return action
