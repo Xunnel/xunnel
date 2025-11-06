@@ -1,4 +1,4 @@
-from odoo import _, api, models
+from odoo import api, models
 from odoo.exceptions import UserError
 
 
@@ -7,7 +7,7 @@ class ResUsers(models.Model):
 
     @api.model
     def get_xunnel_token(self):
-        msg = _("You cannot add new accounts if your company does not have a valid token")
+        msg = self.env._("You cannot add new accounts if your company does not have a valid token")
         if not self.env.company.xunnel_token:
             raise UserError(msg)
         res = self.env.company._xunnel("account_manager/info")

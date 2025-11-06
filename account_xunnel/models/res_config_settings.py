@@ -1,7 +1,7 @@
 # Copyright 2017, Vauxoo, Jarsa Sistemas, S.A. de C.V.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import _, exceptions, models
+from odoo import exceptions, models
 
 
 def assert_xunnel_token(function):
@@ -13,7 +13,9 @@ def assert_xunnel_token(function):
     def wraper(self):
         if not self.company_id.xunnel_token and not self.env.company.xunnel_token:
             raise exceptions.UserError(
-                _("Your company doesn't have a Xunnel Token established. Please add one before trying manual sync.")
+                self.env._(
+                    "Your company doesn't have a Xunnel Token established. Please add one before trying manual sync."
+                )
             )
         return function(self)
 
@@ -28,14 +30,14 @@ class AccountConfigSettings(models.TransientModel):
         current_company = self.company_id if self.company_id else self.env.company
         status, response = current_company._sync_xunnel_providers()
         if not status:
-            error = _("An error has occurred while synchronizing your banks. %s")
+            error = self.env._("An error has occurred while synchronizing your banks. %s")
             raise exceptions.UserError(error % response)
-        message = _("Success! {} banks have been synchronized.").format(len(response))
+        message = self.env._("Success! {} banks have been synchronized.").format(len(response))
         action_params = {"message": message, "message_class": "success"}
         return {
             "type": "ir.actions.client",
             "tag": "account_xunnel.SyncrhonizedAccounts",
-            "name": _("Xunnel response"),
+            "name": self.env._("Xunnel response"),
             "target": "new",
             "params": action_params,
         }

@@ -2,7 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 
-from odoo import _, fields, models
+from odoo import fields, models
 from odoo.exceptions import UserError
 
 
@@ -43,7 +43,9 @@ class AccountOnlineLink(models.Model):
 
     def update_credentials(self):
         raise UserError(
-            _("Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that.")
+            self.env._(
+                "Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that."
+            )
         )
 
     def _open_iframe(self, mode="link", include_param=None, preferred_institution=False, journal_id=False):
@@ -53,7 +55,7 @@ class AccountOnlineLink(models.Model):
 
     def xunnel_exception(self):
         raise UserError(
-            _(
+            self.env._(
                 "Xunnel bank: Unsupported operation.\
                 Please check our documentation in: https://xunnel.com/en_US/user-manual"
             )

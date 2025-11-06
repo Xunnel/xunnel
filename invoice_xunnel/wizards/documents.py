@@ -1,4 +1,4 @@
-from odoo import _, fields, models
+from odoo import fields, models
 
 
 class DocumentsWizard(models.TransientModel):
@@ -22,9 +22,9 @@ class DocumentsWizard(models.TransientModel):
         result = company._sync_xunnel_documents()
         failed = result.get("failed")
         created = result.get("created")
-        message = _("{} xml have been downloaded.").format(len(created))
+        message = self.env._("{} xml have been downloaded.").format(len(created))
         if failed:
-            message += _(" Also {} files have failed at the conversion.").format(failed)
+            message += self.env._(" Also {} files have failed at the conversion.").format(failed)
         action = self.env.ref("invoice_xunnel.action_product_confirm_wizard").sudo().read()[0]
         action["context"] = {
             "default_message": message,

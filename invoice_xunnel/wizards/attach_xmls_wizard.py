@@ -6,7 +6,7 @@ import base64
 
 from lxml import objectify
 
-from odoo import _, api, models
+from odoo import api, models
 
 TYPE_CFDI22_TO_CFDI33 = {
     "ingreso": "I",
@@ -108,10 +108,10 @@ class AttachXmlsWizard(models.TransientModel):
                 }
             )
         )
-        msg = _(
+        msg = self.env._(
             "This partner was created when invoice %s%s was added from "
             "a XML file. Please verify that the datas of partner are "
             "correct."
         ) % (xml.get("Serie", ""), xml.get("Folio", ""))
-        partner.message_post(subject=_("Info"), body=msg)
+        partner.message_post(subject=self.env._("Info"), body=msg)
         return partner
