@@ -23,7 +23,7 @@ class Document(models.Model):
     _inherit = "documents.document"
 
     @api.depends("datas")
-    def _compute_emitter_partner_id(self):
+    def _compute_xml_emitter_information(self):
         documents = self.filtered(lambda rec: rec.xunnel_document and rec.attachment_id)
         for rec in documents:
             xml = rec.get_xml_object(rec.datas)
@@ -40,6 +40,12 @@ class Document(models.Model):
             rec.emitter_partner_id = partner.id
             rec.invoice_total_amount = xml.get("Total")
             rec.stamp_date = datetime.strptime(stamp_date, "%Y-%m-%dT%H:%M:%S")
+
+            rec.xml_l10n_mx_edi_payment_method = self._get_xml_l10n_mx_edi_payment_method(xml)
+            rec.xml_currency_id = self._get_xml_currency_id(xml).id
+            rec.xml_cfdi_usage = self._get_xml_cfdi_usage(xml)
+            rec.xml_l10n_mx_edi_payment_policy = self._get_xml_l10n_mx_edi_payment_policy(xml)
+            rec.xml_exchange_rate = self._get_xml_exchange_rate(xml)
 
     @api.depends("datas")
     def _compute_sat_status(self):
@@ -156,7 +162,7 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     )
     emitter_partner_id = fields.Many2one(
         "res.partner",
-        compute="_compute_emitter_partner_id",
+        compute="_compute_xml_emitter_information",
         string="Emitter",
         help="In case this is a CFDI file, stores emitter's name.",
         store=True,
@@ -164,12 +170,12 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     xunnel_document = fields.Boolean(help="Specify if this is a document downloaded with Xunnel.")
     invoice_total_amount = fields.Float(
         string="Total Amount",
-        compute="_compute_emitter_partner_id",
+        compute="_compute_xml_emitter_information",
         help="In case this is a CFDI file, stores invoice's total amount.",
         store=True,
     )
     stamp_date = fields.Datetime(
-        compute="_compute_emitter_partner_id",
+        compute="_compute_xml_emitter_information",
         help="In case this is a CFDI file, stores invoice's stamp date.",
         store=True,
     )
@@ -185,3 +191,111 @@ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
         help="Related CFDI of the XML file",
         store=True,
     )
+    xml_currency_id = fields.Many2one(
+        "res.currency",
+        string="XML Currency",
+        compute="_compute_xml_emitter_information",
+        store=True,
+        help="Currency specified in the XML file.",
+    )
+    xml_cfdi_usage = fields.Selection(
+        string="XML CFDI Usage",
+        selection=[
+            ("G01", "Acquisition of merchandise"),
+            ("G02", "Returns, discounts or bonuses"),
+            ("G03", "General expenses"),
+            ("I01", "Constructions"),
+            ("I02", "Office furniture and equipment investment"),
+            ("I03", "Transportation equipment"),
+            ("I04", "Computer equipment and accessories"),
+            ("I05", "Dices, dies, molds, matrices and tooling"),
+            ("I06", "Telephone communications"),
+            ("I07", "Satellite communications"),
+            ("I08", "Other machinery and equipment"),
+            ("D01", "Medical, dental and hospital expenses."),
+            ("D02", "Medical expenses for disability"),
+            ("D03", "Funeral expenses"),
+            ("D04", "Donations"),
+            ("D05", "Real interest effectively paid for mortgage loans (room house)"),
+            ("D06", "Voluntary contributions to SAR"),
+            ("D07", "Medical insurance premiums"),
+            ("D08", "Mandatory School Transportation Expenses"),
+            ("D09", "Deposits in savings accounts, premiums based on pension plans."),
+            ("D10", "Payments for educational services (Colegiatura)"),
+            ("S01", "No tax effects"),
+            ("CP01", "Payments"),
+            ("CN01", "Payroll"),
+            ("P01", "To define (CFDI 3.3 only)"),
+        ],
+        compute="_compute_xml_emitter_information",
+        store=True,
+        help="CFDI usage specified in the XML file.",
+    )
+    xml_exchange_rate = fields.Float(
+        string="XML Exchange rate",
+        compute="_compute_xml_emitter_information",
+        store=True,
+        digits=(16, 4),
+        default=1.0,
+        help="Exchange rate specified in the XML file.",
+    )
+    xml_l10n_mx_edi_payment_policy = fields.Selection(
+        string="XML Payment Policy",
+        compute="_compute_xml_emitter_information",
+        selection=[("PPD", "PPD"), ("PUE", "PUE")],
+        store=True,
+    )
+    xml_l10n_mx_edi_payment_method = fields.Char(
+        string="XML Payment Way",
+        compute="_compute_xml_emitter_information",
+        store=True,
+    )
+
+    def _get_xml_l10n_mx_edi_payment_method(self, xml):
+        """Extract the payment method code from the XML"""
+        payment_method_code = xml.get("FormaPago", "")
+        return payment_method_code
+
+    def _get_xml_currency_id(self, xml):
+        """Extract the currency from the XML and search for a matching currency record in Odoo."""
+        currency_name = xml.get("Moneda", "")
+        currency_id = self.env["res.currency"].search(
+            [
+                ("name", "=", currency_name),
+            ],
+            limit=1,
+        )
+        return currency_id
+
+    def _get_xml_exchange_rate(self, xml):
+        """Extract the exchange rate from the XML, if it's not present or invalid,
+        return 1.0 as default.
+        """
+        exchange_rate = 1.0
+        try:
+            exchange_rate = float(xml.get("TipoCambio", "1.0"))
+        except (ValueError, TypeError):
+            _logger.warning("Invalid exchange rate in XML: %s", xml.get("TipoCambio"))
+        return exchange_rate
+
+    def _get_xml_cfdi_usage(self, xml):
+        """Validate if the CFDI usage in the XML is among the allowed values, if so, return it,
+        otherwise return an empty string.
+        """
+        usage = xml.Receptor.get("UsoCFDI", "")
+        usage_selection = self.fields_get(["xml_cfdi_usage"]).get("xml_cfdi_usage", {}).get("selection", [])
+        allowed_usages = {usage[0] for usage in usage_selection}
+        return usage if usage in allowed_usages else False
+
+    def _get_xml_l10n_mx_edi_payment_policy(self, xml):
+        """Validate if the CFDI usage in the XML is among the allowed values, if so, return it,
+        otherwise return an empty string.
+        """
+        policy = xml.get("MetodoPago", "")
+        policy_selection = (
+            self.fields_get(["xml_l10n_mx_edi_payment_policy"])
+            .get("xml_l10n_mx_edi_payment_policy", {})
+            .get("selection", [])
+        )
+        allowed_policys = {policy_selection[0] for policy_selection in policy_selection}
+        return policy if policy in allowed_policys else False

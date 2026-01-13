@@ -7,9 +7,15 @@
         <field name="priority">16</field>
         <field name="arch" type="xml">
             <xpath expr="//search/group" position="before">
+                <separator string="Xunnel" />
                 <field name="emitter_partner_id" string="Emitter" />
                 <field name="sat_status" />
                 <field name="invoice_total_amount" string="Total Amount" />
+                <field name="xml_currency_id" />
+                <field name="xml_cfdi_usage" />
+                <field name="xml_exchange_rate" />
+                <field name="xml_l10n_mx_edi_payment_policy" />
+                <field name="xml_l10n_mx_edi_payment_method" />
             </xpath>
         </field>
     </record>

@@ -4,7 +4,7 @@ import os
 from requests_mock import mock
 
 from odoo.tests.common import TransactionCase
-from odoo.tools import misc
+from odoo.tools import misc, mute_logger
 
 TEXT_xunnel_datas = base64.b64encode(
     bytes(
@@ -40,6 +40,8 @@ TEXT_xunnel_datas_invoice = base64.b64encode(
         Certificado="test="
         Fecha="2021-11-02T11:25:54"
         Folio="666"
+        FormaPago="TESTPM"
+        TipoCambio="2.0"
         Serie="F" Version="3.3" xmlns:cfdi="http://www.sat.gob.mx/cfd/3">
     <cfdi:Emisor Rfc="MXGODE561231GR8" Nombre="TEST EMISOR" RegimenFiscal="666">
     </cfdi:Emisor>
@@ -86,10 +88,74 @@ TEXT_xunnel_datas_invoice = base64.b64encode(
     )
 )
 
+TEXT_xunnel_datas_invoice_wrong_values = base64.b64encode(
+    bytes(
+        """<?xml version="1.0" encoding="utf-8"?>
+    <cfdi:Comprobante
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"
+        LugarExpedicion="45116"
+        MetodoPago="WrongPaymentWay"
+        TipoDeComprobante="I"
+        Total="0.0"
+        Moneda="WRONGCURRENCY"
+        Certificado="test="
+        Fecha="2021-11-02T11:25:54"
+        Folio="666"
+        FormaPago="TESTPM"
+        TipoCambio="Wrong.Value"
+        Serie="F" Version="3.3" xmlns:cfdi="http://www.sat.gob.mx/cfd/3">
+    <cfdi:Emisor Rfc="MXGODE561231GR8" Nombre="TEST EMISOR" RegimenFiscal="666">
+    </cfdi:Emisor>
+    <cfdi:Receptor Rfc="MXGODE561231GR8" Nombre="VAUXOO TEST" UsoCFDI="WRONG.USAGE">
+    </cfdi:Receptor>
+    <cfdi:Conceptos>
+        <cfdi:Concepto
+            ClaveProdServ="80121666"
+            Cantidad="1" ClaveUnidad="E666"
+            Descripcion="IGUALA CORRESPONDIENTE AL MES DE NOVIEMBRE 2021"
+            ValorUnitario="666.00"
+            Importe="666.00">
+                <cfdi:Impuestos>
+                    <cfdi:Traslados>
+                        <cfdi:Traslado Base="666.00"
+                            Impuesto="002"
+                            TipoFactor="Tasa"
+                            TasaOCuota="0.160000"
+                            Importe="3200.00"></cfdi:Traslado>
+                    </cfdi:Traslados>
+                </cfdi:Impuestos>
+            </cfdi:Concepto>
+        </cfdi:Conceptos>
+        <cfdi:Impuestos TotalImpuestosTrasladados="3200.00">
+            <cfdi:Traslados>
+                <cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="3200.00">
+                </cfdi:Traslado>
+            </cfdi:Traslados>
+        </cfdi:Impuestos>
+        <cfdi:Complemento>
+            <tfd:TimbreFiscalDigital
+                xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital"
+                xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital
+                http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd"
+                Version="1.1" UUID="648A7E33-DDDE-4522-AD82-8432A6455A58"
+                FechaTimbrado="2021-11-02T11:27:39"
+                RfcProvCertif="SAT970701NN3"
+                SelloCFD="test="
+                NoCertificadoSAT="000010000005666"
+                SelloSAT="test=" />
+            </cfdi:Complemento>
+        </cfdi:Comprobante>""",
+        "utf-8",
+    )
+)
+
 
 class TestCaseDocuments(TransactionCase):
     def setUp(self):
         super().setUp()
+        mxn = self.env["res.currency"].with_context(active_test=False).search([("name", "=", "MXN")], limit=1)
+        mxn.active = True
         self.url = "https://xunnel.com/"
         self.company = self.env["res.company"].browse(self.ref("base.main_company"))
         self.company.xunnel_token = "test"
@@ -179,7 +245,7 @@ class TestCaseDocuments(TransactionCase):
         expected_error_res = action["context"]
         self.assertEqual(res_error["context"], expected_error_res)
 
-    def test_05_compute_emitter_partner_id(self):
+    def test_05_compute_xml_emitter_information(self):
         self.attachment_obj = self.env["ir.attachment"]
         attachment_1 = self.attachment_obj.create(
             {
@@ -201,11 +267,45 @@ class TestCaseDocuments(TransactionCase):
         partner = self.env["res.partner"].search([], limit=1)
         partner.vat = "MXGODE561231GR8"
         partner.supplier_rank += 1
-        document_test._compute_emitter_partner_id()
+        document_test._compute_xml_emitter_information()
         self.assertEqual(document_test.emitter_partner_id, partner)
         self.assertEqual(document_test.invoice_total_amount, 666.66)
+        self.assertEqual(document_test.xml_currency_id.name, "MXN")
+        self.assertEqual(document_test.xml_cfdi_usage, "G03")
+        self.assertEqual(document_test.xml_exchange_rate, 2.0)
+        self.assertEqual(document_test.xml_l10n_mx_edi_payment_policy, "PUE")
+        self.assertEqual(document_test.xml_l10n_mx_edi_payment_method, "TESTPM")
 
-    def test_06_compute_related_cfdi(self):
+    @mute_logger("odoo.addons.invoice_xunnel.models.documents")
+    def test_06_compute_xml_emitter_information_wrong_values(self):
+        self.attachment_obj = self.env["ir.attachment"]
+        attachment_1 = self.attachment_obj.create(
+            {
+                "name": "an attachment",
+                "datas": base64.b64encode(b"Invoice"),
+                "description": "a description emitter",
+            }
+        )
+        document_test = self.env["documents.document"].create(
+            {
+                "datas": TEXT_xunnel_datas_invoice_wrong_values,
+                "name": "file.txt",
+                "mimetype": "text/plain",
+                "folder_id": self.folder_a.id,
+                "xunnel_document": True,
+                "attachment_id": attachment_1.id,
+            }
+        )
+        document_test._compute_xml_emitter_information()
+        self.assertEqual(document_test.emitter_partner_id.id, False)
+        self.assertEqual(document_test.invoice_total_amount, 0.0)
+        self.assertEqual(document_test.xml_currency_id.name, False)
+        self.assertEqual(document_test.xml_cfdi_usage, False)
+        self.assertEqual(document_test.xml_exchange_rate, 1.0)
+        self.assertEqual(document_test.xml_l10n_mx_edi_payment_policy, False)
+        self.assertEqual(document_test.xml_l10n_mx_edi_payment_method, "TESTPM")
+
+    def test_07_compute_related_cfdi(self):
         self.attachment_obj = self.env["ir.attachment"]
         attachment_1 = self.attachment_obj.create(
             {

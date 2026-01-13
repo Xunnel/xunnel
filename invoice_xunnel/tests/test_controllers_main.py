@@ -1,5 +1,6 @@
 import base64
 
+from odoo.http import request
 from odoo.tests.common import HttpCase, tagged
 
 from odoo.addons.invoice_xunnel.controllers.main import BinaryXunnel
@@ -29,6 +30,7 @@ class TestControllersMain(HttpCase):
             }
         )
         with MockRequest(self.env):
+            request.httprequest.args = {}
             res = BinaryXunnel().content_common(
                 model="documents.document",
                 id=self.document_xunnel.id,

@@ -53,6 +53,11 @@ msgstr ""
 "archivos adjuntos que coincidan con las condiciones"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__g01
+msgid "Acquisition of merchandise"
+msgstr "Adquisición de mercancías"
+
+#. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_attach_xmls_wizard
 msgid "Attach xmls"
 msgstr "Agrega xmls"
@@ -85,9 +90,19 @@ msgid "Companies"
 msgstr "Empresas"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i04
+msgid "Computer equipment and accessories"
+msgstr "Equipo de cómputo y accesorios"
+
+#. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
 msgid "Confirm"
 msgstr "Confirmar"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i01
+msgid "Constructions"
+msgstr "Construcciones"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_workflow_rule__create_model
@@ -112,6 +127,18 @@ msgid "Date From"
 msgstr "Última sincronización con Xunnel"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d09
+msgid "Deposits in savings accounts, premiums based on pension plans."
+msgstr ""
+"Depósitos en cuentas para el ahorro, primas que tengan como base planes de "
+"pensiones."
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i05
+msgid "Dices, dies, molds, matrices and tooling"
+msgstr "Dados, troqueles, moldes, matrices y herramental"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__display_name
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__display_name
 msgid "Display Name"
@@ -121,6 +148,11 @@ msgstr "Nombre para mostrar"
 #: model:ir.model,name:invoice_xunnel.model_documents_document
 msgid "Document"
 msgstr "Documento"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d04
+msgid "Donations"
+msgstr "Donativos"
 
 #. module: invoice_xunnel
 #: model:ir.ui.menu,name:invoice_xunnel.xunnel_download_invoices
@@ -139,6 +171,16 @@ msgstr "Arrastre y suelte sus archivos aquí"
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.document_view_search
 msgid "Emitter"
 msgstr "Emisor"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d03
+msgid "Funeral expenses"
+msgstr "Gastos funerarios"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__g03
+msgid "General expenses"
+msgstr "Gastos en general"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__id
@@ -204,6 +246,26 @@ msgid "Last Updated on"
 msgstr "Ultima actualización el"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d08
+msgid "Mandatory School Transportation Expenses"
+msgstr "Gastos de transportación escolar obligatoria"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d02
+msgid "Medical expenses for disability"
+msgstr "Gastos médicos por incapacidad o discapacidad"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d07
+msgid "Medical insurance premiums"
+msgstr "Primas por seguros de gastos médicos"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d01
+msgid "Medical, dental and hospital expenses."
+msgstr "Honorarios médicos, dentales y gastos hospitalarios."
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__message
 msgid "Message"
 msgstr "Mensaje"
@@ -212,6 +274,11 @@ msgstr "Mensaje"
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__no_attachment_action
 msgid "No Attachment Action"
 msgstr ""
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__s01
+msgid "No tax effects"
+msgstr "Sin efectos fiscales"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__not_found
@@ -224,9 +291,51 @@ msgid "Not Synced Yet"
 msgstr "Aún sin sincronizar"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i02
+msgid "Office furniture and equipment investment"
+msgstr "Mobilario y equipo de oficina por inversiones"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i08
+msgid "Other machinery and equipment"
+msgstr "Otra maquinaria y equipo"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_l10n_mx_edi_payment_policy__ppd
+msgid "PPD"
+msgstr ""
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_l10n_mx_edi_payment_policy__pue
+msgid "PUE"
+msgstr ""
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__cp01
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d10
+msgid "Payments for educational services (Colegiatura)"
+msgstr "Pagos por servicios educativos (colegiaturas)"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__cn01
+msgid "Payroll"
+msgstr "Nómina"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__product_list
 msgid "Products"
 msgstr "Productos"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d05
+msgid "Real interest effectively paid for mortgage loans (room house)"
+msgstr ""
+"Intereses reales efectivamente pagados por créditos hipotecarios (casa "
+"habitación)"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,help:invoice_xunnel.field_documents_document__sat_status
@@ -244,6 +353,11 @@ msgid "Related CFDI of the XML file"
 msgstr "CFDI Relacionado al archivo XML"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__g02
+msgid "Returns, discounts or bonuses"
+msgstr "Devoluciones, descuentos o bonificaciones"
+
+#. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
 msgid "SAT's invoices older than this date won't be fetched."
 msgstr "Facturas del SAT anteriores a esta fecha no serán recuperadas."
@@ -257,6 +371,11 @@ msgstr "Estado del SAT"
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
 msgid "Sat staus: $"
 msgstr "Estado del SAT: $"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i07
+msgid "Satellite communications"
+msgstr "Comunicaciones satelitales"
 
 #. module: invoice_xunnel
 #. odoo-javascript
@@ -293,6 +412,11 @@ msgid "State not defined"
 msgstr "Estado no definido"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i06
+msgid "Telephone communications"
+msgstr "Comunicaciones telefónicas"
+
+#. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/wizards/attach_xmls_wizard.py:0
 #, python-format
@@ -304,6 +428,11 @@ msgstr ""
 "XML. Por favor verifique que la información del socio es correcta."
 
 #. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__p01
+msgid "To define (CFDI 3.3 only)"
+msgstr "Por definir (solo CFDI 3.3)"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__invoice_total_amount
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.document_view_search
 msgid "Total Amount"
@@ -313,6 +442,11 @@ msgstr "Cantidad total"
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
 msgid "Total amount: $"
 msgstr "Cantidad total: $"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__i03
+msgid "Transportation equipment"
+msgstr "Equipo de transporte"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__message
@@ -328,6 +462,36 @@ msgstr "Se usa para alternar la redirección a los archivos adjuntos."
 #: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__valid
 msgid "Valid"
 msgstr "Válido"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__xml_cfdi_usage__d06
+msgid "Voluntary contributions to SAR"
+msgstr "Aportaciones voluntarias al SAR"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__xml_cfdi_usage
+msgid "XML CFDI Usage"
+msgstr "XML Uso CFDI"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__xml_currency_id
+msgid "XML Currency"
+msgstr "XML Moneda"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__xml_exchange_rate
+msgid "XML Exchange rate"
+msgstr "XML Tipo de cambio"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__xml_l10n_mx_edi_payment_policy
+msgid "XML Payment Policy"
+msgstr "XML Metodo de pago"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__xml_l10n_mx_edi_payment_method
+msgid "XML Payment Way"
+msgstr "XML Forma de pago"
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__xunnel_document
