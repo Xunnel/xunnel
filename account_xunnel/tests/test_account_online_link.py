@@ -28,9 +28,9 @@ class TestAccountOnlineLink(TransactionCase):
             }
         )
 
-    def test_01_update_credentials(self):
+    def test_01_action_update_credentials(self):
         with self.assertRaises(UserError):
-            self.link.update_credentials()
+            self.link.action_update_credentials()
 
     @patch("odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink._fetch_odoo_fin")
     def test_02_fetch_odoo_fin(self, _fetch_odoo_fin):
