@@ -13,8 +13,9 @@ class AccountManager extends Component {
         this.orm = useService("orm");
         this.mainXunnelContainer = useRef("mainXunnelContainer");
         onMounted(async () => {
-            window.document.body.appendChild($('<div id="mainXunnelContainer"></div>')[0]);
-            console.warn(this.mainXunnelContainer.el);
+            const divMainXunnelContainer = document.createElement("div");
+            divMainXunnelContainer.id = "mainXunnelContainer";
+            window.document.body.appendChild(divMainXunnelContainer);
             const {src, token, locale, css} = await this.orm.call("res.users", "get_xunnel_token");
             this.locale = locale;
             this.token = token;
@@ -30,7 +31,7 @@ class AccountManager extends Component {
         });
     }
     openManager() {
-        $(this.mainXunnelContainer.el).parents(".modal").addClass("d-none");
+        this.mainXunnelContainer.el.closest(".modal")?.classList.add("d-none");
         const widget = new SyncWidget({
             token: this.token,
             element: "#mainXunnelContainer",
