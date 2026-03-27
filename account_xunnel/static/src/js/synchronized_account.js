@@ -11,12 +11,6 @@ class SyncrhonizedAccounts extends Component {
     _close_action() {
         this.do_action({type: "ir.actions.act_window_close"});
     }
-    // renderButtons($node) {
-    //     debugger;
-    //     this.$buttons = $(this.qweb.render("account_xunnel.synchronized_accounts_footer", {widget: this}));
-    //     this.$buttons.find(".js_cancel").click(() => this.do_action({type: "ir.actions.act_window_close"}));
-    //     this.$buttons.appendTo($node);
-    // }
 }
 SyncrhonizedAccounts.template = "account_xunnel.synchronized_accounts_template";
 
