@@ -7,7 +7,7 @@ from json import dumps
 import requests
 from requests.exceptions import HTTPError
 
-from odoo import _, fields, models
+from odoo import fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class ResCompany(models.Model):
         """
         self.ensure_one()
         if not self.xunnel_token:
-            raise UserError(_("You need to define Xunnel Token"))
+            raise UserError(self.env._("You need to define Xunnel Token"))
         base = self.env["ir.config_parameter"].sudo().get_param("account_xunnel.xunnel_server_url")
         origin_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         response = requests.post(

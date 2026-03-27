@@ -1,4 +1,4 @@
-from odoo import _, fields, models
+from odoo import fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -14,7 +14,7 @@ class WizardChageDate(models.TransientModel):
         online = journal.bank_statements_source == "online_sync"
         online_account = journal.account_online_account_id
         if not online or not online_account:
-            message = _(
+            message = self.env._(
                 "The journal is not correctly configurated. Please"
                 " check that the bank feed is set to 'Automated"
                 " Bank Synchronization' and an online acount is "

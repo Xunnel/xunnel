@@ -8,7 +8,7 @@ from time import mktime
 
 from lxml import etree, objectify
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 BOM_UTF8U = BOM_UTF8.decode("UTF-8")
@@ -40,7 +40,7 @@ class ResCompany(models.Model):
         """
         self.ensure_one()
         if not self.vat and self.xunnel_token:
-            raise UserError(_("You need to define the VAT of your company."))
+            raise UserError(self.env._("You need to define the VAT of your company."))
         values = {"last_sync": False, "xunnel_testing": False, "vat": self.vat}
         if self.xunnel_last_sync:
             values.update(last_sync=mktime(self.xunnel_last_sync.timetuple()))
@@ -88,11 +88,11 @@ class ResCompany(models.Model):
     def get_xml_sync_action(self):
         result = self._sync_xunnel_documents()
         message_class = "success"
-        message = _("{} xml have been downloaded.").format(result.get("created"))
+        message = self.env._("{} xml have been downloaded.").format(result.get("created"))
         failed = result.get("failed")
         if failed:
             message_class = "warning"
-            message += _(
+            message += self.env._(
                 "\nAlso {} files have failed at the conversion."
                 "\nWe sent you an email with the details of the failed invoices."
             ).format(failed)
@@ -100,7 +100,7 @@ class ResCompany(models.Model):
         return {
             "type": "ir.actions.client",
             "tag": "account_xunnel.SyncrhonizedAccounts",
-            "name": _("Xunnel invoice response."),
+            "name": self.env._("Xunnel invoice response."),
             "target": "new",
             "params": action_params,
         }
