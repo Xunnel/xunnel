@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import {patch} from "@web/core/utils/patch";
-// import { FileViewer } from "@documents/attachments/document_file_viewer";
 import {DocumentsFileViewer} from "@documents/views/helper/documents_file_viewer";
 import {useService} from "@web/core/utils/hooks";
 import {_t} from "@web/core/l10n/translation";
@@ -28,11 +27,10 @@ patch(DocumentsFileViewer.prototype, {
                     if (!iframe.contentDocument) {
                         return;
                     }
-                    const $iframe = $(iframe),
-                        iframeDocumentElement = iframe.contentDocument.documentElement,
-                        $iframePre = $(iframeDocumentElement).find("pre");
-                    if ($iframe.hasClass("o_AttachmentViewer_isXml") && $iframePre.length) {
-                        let content = $($iframePre)[0].innerHTML;
+                    const iframeDocumentElement = iframe.contentDocument.documentElement;
+                    const iframePreElements = iframeDocumentElement.querySelectorAll("pre");
+                    if (iframe.classList.contains("o_AttachmentViewer_isXml") && iframePreElements.length) {
+                        let content = iframePreElements[0].innerHTML;
                         let pre_content = PR.prettyPrintOne(content.trim());
                         let prettyprint_css = document.createElement("link");
                         prettyprint_css.href =
@@ -45,8 +43,10 @@ patch(DocumentsFileViewer.prototype, {
                         main_css.rel = "stylesheet";
                         main_css.type = "text/css";
                         iframe.contentDocument.head.append(main_css);
-                        $iframePre.html(pre_content);
-                        $(iframeDocumentElement).find(".atn, .atv").click(this.copy_attribute.bind(this));
+                        iframePreElements.forEach((pre) => (pre.innerHTML = pre_content));
+                        iframeDocumentElement.querySelectorAll(".atn, .atv").forEach((el) => {
+                            el.addEventListener("click", this.copy_attribute.bind(this));
+                        });
                     }
                 };
                 iframe.addEventListener("load", onLoad);
@@ -58,20 +58,19 @@ patch(DocumentsFileViewer.prototype, {
     copy_attribute(ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        const target = $(ev.currentTarget);
-        const text = target.hasClass("atv")
+        const target = ev.currentTarget;
+        const text = target.classList.contains("atv")
             ? this.get_target_value(target)
-            : this.get_target_value(target.next().next());
+            : this.get_target_value(target.nextSibling?.nextSibling);
         this.copy(text);
     },
 
     get_target_value(element) {
-        return element.text().replace(/\"/g, "");
+        if (!element) return "";
+        return element.textContent.replace(/\"/g, "");
     },
 
     copy(textContent) {
-        const input = $();
-        input.val(textContent);
         navigator.clipboard.writeText(textContent);
         this.notification.add(_t("Link copied to clipboard!"), {
             type: "success",
