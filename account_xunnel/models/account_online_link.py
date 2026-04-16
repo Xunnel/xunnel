@@ -41,7 +41,9 @@ class AccountOnlineLink(models.Model):
             raise UserError(err)
         return res.get("response")
 
-    def update_credentials(self):
+    def action_update_credentials(self):
+        if not self.is_xunnel:
+            return super().action_update_credentials()
         raise UserError(
             self.env._(
                 "Updating credentials is not allowed here. Please go to https://www.xunnel.com/ to achieve that."
