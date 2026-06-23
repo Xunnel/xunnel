@@ -33,5 +33,4 @@
             "/invoice_xunnel/static/src/xml/attachment_viewer.xml",
         ],
     },
-    "installable": True,
 }
