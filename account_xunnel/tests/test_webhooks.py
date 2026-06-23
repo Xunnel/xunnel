@@ -4,7 +4,11 @@
 import json
 from unittest.mock import Mock
 
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from .common import failed_requests_mock as mock
+
 
 from odoo.tests import TransactionCase, tagged
 
