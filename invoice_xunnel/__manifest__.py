@@ -35,5 +35,4 @@
             "/invoice_xunnel/static/src/xml/documents_details_panel.xml",
         ],
     },
-    "installable": True,
 }
