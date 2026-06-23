@@ -1,6 +1,10 @@
 from json import dumps
 
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from .common import failed_requests_mock as mock
+
 
 from odoo import Command
 from odoo.tests.common import SingleTransactionCase, TransactionCase, tagged
