@@ -96,14 +96,15 @@ class ResCompany(models.Model):
     def get_xml_sync_action(self):
         result = self._sync_xunnel_documents()
         message_class = "success"
-        message = self.env._("{} xml have been downloaded.").format(result.get("created"))
+        message = self.env._("%d xml have been downloaded.", len(result.get("created")))
         failed = result.get("failed")
         if failed:
             message_class = "warning"
             message += self.env._(
-                "\nAlso {} files have failed at the conversion."
-                "\nWe sent you an email with the details of the failed invoices."
-            ).format(failed)
+                "\nAlso %d files have failed at the conversion."
+                "\nWe sent you an email with the details of the failed invoices.",
+                failed,
+            )
         action_params = {"message": message, "message_class": message_class}
         return {
             "type": "ir.actions.client",
