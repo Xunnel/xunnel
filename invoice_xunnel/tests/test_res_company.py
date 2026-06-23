@@ -4,7 +4,11 @@
 import json
 import os
 
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from odoo.addons.account_xunnel.tests.common import failed_requests_mock as mock
+
 
 from odoo import fields
 from odoo.exceptions import UserError
