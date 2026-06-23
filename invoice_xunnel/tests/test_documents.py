@@ -1,7 +1,11 @@
 import base64
 import os
 
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from odoo.addons.account_xunnel.tests.common import failed_requests_mock as mock
+
 
 from odoo.tests import TransactionCase
 from odoo.tools import misc
