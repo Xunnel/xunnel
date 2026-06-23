@@ -229,8 +229,8 @@ msgstr "Algunos datos no proporcionan esta información."
 #. module: account_xunnel
 #. odoo-python
 #: code:addons/account_xunnel/models/res_config_settings.py:0
-msgid "Success! {} banks have been synchronized."
-msgstr "¡Éxito! {} bancos han sido sincronizados."
+msgid "Success! %d banks have been synchronized."
+msgstr "¡Éxito! %d bancos han sido sincronizados."
 
 #. module: account_xunnel
 #: model_terms:ir.ui.view,arch_db:account_xunnel.wizard_set_up_connection_token_form_view
