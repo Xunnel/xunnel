@@ -22,9 +22,9 @@ class DocumentsWizard(models.TransientModel):
         result = company._sync_xunnel_documents()
         failed = result.get("failed")
         created = result.get("created")
-        message = self.env._("{} xml have been downloaded.").format(len(created))
+        message = self.env._("%d xml have been downloaded.", len(created))
         if failed:
-            message += self.env._(" Also {} files have failed at the conversion.").format(failed)
+            message += self.env._(" Also %d files have failed at the conversion.", failed)
         action = self.env.ref("invoice_xunnel.action_product_confirm_wizard").sudo().read()[0]
         action["context"] = {
             "default_message": message,

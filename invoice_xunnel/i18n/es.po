@@ -20,18 +20,25 @@ msgstr ""
 #: code:addons/invoice_xunnel/models/res_company.py:0
 msgid ""
 "\n"
-"Also {} files have failed at the conversion.\n"
+"Also %d files have failed at the conversion.\n"
 "We sent you an email with the details of the failed invoices."
 msgstr ""
 "\n"
-"Además {} archivos han fallado al convertirse.\n"
+"Además %d archivos han fallado al convertirse.\n"
 "Te enviamos un correo con los detalles de las facturas que fallaron."
 
 #. module: invoice_xunnel
 #. odoo-python
 #: code:addons/invoice_xunnel/wizards/documents.py:0
-msgid " Also {} files have failed at the conversion."
-msgstr "Además {} archivos han fallado al convertirse."
+msgid " Also %d files have failed at the conversion."
+msgstr "Además %d archivos han fallado al convertirse."
+
+#. module: invoice_xunnel
+#. odoo-python
+#: code:addons/invoice_xunnel/models/res_company.py:0
+#: code:addons/invoice_xunnel/wizards/documents.py:0
+msgid "%d xml have been downloaded."
+msgstr "%d xml han sido descargados."
 
 #. module: invoice_xunnel
 #: model:ir.model,name:invoice_xunnel.model_ir_attachment
@@ -318,10 +325,3 @@ msgstr "Necesitas definir un RFC a tu compañia."
 #: code:addons/invoice_xunnel/static/src/xml/attach_xmls_template.xml:0
 msgid "or Click to upload the files"
 msgstr "o click para subir tus archivos"
-
-#. module: invoice_xunnel
-#. odoo-python
-#: code:addons/invoice_xunnel/models/res_company.py:0
-#: code:addons/invoice_xunnel/wizards/documents.py:0
-msgid "{} xml have been downloaded."
-msgstr "{} xml han sido descargados."
