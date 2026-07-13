@@ -28,7 +28,8 @@ class TestControllersMain(HttpCase):
                 "xunnel_document": True,
             }
         )
-        with MockRequest(self.env):
+        with MockRequest(self.env) as mock_request:
+            mock_request.httprequest.args = {}
             res = BinaryXunnel().content_common(
                 model="documents.document",
                 id=self.document_xunnel.id,
