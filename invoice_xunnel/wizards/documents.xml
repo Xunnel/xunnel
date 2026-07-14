@@ -6,14 +6,14 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group invisible="message != False">
+                    <group invisible="message">
                         <field name="date_from" />
                         <field name="date_to" />
                     </group>
-                    <div class="text-muted" invisible="message != False">
+                    <div class="text-muted" invisible="message">
                         SAT's invoices outside this date range won't be fetched.
                     </div>
-                    <div invisible="message == False">
+                    <div invisible="not message">
                         <div role="alert" class="alert alert-warning">
                             <field readonly="1" name="message" />
                         </div>
@@ -22,14 +22,14 @@
                 <footer>
                     <field name="no_attachment_action" invisible="1" />
                     <button
-                        invisible="message != False"
+                        invisible="message"
                         name="synchronize_documents"
                         type="object"
                         string="Confirm"
                         class="oe_highlight"
                     />
                     <button
-                        invisible="message == False or no_attachment_action == True"
+                        invisible="not message or no_attachment_action"
                         name="open_documents"
                         type="object"
                         string="See XMLs"
