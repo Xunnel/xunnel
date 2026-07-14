@@ -53,10 +53,12 @@ class ResCompany(models.Model):
         naive_dt = datetime.combine(value, time.min)
         return tz.localize(naive_dt).timestamp()
 
-    def _sync_xunnel_documents(self):
-        """Requests https://wwww.xunnel.com/ to retrive all invoices
-        related to the current company and check them in the database
-        to create them if they're not. After refresh xunnel_last_sync
+    def _sync_xunnel_documents(self, date_to=False):
+        """Request SAT XMLs from Xunnel for the configured sync range.
+
+        `xunnel_last_sync` remains the lower bound and `date_to`, when
+        provided by the wizard, is forwarded as the upper bound expected by
+        the remote endpoint.
         """
         self.ensure_one()
         if not self.vat and self.xunnel_token:
@@ -64,6 +66,8 @@ class ResCompany(models.Model):
         values = {"last_sync": False, "xunnel_testing": False, "vat": self.vat}
         if self.xunnel_last_sync:
             values.update(last_sync=self._date_to_epoch(self.xunnel_last_sync))
+        if date_to:
+            values.update(last_sync_to=self._date_to_epoch(date_to))
         response = self._xunnel("get_invoices_sat", values)
         err = response.get("error")
         if err:

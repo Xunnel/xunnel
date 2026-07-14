@@ -8,9 +8,10 @@
                 <sheet>
                     <group invisible="message != False">
                         <field name="date_from" />
+                        <field name="date_to" />
                     </group>
                     <div class="text-muted" invisible="message != False">
-                        SAT's invoices older than this date won't be fetched.
+                        SAT's invoices outside this date range won't be fetched.
                     </div>
                     <div invisible="message == False">
                         <div role="alert" class="alert alert-warning">

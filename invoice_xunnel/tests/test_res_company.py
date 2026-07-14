@@ -81,3 +81,32 @@ class TestXunnelAccount(TransactionCase):
             time_module.tzset()
 
         self.assertEqual(epoch_utc, epoch_mexico_city)
+
+    @mock()
+    def test_04_sync_xunnel_documents_with_end_date(self, request=None):
+        self.company.xunnel_last_sync = fields.Date.to_date("2018-01-01")
+        self.company.vat = "MXGODE561231GR8"
+        date_to = fields.Date.to_date("2018-08-31")
+        request.post("%sget_invoices_sat" % self.url, text=dumps({"response": []}))
+
+        result = self.company._sync_xunnel_documents(date_to=date_to)
+
+        payload = request.request_history[-1].json()
+        # Literal epochs, not `self.company._date_to_epoch(...)`: computing the
+        # expectation from the same helper the production code calls would make
+        # this an identity check that passes for any implementation of the
+        # helper, right or wrong (see MR 216, note_846357).
+        self.assertEqual(payload["last_sync"], 1514786400.0)  # 2018-01-01 00:00 Mexico City
+        self.assertEqual(payload["last_sync_to"], 1535691600.0)  # 2018-08-31 00:00 Mexico City
+        self.assertEqual(result, {"created": [], "failed": 0})
+
+    @mock()
+    def test_05_sync_xunnel_documents_without_end_date(self, request=None):
+        self.company.xunnel_last_sync = fields.Date.to_date("2018-01-01")
+        self.company.vat = "MXGODE561231GR8"
+        request.post("%sget_invoices_sat" % self.url, text=dumps({"response": []}))
+
+        self.company._sync_xunnel_documents()
+
+        payload = request.request_history[-1].json()
+        self.assertNotIn("last_sync_to", payload)

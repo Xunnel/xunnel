@@ -112,6 +112,11 @@ msgid "Date From"
 msgstr "Última sincronización con Xunnel"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__date_to
+msgid "Date To"
+msgstr "Fecha hasta"
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_attach_xmls_wizard__display_name
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__display_name
 msgid "Display Name"
@@ -204,6 +209,11 @@ msgid "Last Updated on"
 msgstr "Ultima actualización el"
 
 #. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__date_from
+msgid "Lower bound used to request SAT XMLs from Xunnel."
+msgstr "Límite inferior para solicitar XML del SAT a Xunnel."
+
+#. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_xunnel_documents_wizard__message
 msgid "Message"
 msgstr "Mensaje"
@@ -222,6 +232,13 @@ msgstr "No encontrado"
 #: model:ir.model.fields.selection,name:invoice_xunnel.selection__documents_document__sat_status__undefined
 msgid "Not Synced Yet"
 msgstr "Aún sin sincronizar"
+
+#. module: invoice_xunnel
+#. odoo-python
+#: code:addons/invoice_xunnel/wizards/documents.py:0
+#, python-format
+msgid "Please select a start date."
+msgstr "Por favor selecciona una fecha de inicio."
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__product_list
@@ -245,8 +262,8 @@ msgstr "CFDI Relacionado al archivo XML"
 
 #. module: invoice_xunnel
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.xunnel_documents_wizard_view
-msgid "SAT's invoices older than this date won't be fetched."
-msgstr "Facturas del SAT anteriores a esta fecha no serán recuperadas."
+msgid "SAT's invoices outside this date range won't be fetched."
+msgstr "No se recuperarán facturas del SAT fuera de este rango de fechas."
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,field_description:invoice_xunnel.field_documents_document__sat_status
@@ -294,6 +311,13 @@ msgstr "Estado no definido"
 
 #. module: invoice_xunnel
 #. odoo-python
+#: code:addons/invoice_xunnel/wizards/documents.py:0
+#, python-format
+msgid "The end date cannot be earlier than the start date."
+msgstr "La fecha final no puede ser anterior a la fecha de inicio."
+
+#. module: invoice_xunnel
+#. odoo-python
 #: code:addons/invoice_xunnel/wizards/attach_xmls_wizard.py:0
 #, python-format
 msgid ""
@@ -313,6 +337,15 @@ msgstr "Cantidad total"
 #: model_terms:ir.ui.view,arch_db:invoice_xunnel.documents_view_kanban
 msgid "Total amount: $"
 msgstr "Cantidad total: $"
+
+#. module: invoice_xunnel
+#: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__date_to
+msgid ""
+"Upper bound used to stop the SAT XML synchronization range. If empty, it "
+"will download all invoices from the start date until today."
+msgstr ""
+"Límite superior del rango de sincronización de XML del SAT. Si se deja "
+"vacío, se descargarán las facturas desde la fecha de inicio hasta hoy."
 
 #. module: invoice_xunnel
 #: model:ir.model.fields,help:invoice_xunnel.field_xunnel_documents_wizard__message

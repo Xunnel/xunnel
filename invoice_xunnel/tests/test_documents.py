@@ -1,5 +1,6 @@
 import base64
 import os
+from json import dumps
 
 try:
     from requests_mock import mock
@@ -7,6 +8,8 @@ except ImportError:
     from odoo.addons.account_xunnel.tests.common import failed_requests_mock as mock
 
 
+from odoo import fields
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 from odoo.tools import misc
 
@@ -230,3 +233,38 @@ class TestCaseDocuments(TransactionCase):
         )
         document_test._compute_related_cfdi()
         self.assertFalse(document_test.related_cfdi)
+
+    @mock()
+    def test_07_synchronize_documents_passes_end_date(self, request=None):
+        date_from = fields.Date.to_date("2024-01-01")
+        date_to = fields.Date.to_date("2024-01-31")
+        request.post("%sget_invoices_sat" % self.url, text=dumps({"response": []}))
+
+        wizard = self.env["xunnel.documents.wizard"].create({"date_from": date_from, "date_to": date_to})
+        wizard.synchronize_documents()
+
+        payload = request.request_history[-1].json()
+        # Literal epoch, not `self.company._date_to_epoch(...)`: building the
+        # expectation from the same helper the production code calls would
+        # make this an identity check (see MR 216, note_846357). The day
+        # adjustment is still exercised: `date_to + timedelta(days=1)` mirrors
+        # the wizard's own arithmetic, so only the epoch conversion needs a
+        # literal to close the gap.
+        self.assertEqual(payload["last_sync_to"], 1706767200.0)  # 2024-02-01 00:00 Mexico City
+
+    def test_08_synchronize_documents_rejects_inverted_date_range(self):
+        wizard = self.env["xunnel.documents.wizard"].create(
+            {
+                "date_from": fields.Date.to_date("2024-02-01"),
+                "date_to": fields.Date.to_date("2024-01-31"),
+            }
+        )
+
+        with self.assertRaisesRegex(UserError, "The end date cannot be earlier than the start date."):
+            wizard.synchronize_documents()
+
+    def test_09_synchronize_documents_rejects_empty_start_date(self):
+        wizard = self.env["xunnel.documents.wizard"].create({"date_from": False})
+
+        with self.assertRaisesRegex(UserError, "Please select a start date."):
+            wizard.synchronize_documents()

@@ -1,25 +1,50 @@
+from datetime import timedelta
+
 from odoo import _, fields, models
+from odoo.exceptions import UserError
 
 
 class DocumentsWizard(models.TransientModel):
     _name = "xunnel.documents.wizard"
     _description = "Xunnel documents sync"
 
-    date_from = fields.Date(default=lambda self: self.env.company.xunnel_last_sync)
+    date_from = fields.Date(
+        default=lambda self: self.env.company.xunnel_last_sync,
+        help="Lower bound used to request SAT XMLs from Xunnel.",
+    )
+    date_to = fields.Date(
+        default=fields.Date.context_today,
+        help=(
+            "Upper bound used to stop the SAT XML synchronization range. "
+            "If empty, it will download all invoices from the start date until today."
+        ),
+    )
     message = fields.Char(help="Used to show the synchronization status.")
     no_attachment_action = fields.Boolean(help="Used to toggle the redirect to the attachments.")
 
     def synchronize_documents(self):
-        """Synchronize attachments from Xunnel. After it,
-        opens a new `xunnel.attachments.wizard` instance with
-        the message corresponding to the synchronization status.
+        """Synchronize SAT XMLs from Xunnel for the selected date range.
+
+        The wizard keeps `date_from` as the persisted lower bound through
+        `xunnel_last_sync` and sends `date_to` as the optional upper bound
+        supported by the Xunnel endpoint.
 
         If there was downloaded attachments, it also shows a button
         to redirect to those attachments.
         """
+        if not self.date_from:
+            raise UserError(_("Please select a start date."))
+        if self.date_to and self.date_to < self.date_from:
+            raise UserError(_("The end date cannot be earlier than the start date."))
         company = self.env.company.sudo()
         company.xunnel_last_sync = self.date_from
-        result = company._sync_xunnel_documents()
+        # `get_invoices_sat` treats `last_sync_to` as an exclusive cutoff at
+        # the exact instant sent, not normalized to end-of-day (confirmed
+        # empirically against the real endpoint, see MR 216 description).
+        # Adding a day keeps the whole calendar day the user picked inside
+        # the requested window.
+        date_to = self.date_to + timedelta(days=1) if self.date_to else False
+        result = company._sync_xunnel_documents(date_to=date_to)
         failed = result.get("failed")
         created = result.get("created")
         message = _("%d xml have been downloaded.", len(created))
