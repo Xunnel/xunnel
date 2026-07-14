@@ -108,24 +108,3 @@ class ResCompany(models.Model):
             "created": created,
             "failed": failed,
         }
-
-    def get_xml_sync_action(self):
-        result = self._sync_xunnel_documents()
-        message_class = "success"
-        message = _("%d xml have been downloaded.", len(result.get("created")))
-        failed = result.get("failed")
-        if failed:
-            message_class = "warning"
-            message += _(
-                "\nAlso %d files have failed at the conversion."
-                "\nWe sent you an email with the details of the failed invoices.",
-                failed,
-            )
-        action_params = {"message": message, "message_class": message_class}
-        return {
-            "type": "ir.actions.client",
-            "tag": "account_xunnel.SyncrhonizedAccounts",
-            "name": _("Xunnel invoice response."),
-            "target": "new",
-            "params": action_params,
-        }
