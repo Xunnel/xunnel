@@ -2,6 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import os
+import time as time_module
 from json import dumps
 
 try:
@@ -56,3 +57,27 @@ class TestXunnelAccount(TransactionCase):
         final_documents = documents.search_count([])
         self.assertEqual(final_documents - inital_documents, 0)
         self.assertEqual(old_sync, fields.Date.to_string(self.company.xunnel_last_sync))
+
+    def test_03_date_to_epoch_ignores_server_timezone(self):
+        """The epoch for a given date must not depend on the `TZ` the
+        server process happens to run under (see MR 216, note_844798):
+        a UTC server must produce the same instant as a Mexico_City one.
+        """
+        date_to = fields.Date.to_date("2026-02-01")
+        original_tz = os.environ.get("TZ")
+        try:
+            os.environ["TZ"] = "UTC"
+            time_module.tzset()
+            epoch_utc = self.company._date_to_epoch(date_to)
+
+            os.environ["TZ"] = "America/Mexico_City"
+            time_module.tzset()
+            epoch_mexico_city = self.company._date_to_epoch(date_to)
+        finally:
+            if original_tz is None:
+                os.environ.pop("TZ", None)
+            else:
+                os.environ["TZ"] = original_tz
+            time_module.tzset()
+
+        self.assertEqual(epoch_utc, epoch_mexico_city)

@@ -3,13 +3,15 @@
 
 import base64
 from codecs import BOM_UTF8
-from datetime import date
-from time import mktime
+from datetime import date, datetime, time
 
+import pytz
 from lxml import etree, objectify
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+DEFAULT_XUNNEL_TZ = "America/Mexico_City"
 
 BOM_UTF8U = BOM_UTF8.decode("UTF-8")
 
@@ -33,6 +35,24 @@ class ResCompany(models.Model):
         node = cfdi.Complemento.xpath(attribute, namespaces=namespace)
         return node[0] if node else None
 
+    def _date_to_epoch(self, value):
+        """Convert a naive date to a UNIX timestamp at midnight in
+        `DEFAULT_XUNNEL_TZ`, instead of the process' local timezone.
+
+        `mktime` derives the epoch from the `TZ` the server process happens
+        to run under, so the same date produces a different instant on a
+        UTC server than on one running in Mexico City. `res.partner.tz` is
+        not a substitute: it is a display preference core Odoo never
+        populates on a company's partner, and CFDI code that does need a
+        fiscal timezone (`_l10n_mx_edi_get_cfdi_timezone`) derives it from
+        the issuing address instead. Anchoring on the fixed
+        `DEFAULT_XUNNEL_TZ` keeps the epoch dependent only on the date the
+        user picked.
+        """
+        tz = pytz.timezone(DEFAULT_XUNNEL_TZ)
+        naive_dt = datetime.combine(value, time.min)
+        return tz.localize(naive_dt).timestamp()
+
     def _sync_xunnel_documents(self):
         """Requests https://wwww.xunnel.com/ to retrive all invoices
         related to the current company and check them in the database
@@ -43,7 +63,7 @@ class ResCompany(models.Model):
             raise UserError(_("You need to define the VAT of your company."))
         values = {"last_sync": False, "xunnel_testing": False, "vat": self.vat}
         if self.xunnel_last_sync:
-            values.update(last_sync=mktime(self.xunnel_last_sync.timetuple()))
+            values.update(last_sync=self._date_to_epoch(self.xunnel_last_sync))
         response = self._xunnel("get_invoices_sat", values)
         err = response.get("error")
         if err:
