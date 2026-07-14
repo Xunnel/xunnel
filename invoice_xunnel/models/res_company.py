@@ -73,7 +73,10 @@ class ResCompany(models.Model):
         if err:
             raise UserError(err)
         if response.get("response") is None:
-            return True
+            return {
+                "created": [],
+                "failed": 0,
+            }
         dates = []
         failed = 0
         created = []
