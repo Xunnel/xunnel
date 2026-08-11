@@ -2,7 +2,10 @@ from json import dumps
 from . import response
 
 from odoo.tests.common import TransactionCase
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from .common import failed_requests_mock as mock
 
 
 class TestAccountJournal(TransactionCase):

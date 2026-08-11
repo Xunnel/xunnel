@@ -8,7 +8,10 @@ from unittest.mock import Mock
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 from odoo.tools import misc
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from .common import failed_requests_mock as mock
 
 from . import response
 
