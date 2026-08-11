@@ -8,7 +8,10 @@ from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 from odoo.tools import misc
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from odoo.addons.account_xunnel.tests.common import failed_requests_mock as mock
 
 
 class TestXunnelAccount(TransactionCase):

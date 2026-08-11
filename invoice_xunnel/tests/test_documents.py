@@ -3,7 +3,10 @@ import os
 
 from odoo.tests.common import TransactionCase
 from odoo.tools import misc
-from requests_mock import mock
+try:
+    from requests_mock import mock
+except ImportError:
+    from odoo.addons.account_xunnel.tests.common import failed_requests_mock as mock
 
 TEXT_xunnel_datas = base64.b64encode(
     bytes("""<?xml version="1.0" encoding="UTF-8"?>
