@@ -83,9 +83,9 @@ class TestAccountJournal(TransactionCase):
         self.env['account.bank.statement'].search([('journal_id', '=', self.journal.id)]).unlink()
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         online_journal = self.journal.account_online_link_id
         self.env.user.company_id.xunnel_token = 'test token'
         transactions = self.journal.manual_sync()
@@ -101,9 +101,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         online_journal = self.journal.account_online_account_id
         # To test if manual_sync its executed before is assigned to a journal
         online_journal.last_sync = False
@@ -119,9 +119,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         self.journal.bank_statement_creation_groupby = 'month'
         statement = self.env['account.bank.statement'].create({
             'line_ids': [(0, 0, {
@@ -143,9 +143,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         self.journal.bank_statement_creation_groupby = 'month'
         statement = self.env['account.bank.statement'].create({
             'name': 'online sync',
@@ -164,7 +164,7 @@ class TestAccountJournal(TransactionCase):
             'journal_id': self.journal.id,
         })
         self.journal.manual_sync()
-        lines = statement.line_ids.filtered(lambda l: not l.online_transaction_identifier)
+        lines = statement.line_ids.filtered(lambda line: not line.online_transaction_identifier)
         self.assertEqual(len(lines), 2)
 
     @mock()
@@ -174,9 +174,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         month = self.process_statements_by_period('month')
         self.assertEqual(len(month), 2)
 
@@ -187,9 +187,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         day = self.process_statements_by_period('day')
         self.assertEqual(len(day), 6)
 
@@ -200,9 +200,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         week = self.process_statements_by_period('week')
         self.assertEqual(len(week), 3)
 
@@ -213,9 +213,9 @@ class TestAccountJournal(TransactionCase):
         """
         request.post(
             '%sget_xunnel_transactions' % self.url,
-            text=dumps(dict(response=dumps({
+            text=dumps({'response': dumps({
                 'balance': 0,
-                'transactions': response.TRANSACTIONS}))))
+                'transactions': response.TRANSACTIONS})}))
         bimonthly = self.process_statements_by_period('bimonthly')
         self.assertEqual(len(bimonthly), 3)
 

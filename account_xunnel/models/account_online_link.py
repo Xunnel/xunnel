@@ -61,7 +61,7 @@ class AccountOnlineLink(models.Model):
         """
         res = self.company_id._xunnel(
             'get_xunnel_journals',
-            dict(account_identifier=self.client_id))
+            {'account_identifier': self.client_id})
         err = res.get('error')
         if err:
             raise UserError(err)

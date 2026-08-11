@@ -31,7 +31,7 @@ class AccountJournal(models.Model):
         if not self.account_online_link_id.is_xunnel:
             return super().manual_sync()
         res = online_account.with_context(xunnel_operation=True)._retrieve_transactions()
-        if res == 0:
+        if not res:
             raise ValidationError(_("""No item was found in the period of time that you choose, please change the \
                                     Xunnel Synchronization Date of the journal or check if its associated  account \
                                     has transactions at www.xunnel.com"""))

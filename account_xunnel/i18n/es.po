@@ -279,8 +279,8 @@ msgstr "Configurar Token"
 #. module: account_xunnel
 #: code:addons/account_xunnel/models/account_config_settings.py:62
 #, python-format
-msgid "Success! %s banks have been synchronized."
-msgstr "Éxito! %s bancos han sido sincronizados."
+msgid "Success! %d banks have been synchronized."
+msgstr "Éxito! %d bancos han sido sincronizados."
 
 #. module: account_xunnel
 #: code:addons/account_xunnel/models/xunnel_online_account.py:120

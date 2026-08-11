@@ -29,7 +29,7 @@ class TestResConfigSettings(TransactionCase):
         }
         config_settings_1 = self.config_settings.create(vals_1)
         self.assertEqual(config_settings_1.xunnel_token, 'test token from vals')
-        vals_2 = ({})
+        vals_2 = {}
         self.config_settings.xunnel_token = 'test token'
         config_settings_2 = self.config_settings.create(vals_2)
         self.assertEqual(config_settings_2.xunnel_token, 'test token')
@@ -49,7 +49,7 @@ class TestResConfigSettings(TransactionCase):
             return misc.file_open(
                 os.path.join('account_xunnel', 'tests', path % '1')).read()
 
-        request.post('%sget_xunnel_providers' % self.url, text=dumps(dict(response=response.PROVIDERS)))
+        request.post('%sget_xunnel_providers' % self.url, text=dumps({'response': response.PROVIDERS}))
         request.post('%sget_xunnel_journals' % self.url, text=_response)
 
         self.config_settings.xunnel_token = 'test token'
