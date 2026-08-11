@@ -16,8 +16,6 @@
         'account_asset',
         'account_online_synchronization',
     ],
-    'demo': [
-    ],
     'data': [
         # WiZARDS
         'wizards/wizard_change_date.xml',
@@ -47,5 +45,4 @@
             '/account_xunnel/static/src/xml/add_account_manager.xml',
         ],
     },
-    'installable': True,
 }
