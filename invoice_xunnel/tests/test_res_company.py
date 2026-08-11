@@ -48,13 +48,9 @@ class TestXunnelAccount(TransactionCase):
             '%sget_invoices_sat' % self.url,
             text=dumps({"error": "Expected error for testing"}))
 
-        documents = self.env['documents.document']
-        inital_documents = documents.search_count([])
         old_sync = '1970-01-01'
         self.company.xunnel_last_sync = old_sync
+        self.company.vat = 'MXGODE561231GR8'
         with self.assertRaisesRegex(UserError, 'Expected error for testing'):
-            self.company.vat = 'MXGODE561231GR8'
             self.company._sync_xunnel_documents()
-            final_documents = documents.search_count([])
-            self.assertEquals(final_documents - inital_documents, 3)
         self.assertEqual(old_sync, fields.Date.to_string(self.company.xunnel_last_sync))

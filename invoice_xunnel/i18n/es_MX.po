@@ -20,25 +20,25 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"Also %s files have failed at the conversion.\n"
+"Also %d files have failed at the conversion.\n"
 "We sent you an email with the details of the failed invoices."
 msgstr ""
 "\n"
-"Además %s archivos han fallado al convertirse.\n"
+"Además %d archivos han fallado al convertirse.\n"
 "Te enviamos un correo con los detalles de las facturas que fallaron."
 
 #. module: invoice_xunnel
 #: code:addons/invoice_xunnel/wizards/documents.py:0
 #, python-format
-msgid " Also %s files have failed at the conversion."
-msgstr " Además %s archivos han fallado al convertirse."
+msgid " Also %d files have failed at the conversion."
+msgstr " Además %d archivos han fallado al convertirse."
 
 #. module: invoice_xunnel
 #: code:addons/invoice_xunnel/models/res_company.py:0
 #: code:addons/invoice_xunnel/wizards/documents.py:0
 #, python-format
-msgid "%s xml have been downloaded."
-msgstr "%s xml han sido descargados."
+msgid "%d xml have been downloaded."
+msgstr "%d xml han sido descargados."
 
 #. module: invoice_xunnel
 #. openerp-web
