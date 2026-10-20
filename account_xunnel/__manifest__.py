@@ -18,9 +18,9 @@
     ],
     "data": [
         # WiZARDS
-        "wizards/wizard_change_date.xml",
-        "wizards/wizard_download_bank_accounts.xml",
-        "wizards/wizard_set_up_connection_token.xml",
+        "wizards/wizard_change_date_views.xml",
+        "wizards/wizard_download_bank_accounts_views.xml",
+        "wizards/wizard_set_up_connection_token_views.xml",
         # DATA
         "data/config_parameters.xml",
         "data/images_library.xml",
@@ -28,8 +28,8 @@
         # SECURITY
         "security/ir.model.access.csv",
         # VIEWS
-        "views/account_online_sync.xml",
-        "views/accountant_dashboard.xml",
+        "views/account_online_link_views.xml",
+        "views/account_journal_views.xml",
         "views/xunnel_menuitems.xml",
     ],
     "assets": {
