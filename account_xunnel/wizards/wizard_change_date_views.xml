@@ -22,20 +22,4 @@
         <field name="target">new</field>
         <field name="view_id" ref="change_xunnel_last_sync_date_view" />
     </record>
-
-    <record id="journal_dashboard_view_inherit_inherit" model="ir.ui.view">
-        <field name="name">account.journal.dashboard.kanban.inherit</field>
-        <field name="model">account.journal</field>
-        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//h5[@id='card_action_view_menus']" position="after">
-                <div t-if="journal_type == 'bank'" name="xunnel_sync_date">
-                    <a
-                        type="action"
-                        name="%(account_xunnel.change_xunnel_last_sync_date_action)d"
-                    >Xunnel synchronization date</a>
-                </div>
-            </xpath>
-        </field>
-    </record>
 </odoo>

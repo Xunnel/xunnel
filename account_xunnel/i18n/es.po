@@ -27,7 +27,7 @@ msgstr ""
 "las transacciones añadidas manualmente.</small>"
 
 #. module: account_xunnel
-#: model_terms:ir.ui.view,arch_db:account_xunnel.view_account_journal_dashboard_kanban_xunnel
+#: model_terms:ir.ui.view,arch_db:account_xunnel.account_journal_dashboard_kanban_view
 msgid "<span title=\"Latest synchronization\">Xunnel Last sync</span>"
 msgstr ""
 "<span title=\"Última sincronización Xunnel\">Última sincronización "
@@ -326,7 +326,7 @@ msgid "Xunnel response"
 msgstr "Respuesta Xunnel"
 
 #. module: account_xunnel
-#: model_terms:ir.ui.view,arch_db:account_xunnel.journal_dashboard_view_inherit_inherit
+#: model_terms:ir.ui.view,arch_db:account_xunnel.account_journal_dashboard_kanban_view
 msgid "Xunnel synchronization date"
 msgstr "Fecha de sincronización Xunnel"
 
